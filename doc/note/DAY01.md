@@ -141,13 +141,159 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 </dependency>
 ```
 
+在任何POJO类上，可以添加`@Data`注解，则此框架（Lombok）会自动在编译期生成：
 
+- 各属性对应的Setters & Getters
+- 基于各属性的`hashCode()`与`equals()`
+- 基于各属性的`toString()`
+
+另外，所有POJO类都应该实现`Serializable`接口！
 
 在项目的根包下创建`pojo.entity.Album`类，在类中声明与数据表对应的各属性：
 
 ```java
+package cn.tedu.csmall.product.pojo.entity;
 
+import lombok.Data;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+/**
+ * 相册
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Data
+public class Album implements Serializable {
+
+    /**
+     * 记录id
+     */
+    private Long id;
+
+    /**
+     * 相册名称
+     */
+    private String name;
+
+    /**
+     * 相册简介
+     */
+    private String description;
+
+    /**
+     * 自定义排序序号
+     */
+    private Integer sort;
+
+    /**
+     * 数据创建时间
+     */
+    private LocalDateTime gmtCreate;
+
+    /**
+     * 数据最后修改时间
+     */
+    private LocalDateTime gmtModified;
+
+}
 ```
+
+在项目的根包下创建`mapper.AlbumMapper`接口，并在接口中添加“插入1条数据”的抽象方法：
+
+```java
+package cn.tedu.csmall.product.mapper;
+
+import cn.tedu.csmall.product.pojo.entity.Album;
+
+/**
+ * 处理相册数据的Mapper接口
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+public interface AlbumMapper {
+
+    /**
+     * 插入相册数据
+     *
+     * @param album 相册数据
+     * @return 受影响的行数
+     */
+    int insert(Album album);
+
+}
+```
+
+关于抽象方法的声明：
+
+- 返回值类型：如果执行的SQL语句是增、删、改类型的，返回值类型始终使用`int`，表示“受影响的行数”，也可以使用`void`，但不推荐
+- 方法名称：自定义，但不推荐重载
+  - 阿里巴巴的参考：
+    - 获取单个对象的方法用 get 做前缀
+    - 获取多个对象的方法用 list 做前缀
+    - 获取统计值的方法用 count 做前缀
+    - 插入的方法用 save/insert 做前缀
+    - 删除的方法用 remove/delete 做前缀
+    - 修改的方法用 update 做前缀
+- 参数列表：根据需要执行的SQL语句中的参数来设计，如果参数较多，且具有相关性，则推荐封装
+
+在`src/main/resource/mapper`下，通过粘贴得到`AlbumMapper.xml`文件，并在此文件中配置以上接口
+
+抽象方法的对应代码：
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.csmall.product.mapper.AlbumMapper">
+
+    <!-- int insert(Album album); -->
+    <insert id="insert">
+        INSERT INTO pms_album (
+            name, description, sort
+        ) VALUES (
+            #{name}, #{description}, #{sort}
+        )
+    </insert>
+
+</mapper>
+```
+
+最后，在`src/test/java`下的根包下，创建`mapper.AlbumMapperTests`类，在类上添加`@SpringBootTest`注解，并在类中编写测试方法：
+
+```java
+package cn.tedu.csmall.product.mapper;
+
+import cn.tedu.csmall.product.pojo.entity.Album;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+public class AlbumMapperTests {
+
+    @Autowired
+    AlbumMapper mapper;
+
+    @Test
+    void insert() {
+        Album album = new Album();
+        album.setName("测试相册002");
+        album.setDescription("测试相册简介002");
+        album.setSort(255);
+        int rows = mapper.insert(album);
+        System.out.println("插入相册数据完成，受影响的行数：" + rows);
+    }
+
+}
+```
+
+
+
+
 
 
 
