@@ -7,7 +7,7 @@
 - Group：`cn.tedu`
 - Artifact：`csmall-product`
 - Package：`cn.tedu.csmall.product`
-- Java：8
+- Java：`8`
 
 # 2. 创建数据库
 
@@ -22,3 +22,33 @@ CREATE DATABASE mall_pms;
 # 3. 创建数据表
 
 使用老师共享的`mall_pms_jsd2207.sql`（在老师的项目中的`/doc/sql`下），通过Database面板的Console执行SQL语句，以创建数据表。
+
+# 4. 添加数据库编程的依赖
+
+在`pom.xml`中添加依赖项：
+
+```xml
+<!-- Mybatis整合Spring Boot的依赖项 -->
+<dependency>
+    <groupId>org.mybatis.spring.boot</groupId>
+    <artifactId>mybatis-spring-boot-starter</artifactId>
+    <version>2.2.2</version>
+</dependency>
+<!-- MySQL的依赖项 -->
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <scope>runtime</scope>
+</dependency>
+```
+
+
+
+
+
+
+
+
+
+
+
