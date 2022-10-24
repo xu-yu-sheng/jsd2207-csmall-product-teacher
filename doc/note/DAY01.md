@@ -75,5 +75,80 @@ void getConnection() throws Throwable {
 }
 ```
 
+# 5. 使用Mybatis实现数据库编程
+
+在一个项目中，除了关联表，绝大部分的数据表都至少需要实现以下功能：
+
+- 插入1条数据
+- 批量插入数据
+- 根据id删除某1条数据
+- 根据若干个id批量删除某些数据
+- 根据id修改数据
+- 统计当前表中数据的数量
+- 根据id查询数据详情
+- 查询当前表中的数据列表
+
+以“相册”（`pms_album`）为例，先实现“插入1条数据”的数据访问功能，需要执行的SQL语句大致是：
+
+```mysql
+INSERT INTO pms_album (除了id和2个时间以外的字段列表) VALUES (匹配的值列表);
+```
+
+要实现以上功能，需要：
+
+- 在配置类中使用`@MapperScan`指定接口文件所在的根包
+  - 一次性配置
+- 在配置文件中通过`mybatis.mapper-locations`属性来指定XML文件所在的位置
+  - 一次性配置
+- 创建实体类
+- 创建接口，并声明抽象方法
+- 添加XML文件，并在此文件中配置抽象方法映射的SQL语句
+- 创建测试类，编写并执行测试方法
+  - 非必要，但强烈推荐
+
+则在项目的根包下创建`config.MybatisConfiguration`配置类（添加了`@Configuration`注解的类），在此类上配置`@MapperScan`注解：
+
+```java
+package cn.tedu.csmall.product.config;
+
+import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.context.annotation.Configuration;
+
+@MapperScan("cn.tedu.csmall.product.mapper")
+@Configuration
+public class MybatisConfiguration {
+}
+```
+
+在`application.properties`中添加配置：
+
+```properties
+# Mybatis相关配置
+mybatis.mapper-locations=classpath:mapper/*.xml
+```
+
+并且，在`src/main/resources`下创建名为`mapper`的文件夹。
+
+在项目的根包下创建`pojo.entity.Album`类，在类中声明与数据表对应的各属性：
+
+```java
+
+```
+
+
+
+
+
+# 附录：MySQL数据类型与Java类中的数据类型的对应关系
+
+| MySQL数据类型                   | Java类中的数据类型 |
+| ------------------------------- | ------------------ |
+| `tinyint` / `smallint` / `int`  | `Integer`          |
+| `bigint`                        | `Long`             |
+| `char` / `varchar` / `text`系列 | `String`           |
+| `date_time`                     | `LocalDateTime`    |
+
+
+
 
 
