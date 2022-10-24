@@ -61,9 +61,19 @@ spring.datasource.username=root
 spring.datasource.password=root
 ```
 
+当添加以上配置后，再次启动项目，不会再报错，但是，即使以上配置值有误，也不会出错（除非URL格式有误），因为Spring Boot在加载Spring环境时只会读取以上配置，并不会真实的连接数据库！
 
+为了检查以上配置值是否正确，可以在现有的测试类中添加以下代码，以真实的连接数据库，则如果以上配置值有误，就会出现错误，如果配置值正确，则可以顺利通过测试：
 
+```java
+@Autowired
+DataSource dataSource;
 
+@Test
+void getConnection() throws Throwable {
+    dataSource.getConnection();
+}
+```
 
 
 
