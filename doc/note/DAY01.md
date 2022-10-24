@@ -129,6 +129,20 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 
 并且，在`src/main/resources`下创建名为`mapper`的文件夹。
 
+在编写POJO类之前，先在项目中添加依赖：
+
+```xml
+<!-- Lombok的依赖项，主要用于简化POJO类的编写 -->
+<dependency>
+    <groupId>org.projectlombok</groupId>
+    <artifactId>lombok</artifactId>
+    <version>1.18.20</version>
+    <scope>provided</scope>
+</dependency>
+```
+
+
+
 在项目的根包下创建`pojo.entity.Album`类，在类中声明与数据表对应的各属性：
 
 ```java
@@ -146,7 +160,7 @@ mybatis.mapper-locations=classpath:mapper/*.xml
 | `tinyint` / `smallint` / `int`  | `Integer`          |
 | `bigint`                        | `Long`             |
 | `char` / `varchar` / `text`系列 | `String`           |
-| `date_time`                     | `LocalDateTime`    |
+| `datetime`                      | `LocalDateTime`    |
 
 
 
