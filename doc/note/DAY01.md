@@ -42,9 +42,24 @@ CREATE DATABASE mall_pms;
 </dependency>
 ```
 
+当添加以上依赖项后，如果执行测试中的`contextLoads()`（或其它任何测试方法，或启动项目），会出现错误，测试不通过时的异常信息如下：
 
+```
+Caused by: org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+```
 
+之所以会出现此错误，是因为在Spring Boot项目中，当加载Spring环境时，如果项目中添加了数据库编程的依赖项（例如以上添加的`mybatis-spring-boot-starter`），则Spring Boot会自动读取连接数据库的配置信息，如果没有，就会报错！
 
+则在`src/main/resources`下的`application.properties`文件中配置连接数据库的配置信息，此文件是Spring Boot项目默认的主配置文件，当加载Spring环境时，会自动读取此配置文件中的配置信息！
+
+添加配置如下：
+
+```properties
+# 连接数据库的配置参数
+spring.datasource.url=jdbc:mysql://localhost:3306/mall_pms?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+spring.datasource.username=root
+spring.datasource.password=root
+```
 
 
 
