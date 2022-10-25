@@ -27,14 +27,42 @@ Lombok的常用注解有：
   - 推荐
   - 与添加`@Mapper`注解的本质不同，添加`@Mapper`注解是为了标识此接口是Mybatis框架应该处理的接口，添加`@Repository`注解是为了引导IntelliJ IDEA作出正确的判断
 
+# 11. 关于Slf4j日志
 
+在Spring Boot项目中，基础依赖项（`spring-boot-starter`）中已经包含了日志的相关依赖项。
 
+在添加了`Lombok`依赖项后，可以在类上添加`@Slf4j`注解，则Lombok框架会在编译期生成名为`log`的变量，可调用此变量的方法来输出日志。
 
+日志是有显示级别的，根据日志内容的重要程度，从不重要到重要，依次为：
 
+- `trace`：跟踪信息，可能包含不一定关注，但是包含了程序执行流程的信息
+- `debug`：调试信息，可能包含一些敏感内容，比如关键数据的值
+- `info`：一般信息
+- `warn`：警告信息
+- `error`：错误信息
+
+使用Slf4j时，可以使用`log`变量调用以上5个级别对应的方法，来输出不同级别的日志！
+
+在Spring Boot项目中，默认的日志显示级别为【info】，将只会显示此级别及更重要级别的日志！可以在`application.properties`中配置`logging.level.根包=日志显示级别`来设置当前显示级别，例如：
+
+```properties
+# 日志的显示级别
+logging.level.cn.tedu.csmall=error
 ```
-Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'cn.tedu.csmall.product.mapper.AlbumMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@javax.annotation.Resource(shareable=true, lookup=, name=, description=, authenticationType=CONTAINER, type=class java.lang.Object, mappedName=)}
 
-```
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

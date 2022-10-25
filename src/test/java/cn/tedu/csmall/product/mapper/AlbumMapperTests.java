@@ -1,12 +1,12 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.annotation.Resource;
-
+@Slf4j
 @SpringBootTest
 public class AlbumMapperTests {
 
@@ -16,11 +16,11 @@ public class AlbumMapperTests {
     @Test
     void insert() {
         Album album = new Album();
-        album.setName("测试相册007");
-        album.setDescription("测试相册简介007");
+        album.setName("测试相册008");
+        album.setDescription("测试相册简介008");
         album.setSort(255);
         int rows = mapper.insert(album);
-        System.out.println("插入相册数据完成，受影响的行数：" + rows);
+        log.info("插入相册数据完成，受影响的行数：" + rows);
     }
 
 }
