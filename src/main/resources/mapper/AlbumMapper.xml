@@ -4,12 +4,22 @@
 <mapper namespace="cn.tedu.csmall.product.mapper.AlbumMapper">
 
     <!-- int insert(Album album); -->
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO pms_album (
             name, description, sort
         ) VALUES (
             #{name}, #{description}, #{sort}
         )
+    </insert>
+
+    <!-- int insertBatch(List<Album> albums); -->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_album (
+            name, description, sort
+        ) VALUES
+        <foreach collection="list" item="album" separator=",">
+            (#{album.name}, #{album.description}, #{album.sort})
+        </foreach>
     </insert>
 
 </mapper>

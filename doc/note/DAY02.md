@@ -13,7 +13,7 @@ Lombok的常用注解有：
 - `@ToString`：添加在类上，用于生成全属性对应的`toString()`方法
 - `@Slf4j`：添加在类上，？？？
 
-# 10. 关于自动装配Mapper对象时报错
+# 7. 关于自动装配Mapper对象时报错
 
 当自动装配Mapper接口的对象时，IntelliJ IDEA可能会报错，提示无法装配此对象，但是，并不影响运行！
 
@@ -27,7 +27,7 @@ Lombok的常用注解有：
   - 推荐
   - 与添加`@Mapper`注解的本质不同，添加`@Mapper`注解是为了标识此接口是Mybatis框架应该处理的接口，添加`@Repository`注解是为了引导IntelliJ IDEA作出正确的判断
 
-# 11. 关于Slf4j日志
+# 8. 关于Slf4j日志
 
 在Spring Boot项目中，基础依赖项（`spring-boot-starter`）中已经包含了日志的相关依赖项。
 
@@ -64,7 +64,7 @@ log.info("{}+{}={}", x, y, x + y);
 
 另外，SLF4j是一个日志标准，并不是具体的实现，通常，是通过`logback`或`log4j`等日志框架实现的，当前主流的Spring Boot版本中，都是使用`logback`来实现的。
 
-# 12. 关于Profile配置
+# 9. 关于Profile配置
 
 同一个项目，在不同的环境中（例如开发环境、测试环境、生产环境），需要的配置值可能是不同的，例如日志的显示级别、连接数据库的配置参数等，如果把同一个配置文件的多个属性的值反复修改是不现实的！
 
@@ -98,7 +98,7 @@ spring.profiles.active=dev
 
 如果`application.properties`与被激活的Profile配置中存在同名的属性，配置值却不相同，在执行时，将以Profile配置为准！
 
-# 13. 关于YAML配置
+# 10. 关于YAML配置
 
 YAML是一种编写配置文件的语法，表现为使用`.yml`作为扩展名的配置文件，Spring框架默认并不支持此类配置文件，而Spring Boot的基础依赖项中已经包含解析此类文件的依赖项，所以，在Spring Boot项目可以直接使用此类配置文件。
 
@@ -130,6 +130,80 @@ spring:
 ```
 
 **注意：YAML的解析相对更加严格，如果在此类配置文件中出现了错误的语法，甚至只是一些不应该出现的字符，都会导致解析失败！并且，如果直接复制粘贴整个文件，还可能出现乱码问题！**
+
+# 11. 插入数据时获取自动编号的id
+
+如果表中的id是自动编号的，在`<insert>`标签上，可以配置`useGeneratedKeys="true"`和`keyProperty="属性名"`，将可以获取自动编号的id值，并由Mybatis自动赋值到参数对象的属性（`keyProperty`配置的值）上，例如：
+
+```xml
+<!-- int insert(Album album); -->
+<insert id="insert" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO pms_album (
+        name, description, sort
+    ) VALUES (
+        #{name}, #{description}, #{sort}
+    )
+</insert>
+```
+
+> 提示：如果表的id不是自动编号的，则插入数据时必须由方法的调用者给出id值，所以，对于方法的调用者而言，id值是已知的，则不需要配置这2个属性。
+
+# 12. 关于BindingException
+
+当调用的方法找不到绑定的SQL语句时，将出现错误，例如：
+
+```
+org.apache.ibatis.binding.BindingException: Invalid bound statement (not found): cn.tedu.csmall.product.mapper.AlbumMapper.insert
+```
+
+出现此错误的原因可能是：
+
+- 在XML文件中，`<mapper>`标签的`namespace`值有误
+- 在XML文件中，`<insert>`或类似标签的`id`值有误
+- 在配置文件（`application.properties` / `application.yml`）中，配置的`mybatis.mapper-locations`属性有误，可能属性名写错，或属性值写错
+
+注意：以上异常信息中已经明确表示了哪个接口的哪个方法缺少对应的SQL语句，可以以此为线索来排查错误。
+
+# 13. 批量插入数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int insertBatch(List<Album> albums);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int insertBatch(List<Album> albums); -->
+<insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO pms_album (
+    	name, description, sort
+    ) VALUES
+    <foreach collection="list" item="album" separator=",">
+        (#{album.name}, #{album.description}, #{album.sort})
+    </foreach>
+</insert>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void insertBatch() {
+    List<Album> albums = new ArrayList<>();
+    for (int i = 1; i <= 5; i++) {
+        Album album = new Album();
+        album.setName("批量插入测试相册" + i);
+        album.setDescription("批量插入测试相册的简介" + i);
+        album.setSort(200);
+        albums.add(album);
+    }
+    
+    int rows = mapper.insertBatch(albums);
+    log.debug("批量插入完成，受影响的行数：{}", rows);
+}
+```
 
 
 
