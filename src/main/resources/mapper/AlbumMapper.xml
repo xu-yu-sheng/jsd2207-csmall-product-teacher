@@ -53,4 +53,9 @@
         WHERE id=#{id}
     </update>
 
+    <!-- int count(); -->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM pms_album
+    </select>
+
 </mapper>

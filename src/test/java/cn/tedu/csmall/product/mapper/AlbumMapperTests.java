@@ -69,4 +69,10 @@ public class AlbumMapperTests {
         log.debug("更新完成，受影响的行数：{}", rows);
     }
 
+    @Test
+    void count() {
+        int count = mapper.count();
+        log.debug("统计完成，表中的数据的数量：{}", count);
+    }
+
 }

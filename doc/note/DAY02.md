@@ -229,7 +229,7 @@ int deleteById(Long id);
 void deleteById() {
     Long id = 1L;
     int rows = mapper.deleteById(id);
-    log.debug("删除成功，受影响的行数：{}", rows);
+    log.debug("删除完成，受影响的行数：{}", rows);
 }
 ```
 
@@ -261,7 +261,7 @@ int deleteByIds(Long[] ids);
 void deleteByIds() {
     Long[] ids = {1L, 3L, 5L};
     int rows = mapper.deleteByIds(ids);
-    log.debug("批量删除成功，受影响的行数：{}", rows);
+    log.debug("批量删除完成，受影响的行数：{}", rows);
 }
 ```
 
@@ -300,12 +300,43 @@ int update(Album album);
 @Test
 void update() {
     Album album = new Album();
-    album.setName("测试相册010");
-    album.setDescription("测试相册简介010");
-    album.setSort(255);
+    album.setName("新-测试相册010");
+    album.setDescription("新-测试相册简介010");
+    album.setSort(166);
     
     int rows = mapper.update(album);
     log.debug("更新完成，受影响的行数：{}", rows);
+}
+```
+
+# 17. 统计相册数据的数量
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int count();
+```
+
+在设计“查询”的抽象方法时，关于返回值类型，只需要保证所设计的返回值类型足够“装得下”所需的查询结果即可。
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int count(); -->
+<select id="count" resultType="int">
+    SELECT count(*) FROM pms_album
+</select>
+```
+
+**注意：每个`<select>`标签必须配置`resultType`或`resultMap`这2个属性中的其中1个。**
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void count() {
+    int count = mapper.count();
+    log.debug("统计完成，表中的数据的数量：{}", count);
 }
 ```
 

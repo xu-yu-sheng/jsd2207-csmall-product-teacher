@@ -54,4 +54,11 @@ public interface AlbumMapper {
      */
     int update(Album album);
 
+    /**
+     * 统计相册表中的数据的数量
+     *
+     * @return 相册表中的数据的数量
+     */
+    int count();
+
 }
