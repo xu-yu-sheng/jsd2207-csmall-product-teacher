@@ -58,4 +58,9 @@
         SELECT count(*) FROM pms_album
     </select>
 
+    <!-- AlbumStandardVO getStandardById(Long id); -->
+    <select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AlbumStandardVO">
+        SELECT id, name, description, sort FROM pms_album WHERE id=#{id}
+    </select>
+
 </mapper>

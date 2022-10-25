@@ -340,6 +340,83 @@ void count() {
 }
 ```
 
+# 18. 根据id查询相册数据的详情
+
+根据阿里巴巴的Java开发手册中的规约，查询数据时，不允许使用星号作为字段列表，且，每张表都有`gmt_create`和`gmt_modified`字段，但是，在实际查询时，这2个时间字段通常并不需要查询出来！所以，根据id查询相册数据的详情的SQL语句大致是：
+
+```mysql
+select id, name, description, sort from pms_album where id=?
+```
+
+由于并不是查询所有字段，则使用实体类作为查询结果是**不合适**的，因为存在获取数据时语义不清晰的问题！（例如获取某属性的值为`null`时，是因为没有查询对应的字段？还是确实查询了但表中的数据就是`null`？），在规范的项目开发中，通常建议创建专门的POJO类型，用于封装查询结果！
+
+首先，应该在项目的根包下创建`pojo.vo.AlbumStandardVO`类型，在此类型中设计与查询的字段列表匹配的属性：
+
+```java
+package cn.tedu.csmall.product.pojo.vo;
+
+import lombok.Data;
+
+/**
+ * 相册数据的标准VO类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Data
+public class AlbumStandardVO {
+
+    /**
+     * 记录id
+     */
+    private Long id;
+
+    /**
+     * 相册名称
+     */
+    private String name;
+
+    /**
+     * 相册简介
+     */
+    private String description;
+
+    /**
+     * 自定义排序序号
+     */
+    private Integer sort;
+
+}
+```
+
+应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+AlbumStandardVO getStandardById(Long id);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- AlbumStandardVO getStandardById(Long id); -->
+<select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AlbumStandardVO">
+    SELECT id, name, description, sort FROM pms_album WHERE id=#{id}
+</select>
+```
+
+**注意：每个`<select>`标签必须配置`resultType`或`resultMap`这2个属性中的其中1个。**
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void getStandardById() {
+    Long id = 1L;
+    AlbumStandardVO queryResult = mapper.getStandardById(id);
+    log.debug("根据id【{}】查询数据详情完成，查询结果：{}", id, queryResult);
+}
+```
+
 # 
 
 

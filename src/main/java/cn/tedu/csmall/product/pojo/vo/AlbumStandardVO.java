@@ -1,18 +1,15 @@
-package cn.tedu.csmall.product.pojo.entity;
+package cn.tedu.csmall.product.pojo.vo;
 
 import lombok.Data;
 
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
 /**
- * 相册
+ * 相册数据的标准VO类
  *
  * @author java@tedu.cn
  * @version 0.0.1
  */
 @Data
-public class Album implements Serializable {
+public class AlbumStandardVO {
 
     /**
      * 记录id
@@ -33,15 +30,5 @@ public class Album implements Serializable {
      * 自定义排序序号
      */
     private Integer sort;
-
-    /**
-     * 数据创建时间
-     */
-    private LocalDateTime gmtCreate;
-
-    /**
-     * 数据最后修改时间
-     */
-    private LocalDateTime gmtModified;
 
 }

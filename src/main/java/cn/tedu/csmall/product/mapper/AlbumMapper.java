@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -60,5 +61,13 @@ public interface AlbumMapper {
      * @return 相册表中的数据的数量
      */
     int count();
+
+    /**
+     * 根据id查询相册详情
+     *
+     * @param id 相册id
+     * @return 匹配的相册详情，如果没有匹配的数据，则返回null
+     */
+    AlbumStandardVO getStandardById(Long id);
 
 }
