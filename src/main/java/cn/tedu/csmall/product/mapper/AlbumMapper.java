@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import org.springframework.stereotype.Repository;
 
@@ -69,5 +70,12 @@ public interface AlbumMapper {
      * @return 匹配的相册详情，如果没有匹配的数据，则返回null
      */
     AlbumStandardVO getStandardById(Long id);
+
+    /**
+     * 查询相册列表
+     *
+     * @return 相册列表
+     */
+    List<AlbumListItemVO> list();
 
 }

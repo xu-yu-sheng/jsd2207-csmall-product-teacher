@@ -5,13 +5,13 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * 相册数据的标准VO类
+ * 相册数据的列表项VO类
  *
  * @author java@tedu.cn
  * @version 0.0.1
  */
 @Data
-public class AlbumStandardVO implements Serializable {
+public class AlbumListItemVO implements Serializable {
 
     /**
      * 记录id

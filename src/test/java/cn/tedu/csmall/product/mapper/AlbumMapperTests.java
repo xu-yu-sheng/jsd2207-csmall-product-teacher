@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -81,6 +82,15 @@ public class AlbumMapperTests {
         Long id = 1L;
         AlbumStandardVO queryResult = mapper.getStandardById(id);
         log.debug("根据id【{}】查询数据详情完成，查询结果：{}", id, queryResult);
+    }
+
+    @Test
+    void list() {
+        List<AlbumListItemVO> list = mapper.list();
+        log.debug("查询列表完成，列表中的数据的数量：{}", list.size());
+        for (AlbumListItemVO item : list) {
+            log.debug("{}", item);
+        }
     }
 
 }
