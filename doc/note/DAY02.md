@@ -233,6 +233,38 @@ void deleteById() {
 }
 ```
 
+# 15. 根据若干个id批量删除相册数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int deleteByIds(Long[] ids);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int deleteByIds(Long ids); -->
+<delete id="deleteByIds">
+    DELETE FROM pms_album WHERE id IN (
+    	<foreach collection="array" item="id" separator=",">
+    		#{id}
+    	</foreach>
+    )
+</delete>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void deleteByIds() {
+    Long[] ids = {1L, 3L, 5L};
+    int rows = mapper.deleteByIds(ids);
+    log.debug("批量删除成功，受影响的行数：{}", rows);
+}
+```
+
 # 
 
 

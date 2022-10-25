@@ -38,4 +38,12 @@ public interface AlbumMapper {
      */
     int deleteById(Long id);
 
+    /**
+     * 根据若干个id批量删除相册数据
+     *
+     * @param ids 若干个相册id的数组
+     * @return 受影响的行数
+     */
+    int deleteByIds(Long[] ids);
+
 }
