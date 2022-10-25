@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
+import org.springframework.stereotype.Repository;
 
 /**
  * 处理相册数据的Mapper接口
@@ -8,6 +9,7 @@ import cn.tedu.csmall.product.pojo.entity.Album;
  * @author java@tedu.cn
  * @version 0.0.1
  */
+@Repository
 public interface AlbumMapper {
 
     /**

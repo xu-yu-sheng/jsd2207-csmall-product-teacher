@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import javax.annotation.Resource;
+
 @SpringBootTest
 public class AlbumMapperTests {
 
@@ -14,8 +16,8 @@ public class AlbumMapperTests {
     @Test
     void insert() {
         Album album = new Album();
-        album.setName("测试相册002");
-        album.setDescription("测试相册简介002");
+        album.setName("测试相册007");
+        album.setDescription("测试相册简介007");
         album.setSort(255);
         int rows = mapper.insert(album);
         System.out.println("插入相册数据完成，受影响的行数：" + rows);

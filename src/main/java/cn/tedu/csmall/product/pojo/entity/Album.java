@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.pojo.entity;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
  * @version 0.0.1
  */
 @Data
+@EqualsAndHashCode
 public class Album implements Serializable {
 
     /**
