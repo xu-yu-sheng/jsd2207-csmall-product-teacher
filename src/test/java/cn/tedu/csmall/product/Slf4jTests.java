@@ -15,6 +15,10 @@ public class Slf4jTests {
         log.info("这是一条【info】级别的日志");
         log.warn("这是一条【warn】级别的日志");
         log.error("这是一条【error】级别的日志");
+
+        int x = 1;
+        int y = 2;
+        log.info("{}+{}={}", x, y, x + y);
     }
 
 }
