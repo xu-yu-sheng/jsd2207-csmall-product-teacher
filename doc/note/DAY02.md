@@ -70,9 +70,66 @@ log.info("{}+{}={}", x, y, x + y);
 
 Spring框架提供了Profile配置机制，在Spring Boot中更是简化了此项操作，它允许使用`application-自定义名称.properties`作为Profile配置文件的文件名，这类配置文件默认是不加载的！
 
+例如，在`application.properties`的同级路径下创建`application-dev.properties`，添加配置：
 
+```properties
+# ######################### #
+# 此配置文件是【开发环境】的配置 #
+#  此配置文件需要被激活才会生效 #
+# ######################## #
 
+# 连接数据库的配置参数
+spring.datasource.url=jdbc:mysql://localhost:3306/mall_pms?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+spring.datasource.username=root
+spring.datasource.password=root
 
+# 日志的显示级别
+logging.level.cn.tedu.csmall=trace
+```
+
+然后，在`application.properties`中，根据以上配置文件的名称（`application-dev.properties`）来激活以上配置文件：
+
+```properties
+# 激活Profile配置
+spring.profiles.active=dev
+```
+
+所以，`application.properties`是始终加载的配置，而`application-自定义名称.properties`是必须激活才会加载的配置！
+
+如果`application.properties`与被激活的Profile配置中存在同名的属性，配置值却不相同，在执行时，将以Profile配置为准！
+
+# 13. 关于YAML配置
+
+YAML是一种编写配置文件的语法，表现为使用`.yml`作为扩展名的配置文件，Spring框架默认并不支持此类配置文件，而Spring Boot的基础依赖项中已经包含解析此类文件的依赖项，所以，在Spring Boot项目可以直接使用此类配置文件。
+
+在Spring Boot项目中，使用`.properties`和`.yml`配置是等效的，均可以正常识别并使用！
+
+在YAML语法中，其典型特征是：
+
+- 如果属性名中有小数点，则可以改为冒号，并且，冒号的右侧应该换行且缩进**2个空格**
+  - 在IntelliJ IDEA中编辑YAML语法的配置时，会自动将按下的TAB键的内容转换成2个空格
+- 如果多个属性名称中有相同的部分，不必（也不可）重复配置，只需要保持正确的缩进即可
+- 属性名与属性值之间使用1个冒号和1个空格进行分隔
+- 对于纯数值类型的属性值，可能需要使用双引号框住
+- 也能识别例如`xx.xx.xx`这类属性名
+
+例如：在`.properties`中的配置为：
+
+```properties
+spring.datasource.username=root
+spring.datasource.password=root
+```
+
+在`.yml`中则配置为：
+
+```yaml
+spring:
+  datasource:
+    username: root
+    password: root
+```
+
+**注意：YAML的解析相对更加严格，如果在此类配置文件中出现了错误的语法，甚至只是一些不应该出现的字符，都会导致解析失败！并且，如果直接复制粘贴整个文件，还可能出现乱码问题！**
 
 
 
