@@ -43,4 +43,11 @@ public class AlbumMapperTests {
         log.debug("批量插入完成，受影响的行数：{}", rows);
     }
 
+    @Test
+    void deleteById() {
+        Long id = 6L;
+        int rows = mapper.deleteById(id);
+        log.debug("删除完成，受影响的行数：{}", rows);
+    }
+
 }

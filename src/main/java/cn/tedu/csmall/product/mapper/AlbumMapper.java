@@ -30,4 +30,12 @@ public interface AlbumMapper {
      */
     int insertBatch(List<Album> albums);
 
+    /**
+     * 根据id删除相册数据
+     *
+     * @param id 相册id
+     * @return 受影响的行数
+     */
+    int deleteById(Long id);
+
 }

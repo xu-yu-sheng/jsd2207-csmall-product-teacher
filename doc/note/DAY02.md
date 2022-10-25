@@ -164,7 +164,7 @@ org.apache.ibatis.binding.BindingException: Invalid bound statement (not found):
 
 注意：以上异常信息中已经明确表示了哪个接口的哪个方法缺少对应的SQL语句，可以以此为线索来排查错误。
 
-# 13. 批量插入数据
+# 13. 批量插入相册数据
 
 首先，应该在`AlbumMapper`接口中添加新的抽象方法：
 
@@ -205,9 +205,35 @@ void insertBatch() {
 }
 ```
 
+# 14. 根据id删除相册数据
 
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
 
+```java
+int deleteById(Long id);
+```
 
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int deleteById(Long id); -->
+<delete id="deleteById">
+    DELETE FROM pms_album WHERE id=#{id}
+</delete>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void deleteById() {
+    Long id = 1L;
+    int rows = mapper.deleteById(id);
+    log.debug("删除成功，受影响的行数：{}", rows);
+}
+```
+
+# 
 
 
 

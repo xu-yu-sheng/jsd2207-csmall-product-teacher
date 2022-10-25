@@ -22,4 +22,9 @@
         </foreach>
     </insert>
 
+    <!-- int deleteById(Long id); -->
+    <delete id="deleteById">
+        DELETE FROM pms_album WHERE id=#{id}
+    </delete>
+
 </mapper>
