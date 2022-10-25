@@ -54,7 +54,19 @@ public class AlbumMapperTests {
     void deleteByIds() {
         Long[] ids = {1L, 3L, 5L};
         int rows = mapper.deleteByIds(ids);
-        log.debug("批量删除成功，受影响的行数：{}", rows);
+        log.debug("批量删除完成，受影响的行数：{}", rows);
+    }
+
+    @Test
+    void update() {
+        Album album = new Album();
+        album.setId(14L);
+        //album.setName("新-测试相册006");
+        album.setDescription("新-测试相册简介006");
+        album.setSort(188);
+
+        int rows = mapper.update(album);
+        log.debug("更新完成，受影响的行数：{}", rows);
     }
 
 }

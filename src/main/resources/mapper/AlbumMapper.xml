@@ -36,4 +36,21 @@
         )
     </delete>
 
+    <!-- int update(Album album); -->
+    <update id="update">
+        UPDATE pms_album
+        <set>
+            <if test="name != null">
+                name=#{name},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="sort != null">
+                sort=#{sort},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
 </mapper>

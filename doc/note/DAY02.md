@@ -265,6 +265,50 @@ void deleteByIds() {
 }
 ```
 
+# 16. 修改相册数据
+
+首先，应该在`AlbumMapper`接口中添加新的抽象方法：
+
+```java
+int update(Album album);
+```
+
+然后，在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int update(Album album); -->
+<update id="update">
+    UPDATE pms_album
+    <set>
+    	<if test="name != null">
+    		name=#{name},
+        </if>
+    	<if test="description != null">
+            description=#{description},
+    	</if>
+    	<if test="sort != null">
+            sort=#{sort},
+    	</if>
+    </set>
+    WHERE id=#{id}
+</update>
+```
+
+最后，在`AlbumMapperTests`中编写并执行测试：
+
+```java
+@Test
+void update() {
+    Album album = new Album();
+    album.setName("测试相册010");
+    album.setDescription("测试相册简介010");
+    album.setSort(255);
+    
+    int rows = mapper.update(album);
+    log.debug("更新完成，受影响的行数：{}", rows);
+}
+```
+
 # 
 
 
