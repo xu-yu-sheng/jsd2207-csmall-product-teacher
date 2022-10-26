@@ -16,7 +16,7 @@ import org.springframework.context.annotation.Configuration;
 public class MybatisConfiguration {
 
     public MybatisConfiguration() {
-        log.info("创建配置类对象：MybatisConfiguration");
+        log.debug("创建配置类对象：MybatisConfiguration");
     }
 
 }

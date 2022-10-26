@@ -81,7 +81,7 @@
     </select>
 
     <!-- CategoryStandardVO getStandardById(Long id); -->
-    <select id="getStandardById" resultType="StandardResultMap">
+    <select id="getStandardById" resultMap="StandardResultMap">
         SELECT
             <include refid="StandardQueryFields"/>
         FROM
@@ -125,7 +125,7 @@
         </if>
     </sql>
 
-    <resultMap id="StandardResultMap" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
+    <resultMap id="ListResultMap" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="parent_id" property="parentId"/>
