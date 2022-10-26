@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.sql.rowset.serial.SerialException;
+
 /**
  * 处理相册相关请求的控制器
  *
@@ -29,20 +31,13 @@ public class AlbumController {
     @RequestMapping("/add-new")
     public String addNew(AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
+
         try {
             albumService.addNew(albumAddNewDTO);
             log.debug("添加数据成功！");
             return "添加相册成功！";
         } catch (ServiceException e) {
-            String message = e.getMessage();
-            log.debug(message);
-            return message;
-        } catch (RuntimeException e) {
-            log.debug("添加数据失败！程序运行过程中出现了RuntimeException！");
-            return "添加相册失败！程序运行过程中出现了RuntimeException！";
-        } catch (Throwable e) {
-            log.debug("添加数据失败！程序运行过程中出现了Throwable！");
-            return "添加相册失败！程序运行过程中出现了Throwable！";
+            return e.getMessage();
         }
     }
 

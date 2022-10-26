@@ -319,7 +319,7 @@ public class AlbumController {
 
 完成后，重启项目，打开浏览器，通过 `http://localhost:8080/add-new?name=相册001&description=相册001的简介&sort=199 可以测试访问`。
 
-# 关于异常
+# 24. 关于自定义异常
 
 在Service中处理业务逻辑时，当视为“操作失败”时，应该抛出异常，且，抛出的异常应该是自定义的异常，以避免与原有的其它异常在同一个业务中出现而导致无法区分失败原因的问题！
 
@@ -353,7 +353,30 @@ public class ServiceException extends RuntimeException {
 - 为每一种“失败”都创建一种异常类
 - 使用同一个异常类，对不同的“失败”使用携带了不同信息的对象
 
+如果采取以上第2种方案，可以在自定义异常类中添加带`String message`参数的构造方法，并在此构造方法中调用父类的同参数的构造方法：
 
+```java
+public class ServiceException extends RuntimeException {
+
+    public ServiceException(String message) {
+        super(message);
+    }
+
+}
+```
+
+则抛出异常时，必须封装异常信息的描述文本，例如，在`AlbumServiceImpl`中抛出异常时的代码需要调整为：
+
+```java
+if (count > 0) {
+    // 是：相册名称已经被占用，添加相册失败，抛出异常
+    String message = "添加相册失败，相册名称已经被占用！";
+    log.debug(message);
+    throw new ServiceException(message);
+}
+```
+
+后续，在`AlbumController`中，调用Service方法时，当捕获到`ServiceException`后可以调用异常对象的`getMessage()`方法得到抛出时封装的异常信息。
 
 
 
@@ -386,11 +409,13 @@ try {
 }
 ```
 
+# 25. 关于处理异常
 
+在服务器端项目中，如果某个抛出的异常始终没有被处理，则默认会向客户端响应`500`错误（HTTP状态码为`500`）。
 
+在服务器端项目中，必须对异常进行处理，因为，如果不处理，软件的使用者可能不清楚出现异常的原因（默认情况下，响应的`500`错误普通用户看不懂），也不知道如何调整请求参数来解决此问题，甚至可能反复尝试提交错误的请求（例如反复刷新页面），对于服务器端而言，也是无谓的浪费了一些性能。
 
-
-
+所以，处理异常的根本在于：明确的向软件的使用者表现错误信息，并给予必要的提示，使得软件的使用者能明确的知道错误的原因，则软件的使用者可能会调整请求参数，从而后续的请求是可能成功的！
 
 
 
