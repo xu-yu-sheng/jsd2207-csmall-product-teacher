@@ -76,6 +76,13 @@ public class AlbumMapperTests {
     }
 
     @Test
+    void countByName() {
+        String name = "测试数据";
+        int count = mapper.countByName(name);
+        log.debug("根据名称【{}】统计数据的数量，结果：{}", name, count);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);

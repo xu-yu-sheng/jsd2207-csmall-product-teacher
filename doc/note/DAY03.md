@@ -101,7 +101,34 @@ public class AlbumServiceImpl implements IAlbumService {
 接下来，在项目的根包下创建`pojo.dto.AlbumAddNewDTO`类，用于封装客户端将提交的请求参数：
 
 ```java
+package cn.tedu.csmall.product.pojo.dto;
 
+import java.io.Serializable;
+
+/**
+ * 添加相册的DTO类
+ * 
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+public class AlbumAddNewDTO implements Serializable {
+
+    /**
+     * 相册名称
+     */
+    private String name;
+
+    /**
+     * 相册简介
+     */
+    private String description;
+
+    /**
+     * 自定义排序序号
+     */
+    private Integer sort;
+    
+}
 ```
 
 并在`IAlbumService`中设计“添加相册”的抽象方法：
@@ -116,6 +143,67 @@ void addNew(AlbumAddNewDTO albumAddNewDTO);
   - 操作失败将通过抛出异常来表示
 - 方法名称：自定义的、规范的，无其它约束
 - 参数列表：根据客户端将提交的请求参数来设计，如果参数数量较多，且具有相关性，则应该封装
+
+关于此业务方法的具体实现，大致步骤为：
+
+```
+// 从参数对象中获取相册名称
+// 检查相册名称是否已经被占用（相册表中是否已经存在此名称的数据）
+// 是：相册名称已经被占用，添加相册失败，抛出异常
+// 否：相册名称没有被占用，则向相册表中插入数据
+```
+
+在以上步骤中，需要“检查相册名称是否已经被占用”，可以通过以下SQL查询来实现：
+
+```mysql
+select * from pms_album where name=?
+```
+
+```mysql
+select count(*) from pms_album where name=?
+```
+
+如果采取以上的第2种做法，则需要在`AlbumMapper.java`接口中添加抽象方法：
+
+```java
+int countByName(String name);
+```
+
+并在`AlbumMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int countByName(String name); -->
+<select id="countByName" resultType="int">
+    SELECT count(*) FROM pms_album WHERE name=#{name}
+</select>
+```
+
+完成后，还需要在`AlbumMapperTests.java`中编写并执行测试：
+
+```java
+@Test
+void countByName() {
+    String name = "测试数据";
+    int count = mapper.countByName(name);
+    log.debug("根据名称【{}】统计数据的数量，结果：{}", name, count);
+}
+```
+
+至此，在`AlbumMapper`中已实现了“根据相册名称统计数据的数量”功能，在Service中，可通过调用此功能来检查“相册名称是否已经被占用”。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

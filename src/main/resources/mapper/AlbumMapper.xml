@@ -58,6 +58,11 @@
         SELECT count(*) FROM pms_album
     </select>
 
+    <!-- int countByName(String name); -->
+    <select id="countByName" resultType="int">
+        SELECT count(*) FROM pms_album WHERE name=#{name}
+    </select>
+
     <!-- AlbumStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.AlbumStandardVO">
         SELECT id, name, description, sort FROM pms_album WHERE id=#{id}
