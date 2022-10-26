@@ -1,5 +1,6 @@
 package cn.tedu.csmall.product.controller;
 
+import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +33,15 @@ public class AlbumController {
             albumService.addNew(albumAddNewDTO);
             log.debug("添加数据成功！");
             return "添加相册成功！";
+        } catch (ServiceException e) {
+            log.debug("添加数据失败！相册名称已经被占用！");
+            return "添加相册失败！相册名称已经被占用！";
         } catch (RuntimeException e) {
-            log.debug("添加数据失败！");
-            return "添加相册失败！";
+            log.debug("添加数据失败！程序运行过程中出现了RuntimeException！");
+            return "添加相册失败！程序运行过程中出现了RuntimeException！";
+        } catch (Throwable e) {
+            log.debug("添加数据失败！程序运行过程中出现了Throwable！");
+            return "添加相册失败！程序运行过程中出现了Throwable！";
         }
     }
 

@@ -319,7 +319,20 @@ public class AlbumController {
 
 完成后，重启项目，打开浏览器，通过 `http://localhost:8080/add-new?name=相册001&description=相册001的简介&sort=199 可以测试访问`。
 
+# 关于异常
 
+在Service中处理业务逻辑时，当视为“操作失败”时，应该抛出异常，且，抛出的异常应该是自定义的异常，以避免与原有的其它异常在同一个业务中出现而导致无法区分失败原因的问题！
+
+通常，自定义异常应该继承自`RuntimeException`，其原因主要有：
+
+- Xxxxx
+- Xxxxx
+
+则在项目的根包下创建`ex.ServiceException`类，继承自`RuntimeException`：
+
+```java
+
+```
 
 
 
