@@ -81,20 +81,61 @@
     </select>
 
     <!-- CategoryStandardVO getStandardById(Long id); -->
-    <select id="getStandardById" resultType="cn.tedu.csmall.product.pojo.vo.CategoryStandardVO">
+    <select id="getStandardById" resultType="StandardResultMap">
         SELECT
-            id, name, parent_id, depth, keywords, sort, icon, enable, is_parent, is_display
-        FROM pms_category WHERE id=#{id}
+            <include refid="StandardQueryFields"/>
+        FROM
+            pms_category
+        WHERE
+            id=#{id}
     </select>
 
     <!-- List<CategoryListItemVO> list(); -->
-    <select id="list" resultType="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
+    <select id="list" resultMap="ListResultMap">
         SELECT
-            id, name, parent_id, depth, keywords, sort, icon, enable, is_parent, is_display
+            <include refid="ListQueryFields"/>
         FROM
             pms_category
         ORDER BY
             sort DESC, id DESC
     </select>
+
+    <sql id="StandardQueryFields">
+        <if test="true">
+            id, name, parent_id, depth, keywords, sort, icon, enable, is_parent, is_display
+        </if>
+    </sql>
+
+    <resultMap id="StandardResultMap" type="cn.tedu.csmall.product.pojo.vo.CategoryStandardVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="depth" property="depth"/>
+        <result column="keywords" property="keywords"/>
+        <result column="sort" property="sort"/>
+        <result column="icon" property="icon"/>
+        <result column="enable" property="enable"/>
+        <result column="is_parent" property="isParent"/>
+        <result column="is_display" property="isDisplay"/>
+    </resultMap>
+
+    <sql id="ListQueryFields">
+        <if test="true">
+            id, name, parent_id, depth, keywords, sort, icon, enable, is_parent, is_display
+        </if>
+    </sql>
+
+    <resultMap id="StandardResultMap" type="cn.tedu.csmall.product.pojo.vo.CategoryListItemVO">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="depth" property="depth"/>
+        <result column="keywords" property="keywords"/>
+        <result column="sort" property="sort"/>
+        <result column="icon" property="icon"/>
+        <result column="enable" property="enable"/>
+        <result column="is_parent" property="isParent"/>
+        <result column="is_display" property="isDisplay"/>
+    </resultMap>
 
 </mapper>
