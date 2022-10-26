@@ -1,5 +1,7 @@
 package cn.tedu.csmall.product.pojo.dto;
 
+import lombok.Data;
+
 import java.io.Serializable;
 
 /**
@@ -8,6 +10,7 @@ import java.io.Serializable;
  * @author java@tedu.cn
  * @version 0.0.1
  */
+@Data
 public class AlbumAddNewDTO implements Serializable {
 
     /**
