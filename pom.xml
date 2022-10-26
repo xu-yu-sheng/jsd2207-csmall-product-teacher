@@ -27,10 +27,10 @@
     <!-- scope属性值为test：此依赖项仅用于测试，仅src/test下的代码可使用此依赖项，且此依赖项不参与项目打包、部署等 -->
     <!-- scope属性值为runtime：此依赖项仅运行或测试运行时需要，编写代码时并不需要此依赖项 -->
     <dependencies>
-        <!-- Spring Boot框架的基础依赖项 -->
+        <!-- Spring Boot WEB的依赖项 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <!-- Mybatis整合Spring Boot的依赖项 -->
         <dependency>

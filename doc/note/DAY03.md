@@ -103,6 +103,7 @@ public class AlbumServiceImpl implements IAlbumService {
 ```java
 package cn.tedu.csmall.product.pojo.dto;
 
+import lombok.Data;
 import java.io.Serializable;
 
 /**
@@ -111,6 +112,7 @@ import java.io.Serializable;
  * @author java@tedu.cn
  * @version 0.0.1
  */
+@Data
 public class AlbumAddNewDTO implements Serializable {
 
     /**
@@ -191,11 +193,131 @@ void countByName() {
 
 至此，在`AlbumMapper`中已实现了“根据相册名称统计数据的数量”功能，在Service中，可通过调用此功能来检查“相册名称是否已经被占用”。
 
+接下来，在`AlbumServiceImpl`类中自动装配`AlbumMapper`对象：
 
+```java
+@Autowired
+private AlbumMapper albumMapper;
+```
 
+并实现接口中的抽象方法：
 
+```java
+@Override
+public void addNew(AlbumAddNewDTO albumAddNewDTO) {
+    log.debug("开始处理【添加相册】的业务，参数：{}", albumAddNewDTO);
+    // 从参数对象中获取相册名称
+    String albumName = albumAddNewDTO.getName();
+    // 检查相册名称是否已经被占用（相册表中是否已经存在此名称的数据）
+    log.debug("检查相册名称是否已经被占用");
+    int count = albumMapper.countByName(albumName);
+    if (count > 0) {
+        // 是：相册名称已经被占用，添加相册失败，抛出异常
+        log.debug("相册名称已经被占用，添加相册失败，将抛出异常");
+        throw new RuntimeException();
+    }
 
+    // 否：相册名称没有被占用，则向相册表中插入数据
+    log.debug("相册名称没有被占用，将向相册表中插入数据");
+    Album album = new Album();
+    BeanUtils.copyProperties(albumAddNewDTO, album);
+    log.debug("即将插入相册数据：{}", album);
+    albumMapper.insert(album);
+    log.debug("插入相册数据完成");
+}
+```
 
+完成后，在`src/test/java`下的根包下，创建`service.AlbumServiceTests`测试类，在此类中自动装配`IAlbumService`对象，并编写、执行测试：
+
+```java
+package cn.tedu.csmall.product.service;
+
+import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@Slf4j
+@SpringBootTest
+public class AlbumServiceTests {
+
+    @Autowired
+    IAlbumService service;
+
+    @Test
+    void addNew() {
+        AlbumAddNewDTO albumAddNewDTO = new AlbumAddNewDTO();
+        albumAddNewDTO.setName("测试数据1");
+        albumAddNewDTO.setDescription("测试数据的简介1");
+        albumAddNewDTO.setSort(100);
+
+        try {
+            service.addNew(albumAddNewDTO);
+            log.debug("测试添加数据成功！");
+        } catch (RuntimeException e) {
+            log.debug("测试添加数据失败！");
+        }
+    }
+
+}
+```
+
+# 23. 处理“添加相册”的请求
+
+在服务器端项目中，需要使用“控制器（Controller）”来接收来自客户端（例如网页、手机APP等）的请求，并响应结果到客户端。
+
+当需要开发控制器相关代码时，需要项目中添加`spring-boot-starter-web`依赖项。
+
+> 提示：`spring-boot-starter-web`包含了`spring-boot-starter`，所以，并不需要添加新的依赖，只需要将原有的`spring-boot-starter`改成`spring-boot-starter-web`即可。
+
+当添加了`spring-boot-starter-web`依赖项之后，在项目的根包下创建`controller.AlbumController`类，在此类中编写接收请求、响应结果的方法：
+
+```java
+package cn.tedu.csmall.product.controller;
+
+import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.service.IAlbumService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * 处理相册相关请求的控制器
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Slf4j
+@RestController
+public class AlbumController {
+
+    @Autowired
+    private IAlbumService albumService;
+
+    public AlbumController() {
+        log.debug("创建控制器对象：AlbumController");
+    }
+
+    // http://localhost:8080/add-new?name=相册001&description=相册001的简介&sort=199
+    @RequestMapping("/add-new")
+    public String addNew(AlbumAddNewDTO albumAddNewDTO) {
+        log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
+        try {
+            albumService.addNew(albumAddNewDTO);
+            log.debug("添加数据成功！");
+            return "添加相册成功！";
+        } catch (RuntimeException e) {
+            log.debug("添加数据失败！");
+            return "添加相册失败！";
+        }
+    }
+
+}
+```
+
+完成后，重启项目，打开浏览器，通过 `http://localhost:8080/add-new?name=相册001&description=相册001的简介&sort=199 可以测试访问`。
 
 
 
