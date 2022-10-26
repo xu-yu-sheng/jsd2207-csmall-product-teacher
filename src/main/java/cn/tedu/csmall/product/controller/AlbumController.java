@@ -34,8 +34,9 @@ public class AlbumController {
             log.debug("添加数据成功！");
             return "添加相册成功！";
         } catch (ServiceException e) {
-            log.debug("添加数据失败！相册名称已经被占用！");
-            return "添加相册失败！相册名称已经被占用！";
+            String message = e.getMessage();
+            log.debug(message);
+            return message;
         } catch (RuntimeException e) {
             log.debug("添加数据失败！程序运行过程中出现了RuntimeException！");
             return "添加相册失败！程序运行过程中出现了RuntimeException！";

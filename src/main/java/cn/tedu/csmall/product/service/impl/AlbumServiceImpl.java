@@ -37,16 +37,14 @@ public class AlbumServiceImpl implements IAlbumService {
         int count = albumMapper.countByName(albumName);
         if (count > 0) {
             // 是：相册名称已经被占用，添加相册失败，抛出异常
-            log.debug("相册名称已经被占用，添加相册失败，将抛出异常");
-            throw new ServiceException();
+            String message = "添加相册失败，相册名称已经被占用！";
+            log.debug(message);
+            throw new ServiceException(message);
         }
 
         // 否：相册名称没有被占用，则向相册表中插入数据
         log.debug("相册名称没有被占用，将向相册表中插入数据");
         Album album = new Album();
-
-        // album.getName().toLowerCase();
-
         BeanUtils.copyProperties(albumAddNewDTO, album);
         log.debug("即将插入相册数据：{}", album);
         albumMapper.insert(album);

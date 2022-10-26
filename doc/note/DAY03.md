@@ -331,8 +331,33 @@ public class AlbumController {
 则在项目的根包下创建`ex.ServiceException`类，继承自`RuntimeException`：
 
 ```java
-
+/**
+ * 业务异常类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+public class ServiceException extends RuntimeException {
+}
 ```
+
+在开发实践中，同一个业务可能存在多种“失败”的可能，以“登录”为例，导致“失败”的原因可能有：
+
+- 用户名不存在
+- 密码错误
+- 账号已经被封号
+- 其它
+
+为了区分这些不同的“失败”，了解失败的原因，可以：
+
+- 为每一种“失败”都创建一种异常类
+- 使用同一个异常类，对不同的“失败”使用携带了不同信息的对象
+
+
+
+
+
+
 
 
 
