@@ -107,7 +107,7 @@ public class AlbumServiceImpl implements IAlbumService {
 并在`IAlbumService`中设计“添加相册”的抽象方法：
 
 ```java
-xx addNew(AlbumAddNewDTO albumAddNewDTO);
+void addNew(AlbumAddNewDTO albumAddNewDTO);
 ```
 
 关于Service的抽象方法的声明原则：

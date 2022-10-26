@@ -1,5 +1,6 @@
 package cn.tedu.csmall.product.service.impl;
 
+import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,11 @@ public class AlbumServiceImpl implements IAlbumService {
 
     public AlbumServiceImpl() {
         log.debug("创建业务对象：AlbumServiceImpl");
+    }
+
+    @Override
+    public void addNew(AlbumAddNewDTO albumAddNewDTO) {
+
     }
 
 }
