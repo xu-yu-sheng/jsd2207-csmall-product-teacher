@@ -1,6 +1,6 @@
 package cn.tedu.csmall.product.mapper;
 
-import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.entity.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,35 +11,33 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-public class AlbumMapperTests {
+public class CategoryMapperTests {
 
     @Autowired
-    AlbumMapper mapper;
+    CategoryMapper mapper;
 
     @Test
     void insert() {
-        Album album = new Album();
-        album.setName("测试相册010");
-        album.setDescription("测试相册简介010");
-        album.setSort(255);
-        log.debug("插入数据之前，参数：{}", album);
-        int rows = mapper.insert(album);
+        Category category = new Category();
+        category.setName("测试品牌010");
+        category.setSort(255);
+        log.debug("插入数据之前，参数：{}", category);
+        int rows = mapper.insert(category);
         log.debug("插入数据完成，受影响的行数：{}", rows);
-        log.debug("插入数据之后，参数：{}", album);
+        log.debug("插入数据之后，参数：{}", category);
     }
 
     @Test
     void insertBatch() {
-        List<Album> albums = new ArrayList<>();
+        List<Category> categories = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
-            Album album = new Album();
-            album.setName("批量插入测试数据" + i);
-            album.setDescription("批量插入测试数据的简介" + i);
-            album.setSort(200);
-            albums.add(album);
+            Category category = new Category();
+            category.setName("批量插入测试数据" + i);
+            category.setSort(200);
+            categories.add(category);
         }
 
-        int rows = mapper.insertBatch(albums);
+        int rows = mapper.insertBatch(categories);
         log.debug("批量插入完成，受影响的行数：{}", rows);
     }
 
@@ -59,13 +57,11 @@ public class AlbumMapperTests {
 
     @Test
     void update() {
-        Album album = new Album();
-        album.setId(14L);
-        //album.setName("新-测试数据006");
-        album.setDescription("新-测试数据简介006");
-        album.setSort(188);
+        Category category = new Category();
+        category.setId(14L);
+        category.setSort(188);
 
-        int rows = mapper.update(album);
+        int rows = mapper.update(category);
         log.debug("更新完成，受影响的行数：{}", rows);
     }
 
