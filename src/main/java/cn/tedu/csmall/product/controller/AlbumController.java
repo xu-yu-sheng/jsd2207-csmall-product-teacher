@@ -5,10 +5,9 @@ import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.sql.rowset.serial.SerialException;
 
 /**
  * 处理相册相关请求的控制器
@@ -31,14 +30,20 @@ public class AlbumController {
     @RequestMapping("/add-new")
     public String addNew(AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
+        albumService.addNew(albumAddNewDTO);
+        log.debug("添加数据成功！");
+        return "添加相册成功！";
+    }
 
-        try {
-            albumService.addNew(albumAddNewDTO);
-            log.debug("添加数据成功！");
-            return "添加相册成功！";
-        } catch (ServiceException e) {
-            return e.getMessage();
-        }
+    @ExceptionHandler
+    public String xxx(ServiceException e) {
+        log.debug("处理请求的方法抛出了ServiceException，将统一处理");
+        return e.getMessage();
+    }
+
+    @RequestMapping("/test")
+    public String test() {
+        throw new ServiceException("这是一个测试抛出的异常");
     }
 
 }
