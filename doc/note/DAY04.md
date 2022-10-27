@@ -261,9 +261,9 @@ public String delete(@PathVariable Long id) {
 }
 
 // http://localhost:8080/album/hello/delete
-@RequestMapping("/{id:[a-z]+}/delete")
-public String delete(@PathVariable String id) {
-    String message = "尝试删除名称值为【" + id + "】的相册";
+@RequestMapping("/{name:[a-z]+}/delete")
+public String delete(@PathVariable String name) {
+    String message = "尝试删除名称值为【" + name + "】的相册";
     log.debug(message);
     return message;
 }
@@ -272,14 +272,162 @@ public String delete(@PathVariable String id) {
 另外，没有使用占位符的设计，与使用了占位符的设计，也是允许共存的，例如：
 
 ```java
+// http://localhost:8080/album/hello/delete
+@RequestMapping("/{name:[a-z]+}/delete")
+public String delete(@PathVariable String name) {
+    String message = "尝试删除名称值为【" + name + "】的相册";
+    log.debug(message);
+    return message;
+}
 
+// http://localhost:8080/album/test/delete
+@RequestMapping("/test/delete")
+public String delete() {
+    String message = "尝试测试删除相册";
+    log.debug(message);
+    return message;
+}
 ```
 
+最后，关于RESTful风格的URL设计，如果没有明确的要求，或没有更好的选择，可以设计为：
 
+- 获取数据列表：`/数据类型的复数`
+  - 例如：`/albums`
+- 根据id获取数据：`/数据类型的复数/id值`
+  - 例如：`/albums/1`
+- 根据id对数据执行某种操作：`/数据类型的复数/id值/命令`
+  - 例如：`/albums/1/delete`
 
+# 29. 关于Knife4j框架
 
+Knife4j是一款基于Swagger 2的在线API文档框架。
 
+使用Knife4j需要：
 
+- 添加依赖，注意：本次使用的Knife4j的版本必须基于Spring Boot的版本在2.6之前（2.6及更高版本不可用）
+
+  ```xml
+  <!-- Knife4j Spring Boot：在线API -->
+  <dependency>
+      <groupId>com.github.xiaoymin</groupId>
+      <artifactId>knife4j-spring-boot-starter</artifactId>
+      <version>2.0.9</version>
+  </dependency>
+  ```
+
+- 需要在主配置文件（`application.properties`或`application.yml`）中添加配置：
+
+  ```properties
+  knife4j.enable=true
+  ```
+
+- 需要添加配置类，配置类代码为（注意：可能需要修改包名）：
+
+  ```java
+  package cn.tedu.csmall.product.config;
+  
+  import com.github.xiaoymin.knife4j.spring.extension.OpenApiExtensionResolver;
+  import lombok.extern.slf4j.Slf4j;
+  import org.springframework.beans.factory.annotation.Autowired;
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+  import springfox.documentation.builders.ApiInfoBuilder;
+  import springfox.documentation.builders.PathSelectors;
+  import springfox.documentation.builders.RequestHandlerSelectors;
+  import springfox.documentation.service.ApiInfo;
+  import springfox.documentation.service.Contact;
+  import springfox.documentation.spi.DocumentationType;
+  import springfox.documentation.spring.web.plugins.Docket;
+  import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
+  
+  /**
+   * Knife4j配置类
+   *
+   * @author java@tedu.cn
+   * @version 0.0.1
+   */
+  @Slf4j
+  @Configuration
+  @EnableSwagger2WebMvc
+  public class Knife4jConfiguration {
+  
+      /**
+       * 【重要】指定Controller包路径
+       */
+      private String basePackage = "cn.tedu.csmall.product.controller";
+      /**
+       * 分组名称
+       */
+      private String groupName = "product";
+      /**
+       * 主机名
+       */
+      private String host = "http://java.tedu.cn";
+      /**
+       * 标题
+       */
+      private String title = "酷鲨商城在线API文档--商品管理";
+      /**
+       * 简介
+       */
+      private String description = "酷鲨商城在线API文档--商品管理";
+      /**
+       * 服务条款URL
+       */
+      private String termsOfServiceUrl = "http://www.apache.org/licenses/LICENSE-2.0";
+      /**
+       * 联系人
+       */
+      private String contactName = "Java教学研发部";
+      /**
+       * 联系网址
+       */
+      private String contactUrl = "http://java.tedu.cn";
+      /**
+       * 联系邮箱
+       */
+      private String contactEmail = "java@tedu.cn";
+      /**
+       * 版本号
+       */
+      private String version = "1.0.0";
+  
+      @Autowired
+      private OpenApiExtensionResolver openApiExtensionResolver;
+  
+      public Knife4jConfiguration() {
+          log.debug("创建配置类对象：Knife4jConfiguration");
+      }
+  
+      @Bean
+      public Docket docket() {
+          String groupName = "1.0.0";
+          Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                  .host(host)
+                  .apiInfo(apiInfo())
+                  .groupName(groupName)
+                  .select()
+                  .apis(RequestHandlerSelectors.basePackage(basePackage))
+                  .paths(PathSelectors.any())
+                  .build()
+                  .extensions(openApiExtensionResolver.buildExtensions(groupName));
+          return docket;
+      }
+  
+      private ApiInfo apiInfo() {
+          return new ApiInfoBuilder()
+                  .title(title)
+                  .description(description)
+                  .termsOfServiceUrl(termsOfServiceUrl)
+                  .contact(new Contact(contactName, contactUrl, contactEmail))
+                  .version(version)
+                  .build();
+      }
+  
+  }
+  ```
+
+完成后，重新启动项目，可以通过 http://localhost:8080/doc.html 查看在线API文档，并可使用其中的调用功能等。
 
 
 

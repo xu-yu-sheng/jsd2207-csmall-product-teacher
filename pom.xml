@@ -44,6 +44,12 @@
             <artifactId>mysql-connector-java</artifactId>
             <scope>runtime</scope>
         </dependency>
+        <!-- Knife4j Spring Boot：在线API -->
+        <dependency>
+            <groupId>com.github.xiaoymin</groupId>
+            <artifactId>knife4j-spring-boot-starter</artifactId>
+            <version>2.0.9</version>
+        </dependency>
         <!-- Lombok的依赖项，主要用于简化POJO类的编写 -->
         <dependency>
             <groupId>org.projectlombok</groupId>
