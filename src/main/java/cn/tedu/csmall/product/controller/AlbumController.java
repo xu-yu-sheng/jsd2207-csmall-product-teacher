@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,8 +35,12 @@ public class AlbumController {
         return "添加相册成功！";
     }
 
-    // http://localhost/album/delete
-    // @RequestMapping("/delete")
-
+    // http://localhost:8080/album/9527/delete
+    @RequestMapping("/{id}/delete")
+    public String delete(@PathVariable String id) {
+        String message = "尝试删除id值为【" + id + "】的相册";
+        log.debug(message);
+        return message;
+    }
 
 }
