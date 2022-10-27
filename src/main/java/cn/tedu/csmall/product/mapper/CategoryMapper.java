@@ -64,6 +64,14 @@ public interface CategoryMapper {
     int count();
 
     /**
+     * 根据类别名称统计当前表中类别数据的数量
+     *
+     * @param name 类别名称
+     * @return 当前表中匹配名称的类别数据的数量
+     */
+    int countByName(String name);
+
+    /**
      * 根据id查询类别详情
      *
      * @param id 类别id

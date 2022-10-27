@@ -80,6 +80,11 @@
         SELECT count(*) FROM pms_category
     </select>
 
+    <!-- int countByName(String name); -->
+    <select id="countByName" resultType="int">
+        SELECT count(*) FROM pms_category WHERE name=#{name}
+    </select>
+
     <!-- CategoryStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

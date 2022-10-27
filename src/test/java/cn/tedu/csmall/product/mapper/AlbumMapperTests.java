@@ -60,7 +60,7 @@ public class AlbumMapperTests {
     @Test
     void update() {
         Album album = new Album();
-        album.setId(14L);
+        album.setId(1L);
         //album.setName("新-测试数据006");
         album.setDescription("新-测试数据简介006");
         album.setSort(188);

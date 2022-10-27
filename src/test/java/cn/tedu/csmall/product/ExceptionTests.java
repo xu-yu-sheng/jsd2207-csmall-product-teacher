@@ -2,7 +2,7 @@ package cn.tedu.csmall.product;
 
 import java.io.IOException;
 
-public class Demo {
+public class ExceptionTests {
 
     void a1() throws IOException {
         throw new IOException();

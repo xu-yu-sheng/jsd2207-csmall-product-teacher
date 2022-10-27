@@ -18,10 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
  * @author java@tedu.cn
  * @version 0.0.1
  */
-@Api(tags = "01. 相册管理模块")
 @Slf4j
-@RequestMapping("/albums")
 @RestController
+@RequestMapping("/albums")
+@Api(tags = "04. 相册管理模块")
 public class AlbumController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class AlbumController {
     public String addNew(AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
-        log.debug("添加数据成功！");
+        log.debug("添加相册成功！");
         return "添加相册成功！";
     }
 
