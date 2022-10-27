@@ -2,6 +2,9 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.service.IAlbumService;
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author java@tedu.cn
  * @version 0.0.1
  */
+@Api(tags = "01. 相册管理模块")
 @Slf4j
 @RequestMapping("/albums")
 @RestController
@@ -28,6 +32,8 @@ public class AlbumController {
     }
 
     // http://localhost:8080/albums/add-new?name=相册001&description=相册001的简介&sort=199
+    @ApiOperation("添加相册")
+    @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
     public String addNew(AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
@@ -37,6 +43,8 @@ public class AlbumController {
     }
 
     // http://localhost:8080/albums/9527/delete
+    @ApiOperation("根据id删除相册")
+    @ApiOperationSupport(order = 200)
     @PostMapping("/{id:[0-9]+}/delete")
     public String delete(@PathVariable Long id) {
         String message = "尝试删除id值为【" + id + "】的相册";
@@ -45,6 +53,8 @@ public class AlbumController {
     }
 
     // http://localhost:8080/albums/hello/delete
+    @ApiOperation("【已过期】根据名称删除相册")
+    @ApiOperationSupport(order = 901)
     @PostMapping("/{name:[a-z]+}/delete")
     public String delete2(@PathVariable String name) {
         String message = "尝试删除名称值为【" + name + "】的相册";
@@ -53,6 +63,8 @@ public class AlbumController {
     }
 
     // http://localhost:8080/albums/test/delete
+    @ApiOperation("【已过期】测试删除相册")
+    @ApiOperationSupport(order = 902)
     @PostMapping("/test/delete")
     public String delete3() {
         String message = "尝试测试删除相册";
