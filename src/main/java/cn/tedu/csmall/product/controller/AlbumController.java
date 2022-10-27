@@ -36,8 +36,8 @@ public class AlbumController {
     }
 
     // http://localhost:8080/album/9527/delete
-    @RequestMapping("/{id}/delete")
-    public String delete(@PathVariable String id) {
+    @RequestMapping("/{id:[0-9]+}/delete")
+    public String delete(@PathVariable Long id) {
         String message = "尝试删除id值为【" + id + "】的相册";
         log.debug(message);
         return message;
