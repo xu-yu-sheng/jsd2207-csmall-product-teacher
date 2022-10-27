@@ -35,15 +35,6 @@ public class AlbumController {
         return "添加相册成功！";
     }
 
-    @ExceptionHandler
-    public String xxx(ServiceException e) {
-        log.debug("处理请求的方法抛出了ServiceException，将统一处理");
-        return e.getMessage();
-    }
 
-    @RequestMapping("/test")
-    public String test() {
-        throw new ServiceException("这是一个测试抛出的异常");
-    }
 
 }

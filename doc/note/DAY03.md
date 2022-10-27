@@ -325,7 +325,7 @@ public class AlbumController {
 
 通常，自定义异常应该继承自`RuntimeException`，其原因主要有：
 
-- Xxxxx
+- 所有`RuntimeException`不会受到`try...catch`或`throw / throws`语法的约束
 - Xxxxx
 
 则在项目的根包下创建`ex.ServiceException`类，继承自`RuntimeException`：
@@ -378,23 +378,11 @@ if (count > 0) {
 
 后续，在`AlbumController`中，调用Service方法时，当捕获到`ServiceException`后可以调用异常对象的`getMessage()`方法得到抛出时封装的异常信息。
 
-
-
-
-
-
-
-
-
-
-
-
+附：关于设计业务方法的猜想：
 
 ```java
 User login(String username, String password) throws 用户名不存在的异常, 密码错误的异常, 账号被封号的异常;
 ```
-
-
 
 ```java
 try {
