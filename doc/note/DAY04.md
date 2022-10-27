@@ -133,18 +133,80 @@ String[] value() default {};
 @RequestMapping("a")
 ```
 
-
+另外，在`@RequestMapping`的源代码中，还包含：
 
 ```java
-@RequestMapping(value = {"a"})
-@RequestMapping(value = "a")
-@RequestMapping({"a"})
-@RequestMapping("a")
+RequestMethod[] method() default {};
 ```
 
+此属性的作用的是限制请求方式，在默认情况下，客户端提交请求时，所有请求方式都是允许的！如果配置此属性，则只有与配置值匹配的请求方式才是允许的，如果客户端提交请求的方式有误，则会导致`405`错误！
 
+> 提示：目前，提交POST请求的方式有：使用HTML的`<form>`标签的`method="post"`、使用`axios`的`post()`函数，或其它通过JavaScript程序发出POST请求，除此以外，都是GET请求，例如：直接在浏览器的地址栏中输入URL并访问、点击页面上的超链接、打开浏览器收藏夹中的收藏地址等。
 
+通常，建议：以获取数据为主要目的的请求，应该限制为GET方式，除此以外，都应该限制为POST方式。
 
+Spring MVC框架还定义了已经限制了请求方式的、与`@RequestMapping`类似的注解，包括：
+
+- `@GetMapping`
+- `@PostMapping`
+- `@PutMapping`
+- `@DeleteMapping`
+- `@PatchMapping`
+
+以`@GetMapping`为例，其源代码片段：
+
+```java
+@Target(ElementType.METHOD)
+@Retention(RetentionPolicy.RUNTIME)
+@Documented
+@RequestMapping(method = RequestMethod.GET)
+public @interface GetMapping {
+
+	/**
+	 * Alias for {@link RequestMapping#name}.
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String name() default "";
+
+	/**
+	 * Alias for {@link RequestMapping#value}.
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String[] value() default {};
+
+	/**
+	 * Alias for {@link RequestMapping#path}.
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String[] path() default {};
+
+	/**
+	 * Alias for {@link RequestMapping#params}.
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String[] params() default {};
+
+	/**
+	 * Alias for {@link RequestMapping#headers}.
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String[] headers() default {};
+
+	/**
+	 * Alias for {@link RequestMapping#consumes}.
+	 * @since 4.3.5
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String[] consumes() default {};
+
+	/**
+	 * Alias for {@link RequestMapping#produces}.
+	 */
+	@AliasFor(annotation = RequestMapping.class)
+	String[] produces() default {};
+
+}
+```
 
 
 
