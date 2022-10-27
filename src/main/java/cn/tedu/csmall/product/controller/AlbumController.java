@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @version 0.0.1
  */
 @Slf4j
+@RequestMapping("/album")
 @RestController
 public class AlbumController {
 
@@ -26,7 +27,7 @@ public class AlbumController {
         log.debug("创建控制器对象：AlbumController");
     }
 
-    // http://localhost:8080/add-new?name=相册001&description=相册001的简介&sort=199
+    // http://localhost:8080/album/add-new?name=相册001&description=相册001的简介&sort=199
     @RequestMapping("/add-new")
     public String addNew(AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
@@ -35,6 +36,8 @@ public class AlbumController {
         return "添加相册成功！";
     }
 
+    // http://localhost/album/delete
+    // @RequestMapping("/delete")
 
 
 }
