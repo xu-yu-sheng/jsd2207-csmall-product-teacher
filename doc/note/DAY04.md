@@ -246,10 +246,34 @@ public String delete(@PathVariable String id) {
 为了尽量保证匹配的准确性、保证参数值可以正常转换，在设计占位符时，可以在占位符名称右侧添加冒号，并在冒号右侧使用正则表达式来限制占位符的值的格式，例如：
 
 ```java
-
+@RequestMapping("/{id:[0-9]+}/delete")
 ```
 
+注意，一旦使用正则表达式后，多个不冲突的占位符的设计是允许共存在的，例如：
 
+```java
+// http://localhost:8080/album/9527/delete
+@RequestMapping("/{id:[0-9]+}/delete")
+public String delete(@PathVariable Long id) {
+    String message = "尝试删除id值为【" + id + "】的相册";
+    log.debug(message);
+    return message;
+}
+
+// http://localhost:8080/album/hello/delete
+@RequestMapping("/{id:[a-z]+}/delete")
+public String delete(@PathVariable String id) {
+    String message = "尝试删除名称值为【" + id + "】的相册";
+    log.debug(message);
+    return message;
+}
+```
+
+另外，没有使用占位符的设计，与使用了占位符的设计，也是允许共存的，例如：
+
+```java
+
+```
 
 
 

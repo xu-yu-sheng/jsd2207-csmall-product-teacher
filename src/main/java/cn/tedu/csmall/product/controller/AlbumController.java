@@ -43,4 +43,20 @@ public class AlbumController {
         return message;
     }
 
+    // http://localhost:8080/album/hello/delete
+    @RequestMapping("/{name:[a-z]+}/delete")
+    public String delete2(@PathVariable String name) {
+        String message = "尝试删除名称值为【" + name + "】的相册";
+        log.debug(message);
+        return message;
+    }
+
+    // http://localhost:8080/album/test/delete
+    @RequestMapping("/test/delete")
+    public String delete3() {
+        String message = "尝试测试删除相册";
+        log.debug(message);
+        return message;
+    }
+
 }
