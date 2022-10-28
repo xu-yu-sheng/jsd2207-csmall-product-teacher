@@ -79,3 +79,22 @@ vue create jsd2207-csmall-web-client-teacher
 ![image-20221028103435494](images/image-20221028103435494.png)
 
 则可以在命令提示符对应的位置找到新创建的项目。
+
+可以将项目移动到常用的文件夹中，并可以使用IntelliJ IDEA打开此项目：
+
+![image-20221028110706171](images/image-20221028110706171.png)
+
+# 32. 
+
+在IntelliJ IDEA中打开项目后，点击下方的`Terminal`即可打开**终端**面板
+
+![image-20221028110943151](images/image-20221028110943151.png)
+
+在**终端**窗口中，执行`npm run serve`命令，即可启动当前项目，当启动成功后，可以看到`successfully`字样，如下图所示：
+
+![image-20221028111135194](images/image-20221028111135194.png)
+
+根据提示的URL，在浏览器中打开，可以看到默认的页面：
+
+![image-20221028111252455](images/image-20221028111252455.png)
+
