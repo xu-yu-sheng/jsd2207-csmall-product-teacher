@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.csmall.product.mapper.SpuDetailMapper">
+
+    <!-- int insert(SpuDetail spuDetail); -->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_spu_detail (
+            spu_id, detail
+        ) VALUES (
+            #{spuId}, #{detail}
+        )
+    </insert>
+
+    <!-- int insertBatch(List<SpuDetail> spuDetailList); -->
+    <insert id="insertBatch" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO pms_spu_detail (
+            spu_id,detail
+        ) VALUES
+        <foreach collection="list" item="spuDetail" separator=",">
+            (
+                #{spuDetail.spuId},#{spuDetail.detail}
+            )
+        </foreach>
+    </insert>
+
+    <!-- int deleteById(Long id); -->
+    <delete id="deleteById">
+        DELETE FROM pms_spu_detail WHERE id=#{id}
+    </delete>
+
+    <!-- int updateById(SpuDetail spuDetail); -->
+    <delete id="deleteByIds">
+        DELETE FROM pms_spu_detail WHERE id IN (
+            <foreach collection="array" item="id" separator=",">
+                #{id}
+            </foreach>
+        )
+    </delete>
+
+    <!-- int update(Brand brand); -->
+    <update id="update">
+        UPDATE
+            pms_spu_detail
+        <set>
+            <if test="spuId != null">
+                spu_id=#{spuId},
+            </if>
+            <if test="detail != null">
+                detail=#{detail},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!-- int count(); -->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM pms_spu_detail
+    </select>
+
+    <!-- SpuDetailStandardVO getStandardById(Long id); -->
+    <select id="getStandardById" resultMap="StandardResultMap">
+        SELECT
+            <include refid="StandardQueryFields"/>
+        FROM
+            pms_spu_detail
+        WHERE
+            id=#{id}
+    </select>
+
+    <!-- List<SpuDetailListItemVO> list(); -->
+    <select id="list" resultMap="ListResultMap">
+        SELECT
+            <include refid="ListQueryFields"/>
+        FROM
+            pms_spu_detail
+        ORDER BY
+            id DESC
+    </select>
+
+    <sql id="StandardQueryFields">
+        <if test="true">
+            id, spu_id, detail
+        </if>
+    </sql>
+
+    <resultMap id="StandardResultMap"
+               type="cn.tedu.csmall.product.pojo.vo.SpuDetailStandardVO">
+        <id column="id" property="id"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="detail" property="detail"/>
+    </resultMap>
+
+    <sql id="ListQueryFields">
+        <if test="true">
+            id, spu_id, detail
+        </if>
+    </sql>
+
+    <resultMap id="ListResultMap"
+               type="cn.tedu.csmall.product.pojo.vo.SpuDetailListItemVO">
+        <id column="id" property="id"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="detail" property="detail"/>
+    </resultMap>
+
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.csmall.product.mapper.SkuMapper">
+
+    <!-- int insert(Sku sku); -->
+    <insert id="insert">
+        INSERT INTO pms_sku (
+            id, spu_id, title, bar_code, attribute_template_id,
+            specifications, album_id, pictures, price, stock,
+            stock_threshold, sort
+        ) VALUES (
+            #{id}, #{spuId}, #{title}, #{barCode}, #{attributeTemplateId},
+            #{specifications}, #{albumId}, #{pictures}, #{price}, #{stock},
+            #{stockThreshold}, #{sort}
+        )
+    </insert>
+
+    <!-- int insertBatch(List<Sku> skuList); -->
+    <insert id="insertBatch">
+        INSERT INTO pms_sku (
+            id, spu_id, title, bar_code, attribute_template_id,
+            specifications, album_id, pictures, price, stock,
+            stock_threshold, sort
+        ) VALUES
+        <foreach collection="list" item="sku" separator=",">
+            (
+                #{sku.id}, #{sku.spuId}, #{sku.title}, #{sku.barCode}, #{sku.attributeTemplateId},
+                #{sku.specifications}, #{sku.albumId}, #{sku.pictures}, #{sku.price}, #{sku.stock},
+                #{sku.stockThreshold}, #{sku.sort}
+            )
+        </foreach>
+    </insert>
+
+    <!-- int deleteById(Long id); -->
+    <delete id="deleteById">
+        DELETE FROM pms_sku WHERE id=#{id}
+    </delete>
+
+    <!-- int deleteByIds(List<Long> ids); -->
+    <delete id="deleteByIds">
+        DELETE FROM pms_sku WHERE id IN (
+            <foreach collection="array" item="id" separator=",">
+                #{id}
+            </foreach>
+        )
+    </delete>
+
+    <!-- int update(Sku sku); -->
+    <update id="update">
+        UPDATE
+            pms_sku
+        <set>
+            <if test="spuId != null">
+                spu_id=#{spuId},
+            </if>
+            <if test="title != null">
+                title=#{title},
+            </if>
+            <if test="barCode != null">
+                bar_code=#{barCode},
+            </if>
+            <if test="attributeTemplateId != null">
+                attribute_template_id=#{attributeTemplateId},
+            </if>
+            <if test="specifications != null">
+                specifications=#{specifications},
+            </if>
+            <if test="albumId != null">
+                album_id=#{albumId},
+            </if>
+            <if test="pictures != null">
+                pictures=#{pictures},
+            </if>
+            <if test="price != null">
+                price=#{price},
+            </if>
+            <if test="stock != null">
+                stock=#{stock},
+            </if>
+            <if test="stockThreshold != null">
+                stock_threshold=#{stockThreshold},
+            </if>
+            <if test="sort != null">
+                sort=#{sort},
+            </if>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <!-- int count(); -->
+    <select id="count" resultType="int">
+        SELECT count(*) FROM pms_sku
+    </select>
+
+    <!-- SkuStandardVO getStandardById(Long id); -->
+    <select id="getStandardById" resultMap="StandardResultMap">
+        SELECT
+            <include refid="StandardQueryFields"/>
+        FROM
+            pms_sku
+        WHERE
+            id=#{id}
+    </select>
+
+    <!-- List<SkuListItemVO> list(); -->
+    <select id="list" resultMap="ListResultMap">
+        SELECT
+            <include refid="ListQueryFields"/>
+        FROM
+            pms_sku
+        ORDER BY
+            sort DESC, id DESC
+    </select>
+
+    <sql id="StandardQueryFields">
+        <if test="true">
+            id, spu_id, title, bar_code, attribute_template_id,
+            specifications, album_id, pictures, price, stock,
+            stock_threshold, sales, comment_count, positive_comment_count, sort
+        </if>
+    </sql>
+
+    <resultMap id="StandardResultMap"
+               type="cn.tedu.csmall.product.pojo.vo.SkuStandardVO">
+        <id column="id" property="id"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="title" property="title"/>
+        <result column="bar_code" property="barCode"/>
+        <result column="attribute_template_id" property="attributeTemplateId"/>
+        <result column="data" property="data"/>
+        <result column="album_id" property="albumId"/>
+        <result column="pictures" property="pictures"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="stock_threshold" property="stockThreshold"/>
+        <result column="sales" property="sales"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="positive_comment_count" property="positiveCommentCount"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+    <sql id="ListQueryFields">
+        <if test="true">
+            id, spu_id, title, bar_code, attribute_template_id,
+            specifications, album_id, pictures, price, stock,
+            stock_threshold, sales, comment_count, positive_comment_count, sort
+        </if>
+    </sql>
+
+    <resultMap id="ListResultMap"
+               type="cn.tedu.csmall.product.pojo.vo.SkuListItemVO">
+        <id column="id" property="id"/>
+        <result column="spu_id" property="spuId"/>
+        <result column="title" property="title"/>
+        <result column="bar_code" property="barCode"/>
+        <result column="attribute_template_id" property="attributeTemplateId"/>
+        <result column="data" property="data"/>
+        <result column="album_id" property="albumId"/>
+        <result column="pictures" property="pictures"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="stock_threshold" property="stockThreshold"/>
+        <result column="sales" property="sales"/>
+        <result column="comment_count" property="commentCount"/>
+        <result column="positive_comment_count" property="positiveCommentCount"/>
+        <result column="sort" property="sort"/>
+    </resultMap>
+
+</mapper>

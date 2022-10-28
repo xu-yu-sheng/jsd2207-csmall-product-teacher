@@ -1,8 +1,6 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
-import cn.tedu.csmall.product.pojo.entity.Brand;
-import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -45,7 +45,7 @@ public class AlbumMapperTests {
 
     @Test
     void deleteById() {
-        Long id = 6L;
+        Long id = 1L;
         int rows = mapper.deleteById(id);
         log.debug("删除完成，受影响的行数：{}", rows);
     }

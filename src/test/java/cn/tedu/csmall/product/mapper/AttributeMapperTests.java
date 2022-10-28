@@ -1,6 +1,6 @@
 package cn.tedu.csmall.product.mapper;
 
-import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.entity.Attribute;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,33 +11,33 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-public class CategoryMapperTests {
+public class AttributeMapperTests {
 
     @Autowired
-    CategoryMapper mapper;
+    AttributeMapper mapper;
 
     @Test
     void insert() {
-        Category category = new Category();
-        category.setName("测试品牌001");
-        category.setSort(255);
-        log.debug("插入数据之前，参数：{}", category);
-        int rows = mapper.insert(category);
+        Attribute attribute = new Attribute();
+        attribute.setName("测试数据001");
+        attribute.setSort(255);
+        log.debug("插入数据之前，参数：{}", attribute);
+        int rows = mapper.insert(attribute);
         log.debug("插入数据完成，受影响的行数：{}", rows);
-        log.debug("插入数据之后，参数：{}", category);
+        log.debug("插入数据之后，参数：{}", attribute);
     }
 
     @Test
     void insertBatch() {
-        List<Category> categories = new ArrayList<>();
+        List<Attribute> attributes = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
-            Category category = new Category();
-            category.setName("批量插入测试数据" + i);
-            category.setSort(200);
-            categories.add(category);
+            Attribute attribute = new Attribute();
+            attribute.setName("批量插入测试数据" + i);
+            attribute.setSort(200);
+            attributes.add(attribute);
         }
 
-        int rows = mapper.insertBatch(categories);
+        int rows = mapper.insertBatch(attributes);
         log.debug("批量插入完成，受影响的行数：{}", rows);
     }
 
@@ -57,11 +57,11 @@ public class CategoryMapperTests {
 
     @Test
     void update() {
-        Category category = new Category();
-        category.setId(1L);
-        category.setSort(188);
+        Attribute attribute = new Attribute();
+        attribute.setId(1L);
+        attribute.setName("新-测试数据001");
 
-        int rows = mapper.update(category);
+        int rows = mapper.update(attribute);
         log.debug("更新完成，受影响的行数：{}", rows);
     }
 
@@ -69,13 +69,6 @@ public class CategoryMapperTests {
     void count() {
         int count = mapper.count();
         log.debug("统计完成，表中的数据的数量：{}", count);
-    }
-
-    @Test
-    public void countByName() {
-        String name = "某个新类别";
-        int count = mapper.countByName(name);
-        log.debug("根据名称【{}】统计数量完成，统计结果：{}", name, count);
     }
 
     @Test

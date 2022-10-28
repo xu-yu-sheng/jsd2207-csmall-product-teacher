@@ -18,13 +18,13 @@ public class BrandMapperTests {
 
     @Test
     void insert() {
-        Brand data = new Brand();
-        data.setName("测试品牌123");
+        Brand brand = new Brand();
+        brand.setName("测试品牌123");
 
-        log.debug("插入数据之前，参数：{}", data);
-        int rows = mapper.insert(data);
+        log.debug("插入数据之前，参数：{}", brand);
+        int rows = mapper.insert(brand);
         log.debug("插入数据完成，受影响的行数：{}", rows);
-        log.debug("插入数据之后，参数：{}", data);
+        log.debug("插入数据之后，参数：{}", brand);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package cn.tedu.csmall.product.mapper;
 
-import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.entity.SpuDetail;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,33 +11,31 @@ import java.util.List;
 
 @Slf4j
 @SpringBootTest
-public class CategoryMapperTests {
+public class SpuDetailMapperTests {
 
     @Autowired
-    CategoryMapper mapper;
+    SpuDetailMapper mapper;
 
     @Test
     void insert() {
-        Category category = new Category();
-        category.setName("测试品牌001");
-        category.setSort(255);
-        log.debug("插入数据之前，参数：{}", category);
-        int rows = mapper.insert(category);
+        SpuDetail spuDetail = new SpuDetail();
+        spuDetail.setDetail("测试数据001");
+        log.debug("插入数据之前，参数：{}", spuDetail);
+        int rows = mapper.insert(spuDetail);
         log.debug("插入数据完成，受影响的行数：{}", rows);
-        log.debug("插入数据之后，参数：{}", category);
+        log.debug("插入数据之后，参数：{}", spuDetail);
     }
 
     @Test
     void insertBatch() {
-        List<Category> categories = new ArrayList<>();
+        List<SpuDetail> spuDetailList = new ArrayList<>();
         for (int i = 1; i <= 5; i++) {
-            Category category = new Category();
-            category.setName("批量插入测试数据" + i);
-            category.setSort(200);
-            categories.add(category);
+            SpuDetail spuDetail = new SpuDetail();
+            spuDetail.setDetail("批量插入测试数据" + i);
+            spuDetailList.add(spuDetail);
         }
 
-        int rows = mapper.insertBatch(categories);
+        int rows = mapper.insertBatch(spuDetailList);
         log.debug("批量插入完成，受影响的行数：{}", rows);
     }
 
@@ -57,11 +55,11 @@ public class CategoryMapperTests {
 
     @Test
     void update() {
-        Category category = new Category();
-        category.setId(1L);
-        category.setSort(188);
+        SpuDetail spuDetail = new SpuDetail();
+        spuDetail.setId(1L);
+        spuDetail.setDetail("新-测试数据001");
 
-        int rows = mapper.update(category);
+        int rows = mapper.update(spuDetail);
         log.debug("更新完成，受影响的行数：{}", rows);
     }
 
@@ -69,13 +67,6 @@ public class CategoryMapperTests {
     void count() {
         int count = mapper.count();
         log.debug("统计完成，表中的数据的数量：{}", count);
-    }
-
-    @Test
-    public void countByName() {
-        String name = "某个新类别";
-        int count = mapper.countByName(name);
-        log.debug("根据名称【{}】统计数量完成，统计结果：{}", name, count);
     }
 
     @Test
