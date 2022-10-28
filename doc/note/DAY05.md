@@ -98,3 +98,29 @@ vue create jsd2207-csmall-web-client-teacher
 
 ![image-20221028111252455](images/image-20221028111252455.png)
 
+# 关于Vue脚手架项目的端口
+
+启动Vue脚手架项目时，默认会尝试使用`8080`端口，如果此端口已经被占用，则会改为尝试使用`8081`端口，如果仍被占用，当会继续顺延。
+
+为了避免每次启动时端口不一样，甚至如果先启动前端项目再启动后端项目，还会导致后端项目启动失败，强烈推荐显式的为前端项目和后端项目分别指定不同的端口号！
+
+在后端项目（`jsd2207-csmall-product`）中，在`application-dev.yml`中添加配置：
+
+```yaml
+# 服务端口
+server:
+  port: 9080
+```
+
+在前端项目`jsd2207-csmall-web-client`中，在`package.json`文件中，将原有的在`scripts`下的`serve`的值由原本的`"vue-cli-service serve`改为`"vue-cli-service serve --port 9000"`，例如：
+
+![image-20221028113223083](images/image-20221028113223083.png)
+
+提示：前端项目启动后，没有停止按钮可用，需要在启动此项目的终端窗口中通过`Ctrl + C`来停止项目。
+
+
+
+
+
+
+
