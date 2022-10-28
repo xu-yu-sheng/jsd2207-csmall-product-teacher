@@ -187,11 +187,17 @@ import 'element-ui/lib/theme-chalk/index.css';
 Vue.use(ElementUI);
 ```
 
+至此，在当前项目的任何一个视图组件的源代码中，都可以直接使用Element UI。
 
+练习目标：
 
+![image-20221028161913050](images/image-20221028161913050.png)
 
+要实现以上目标，大致需要：
 
-
+- 准备好视图组件的文件，可以是新创建的文件，也可以使用现在的文件进行修改
+- 在`src/router/index.js`中，确保已经配置此文件的路由
+- 在`src/App.vue`中，在页面设计部分，只保留`<router-view/>`，删除其它代码
 
 
 
