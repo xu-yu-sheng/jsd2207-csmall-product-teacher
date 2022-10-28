@@ -35,7 +35,7 @@ public class BrandController {
     @ApiOperation("添加品牌")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public String addNew(@Validated BrandAddNewDTO brandAddNewDTO) {
+    public String addNew(BrandAddNewDTO brandAddNewDTO) {
         log.debug("开始处理【添加品牌】的请求：{}", brandAddNewDTO);
         brandService.addNew(brandAddNewDTO);
         log.debug("添加相册成功！");

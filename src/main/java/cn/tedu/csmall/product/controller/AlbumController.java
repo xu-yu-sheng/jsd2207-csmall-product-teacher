@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,7 @@ public class AlbumController {
     // http://localhost:8080/albums/9527/delete
     @ApiOperation("根据id删除相册")
     @ApiOperationSupport(order = 200)
+    @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")
     public String delete(@PathVariable Long id) {
         String message = "尝试删除id值为【" + id + "】的相册";
