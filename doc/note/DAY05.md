@@ -167,6 +167,30 @@ Vue脚手架项目是一个单页面的应用，即在整个项目中只有1个`
 - `README.md`：默认的用于介绍当前项目的文件
 - `vue.config.js`：暂不关心
 
+# 37. 使用Element UI
+
+在Vue脚手架项目中，当需要使用Element UI时，需要事先安装并配置。
+
+可以在终端窗口中执行命令来安装Element UI：
+
+```
+npm i element-ui -S
+```
+
+注意：如果从Git上拉取老师的代码，需要再次执行`npm install`命令！
+
+然后，需要在`main.js`中添加配置：
+
+```javascript
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+Vue.use(ElementUI);
+```
+
+
+
+
+
 
 
 
