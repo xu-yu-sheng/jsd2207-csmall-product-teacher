@@ -128,6 +128,28 @@ name=测试相册名称&description=测试相册简介&sort=188
 
 `qs`是一款可以将对象格式的数据转换成FormData格式的框架。
 
+首先，需要安装`qs`：
+
+```
+npm i qs -S
+```
+
+然后，在`main.js`中添加配置：
+
+```javascript
+import qs from 'qs';
+
+Vue.prototype.qs = qs;
+```
+
+在项目中，当需要将对象转换为FormData格式时，例如：
+
+```javascript
+let formData = this.qs.stringify(this.ruleForm);
+```
+
+
+
 
 
 
