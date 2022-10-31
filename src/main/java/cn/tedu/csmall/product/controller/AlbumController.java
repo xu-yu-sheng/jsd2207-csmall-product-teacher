@@ -8,10 +8,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 处理相册相关请求的控制器
@@ -36,7 +33,7 @@ public class AlbumController {
     @ApiOperation("添加相册")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public String addNew(AlbumAddNewDTO albumAddNewDTO) {
+    public String addNew(@RequestBody AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
         log.debug("添加相册成功！");
