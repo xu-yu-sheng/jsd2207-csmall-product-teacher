@@ -41,11 +41,7 @@ public class AlbumController {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
         log.debug("添加相册成功！");
-
-        //JsonResult jsonResult = new JsonResult();
-        //jsonResult.setState(1);
-        //jsonResult.setMessage("添加相册成功！");
-        return new JsonResult(1, "添加相册成功！");
+        return JsonResult.ok();
     }
 
     // http://localhost:8080/albums/9527/delete

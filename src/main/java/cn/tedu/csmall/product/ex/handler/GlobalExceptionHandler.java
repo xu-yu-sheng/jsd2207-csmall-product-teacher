@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
         //JsonResult jsonResult = new JsonResult();
         //jsonResult.setState(2);
         //jsonResult.setMessage(e.getMessage());
-        return new JsonResult(2, e.getMessage());
+        return JsonResult.fail(2, e.getMessage());
     }
 
 }
