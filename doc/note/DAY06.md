@@ -200,5 +200,9 @@ public class JsonResult implements Serializable {
 
 
 
+```java
+return new JsonResult(1, "添加相册成功！");
+```
+
 
 

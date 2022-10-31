@@ -57,3 +57,35 @@
 ![image-20221028180155610](images/image-20221028180155610.png)
 
 提示：其它菜单项暂未设计子级。
+
+# DAY06（10.31）
+
+在`csmall-web-client`（前端项目）中设计以下页面：
+
+- 添加品牌（BrandAddNewView.vue）
+
+![image-20221031173024336](images/image-20221031173024336.png)
+
+提示：以上“是否启用”是通过“开关”控件实现的，可参考：https://element.eleme.cn/#/zh-CN/component/switch
+
+- 添加类别（CategoryAddNewView.vue）
+
+  ![image-20221031173157386](images/image-20221031173157386.png)
+
+- 添加属性模板（AttributeTemplateAddNewView.vue）
+
+![image-20221031173246534](images/image-20221031173246534.png)
+
+- 添加属性（AttributeAddNewView.vue）
+
+  ![image-20221031173330215](images/image-20221031173330215.png)
+
+  提示：以上表单中，“属性模板”的控件是“Select选择器”，可参考：https://element.eleme.cn/#/zh-CN/component/select
+
+  提示：以上表单中，“类型”和“输入类型”的控件是“Radio单选框”，可参考：https://element.eleme.cn/#/zh-CN/component/radio
+
+  提示：以上表单中，“类型”的值的右侧的“i”是通过图标显示的（可参考菜单项的图标），并且，鼠标移上去可以显示一段文本，显示文本可参考：https://element.eleme.cn/#/zh-CN/component/tooltip
+
+- 添加管理员（AdminAddNewView.vue）
+
+![image-20221031173820915](images/image-20221031173820915.png)
