@@ -184,11 +184,11 @@ let formData = this.qs.stringify(this.ruleForm);
 
 在Spring Boot项目中，当需要响应JSON格式的字符串时，只需自定义类型，在此类型中设计响应结果中包含的数据属性，并在处理请求、处理异常的方法上使用此类型作为返回值类型即可！
 
-则在根包下创建`xx.xx`类：
+则在根包下创建`web.JsonResult`类：
 
 ``` java
 @Data
-public class Xxxxx implements Serializable {
+public class JsonResult implements Serializable {
     private Integer state;
     private String message;
 }
