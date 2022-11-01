@@ -163,6 +163,8 @@ public JsonResult addNew(AlbumAddNewDTO albumAddNewDTO) {
 
 # 45. 使用Validation框架检查请求参数的基本格式
 
+## 45.1. 添加依赖
+
 在`pom.xml`中添加`spring-boot-starter-validation`依赖项：
 
 ```xml
@@ -172,6 +174,8 @@ public JsonResult addNew(AlbumAddNewDTO albumAddNewDTO) {
     <artifactId>spring-boot-starter-validation</artifactId>
 </dependency>
 ```
+
+## 45.2. 检查封装的请求参数
 
 在控制器中，对于封装类型的请求参数，应该先在请求参数之前添加`@Valid`或`@Validated`注解，表示将需要对此请求参数的格式进行检查，例如：
 
@@ -210,6 +214,8 @@ public class AlbumAddNewDTO implements Serializable {
 ```
 2022-11-01 11:27:45.398  WARN 15104 --- [nio-9080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.validation.BindException: org.springframework.validation.BeanPropertyBindingResult: 1 errors<EOL>Field error in object 'albumAddNewDTO' on field 'name': rejected value [null]; codes [NotNull.albumAddNewDTO.name,NotNull.name,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [albumAddNewDTO.name,name]; arguments []; default message [name]]; default message [不能为null]]
 ```
+
+## 45.3. 处理检查不通过时的异常
 
 由于检查未通过时会抛出`org.springframework.validation.BindException`异常，则可以在全局异常处理器中，添加对此异常的处理，以避免响应`400`错误到客户端，而是改为响应一段JSON数据：
 
@@ -278,6 +284,51 @@ public JsonResult handleBindException(BindException e) {
     return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, defaultMessage);
 }
 ```
+
+## 45.4. 检查未封装的请求参数
+
+当处理请求的方法的参数是未封装的（例如`Long id`等），检查时，需要：
+
+- 在当前控制器类上添加`@Validated`注解
+- 在需要检查的请求参数上添加检查注解
+
+例如：
+
+```java
+@Slf4j
+@Validated // 新添加的注解
+@RestController
+@RequestMapping("/albums")
+@Api(tags = "04. 相册管理模块")
+public class AlbumController {
+
+    // 暂不关心其它代码
+  
+    // http://localhost:8080/albums/9527/delete
+    @ApiOperation("根据id删除相册")
+    @ApiOperationSupport(order = 200)
+    @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/delete")
+    //        新添加的注解 ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+    public String delete(@Range(min = 1, message = "删除相册失败，尝试删除的相册的ID无效！")
+                             @PathVariable Long id) {
+        String message = "尝试删除id值为【" + id + "】的相册";
+        log.debug(message);
+        return message;
+    }
+
+}
+```
+
+当请求参数不符合以上`@Range(min =1)`的规则时（例如请求参数值为`0`或负数），默认情况下会出现`500`错误，在服务器端控制台可以看到以下异常信息：
+
+```
+javax.validation.ConstraintViolationException: delete.id: 删除相册失败，尝试删除的相册的ID无效！
+```
+
+
+
+
 
 
 

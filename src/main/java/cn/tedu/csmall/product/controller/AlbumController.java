@@ -8,7 +8,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +25,7 @@ import javax.validation.Valid;
  * @version 0.0.1
  */
 @Slf4j
+@Validated
 @RestController
 @RequestMapping("/albums")
 @Api(tags = "04. 相册管理模块")
@@ -51,7 +54,8 @@ public class AlbumController {
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")
-    public String delete(@PathVariable Long id) {
+    public String delete(@Range(min = 1, message = "删除相册失败，尝试删除的相册的ID无效！")
+                             @PathVariable Long id) {
         String message = "尝试删除id值为【" + id + "】的相册";
         log.debug(message);
         return message;
