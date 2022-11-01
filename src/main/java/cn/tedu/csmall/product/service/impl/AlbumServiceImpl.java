@@ -55,16 +55,19 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Override
     public void delete(Long id) {
+        log.debug("开始处理【根据id删除相册】的业务，参数：{}", id);
         // 调用Mapper对象的getStandardById()执行查询
         AlbumStandardVO queryResult = albumMapper.getStandardById(id);
         // 判断查询结果是否为null
         if (queryResult == null) {
             // 是：无此id对应的数据，将不允许执行删除操作，则抛出异常
             String message = "删除相册失败，尝试访问的数据不存在！";
+            log.debug(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
 
         // 调用Mapper对象的deleteById()方法执行删除
+        log.debug("即将执行删除，参数：{}", id);
         albumMapper.deleteById(id);
     }
 

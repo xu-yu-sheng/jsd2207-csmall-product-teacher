@@ -380,16 +380,19 @@ public void delete(Long id) {
 ```java
 @Override
 public void delete(Long id) {
+    log.debug("开始处理【根据id删除相册】的业务，参数：{}", id);
     // 调用Mapper对象的getStandardById()执行查询
     AlbumStandardVO queryResult = albumMapper.getStandardById(id);
     // 判断查询结果是否为null
     if (queryResult == null) {
         // 是：无此id对应的数据，将不允许执行删除操作，则抛出异常
         String message = "删除相册失败，尝试访问的数据不存在！";
+        log.debug(message);
         throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
     }
 
     // 调用Mapper对象的deleteById()方法执行删除
+    log.debug("即将执行删除，参数：{}", id);
     albumMapper.deleteById(id);
 }
 ```
@@ -410,7 +413,22 @@ void delete() {
 }
 ```
 
+最后，在`AlbumController`中完善处理此请求的代码：
 
+```java
+@ApiOperation("根据id删除相册")
+@ApiOperationSupport(order = 200)
+@ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
+@PostMapping("/{id:[0-9]+}/delete")
+public JsonResult delete(@Range(min = 1, message = "删除相册失败，尝试删除的相册的ID无效！")
+                         @PathVariable Long id) {
+    log.debug("开始处理【根据id删除相册】的请求，参数：{}", id);
+    albumService.delete(id);
+    return JsonResult.ok();
+}
+```
+
+全部完成后，可以通过API文档进行测试访问。
 
 
 
