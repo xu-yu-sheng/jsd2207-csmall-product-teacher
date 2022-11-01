@@ -341,9 +341,17 @@ public JsonResult handleConstraintViolationException(ConstraintViolationExceptio
 }
 ```
 
+## 45.5. 关于检查注解
 
+在`javax.validation.constraints`和`org.hibernate.validator.constraints`都有大量的检查注解，常用的检查注解有：
 
+- `@NotNull`：不允许为`null`
+- `@Range`：此注解有`min`和`max`属性，分别通过`@Min`和`@Max`实现，且`min`的默认值为`0`，`max`的默认值为`long`类型的最大值，此注解只能添加在整型的数值类型上，用于设置取值区间
+- `@NotEmpty`：不允许为空字符串，即长度为0的字符串，此注解只能添加在字符串类型的参数上
+- `@NotBlank`：不允许为空白，即不允许是仅由空格、TAB制表位、换行符等空白字符组成的值，此注解只能添加在字符串类型的参数上
+- `@Pattern`：此注解有`regexp`属性，可通过此属性配置正则表达式，在检查时将根据正则表达式所配置的规则进行检查，此注解只能添加在字符串类型的参数上
 
+**注意：除了`@NotNull`注解以外，其它注解均不检查请求参数为`null`的情况，例如在某个请求参数上配置了`@NotEmpty`，当提交的请求参数为`null`时将通过检查（视为正确），所以，当某个请求参数需要配置为不允许为`null`时，必须使用`@NotNull`，且以上不冲突的多个注解可以同时添加在同一个请求参数上！**
 
 
 
