@@ -326,6 +326,21 @@ public class AlbumController {
 javax.validation.ConstraintViolationException: delete.id: 删除相册失败，尝试删除的相册的ID无效！
 ```
 
+则需要在全局异常处理器中，添加新的处理异常的方法，用于处理以上异常：
+
+```java
+@ExceptionHandler
+public JsonResult handleConstraintViolationException(ConstraintViolationException e) {
+    log.debug("开始处理ConstraintViolationException");
+    StringJoiner stringJoiner = new StringJoiner("，");
+    Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+    for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+        stringJoiner.add(constraintViolation.getMessage());
+    }
+    return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, stringJoiner.toString());
+}
+```
+
 
 
 

@@ -9,7 +9,10 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
+import java.util.Set;
 import java.util.StringJoiner;
 
 /**
@@ -45,6 +48,17 @@ public class GlobalExceptionHandler {
         //}
 
         return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, defaultMessage);
+    }
+
+    @ExceptionHandler
+    public JsonResult handleConstraintViolationException(ConstraintViolationException e) {
+        log.debug("开始处理ConstraintViolationException");
+        StringJoiner stringJoiner = new StringJoiner("，");
+        Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
+        for (ConstraintViolation<?> constraintViolation : constraintViolations) {
+            stringJoiner.add(constraintViolation.getMessage());
+        }
+        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, stringJoiner.toString());
     }
 
 }
