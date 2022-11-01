@@ -70,11 +70,13 @@ public class AlbumServiceImpl implements IAlbumService {
         }
 
         // 检查是否存在图片（picture）关联到此相册，如果存在，则不允许删除
-        int count = pictureMapper.countByAlbumId(id);
-        if (count > 0) {
-            String message = "删除相册失败，此相册存在关联的图片数据！";
-            log.debug(message);
-            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        {
+            int count = pictureMapper.countByAlbumId(id);
+            if (count > 0) {
+                String message = "删除相册失败，此相册存在关联的图片数据！";
+                log.debug(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
         }
 
         // 调用Mapper对象的deleteById()方法执行删除

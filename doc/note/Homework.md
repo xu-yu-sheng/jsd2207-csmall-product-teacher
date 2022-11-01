@@ -89,3 +89,39 @@
 - 添加管理员（AdminAddNewView.vue）
 
 ![image-20221031173820915](images/image-20221031173820915.png)
+
+# DAY07 (11.01)
+
+在`csmall-product`项目中实现：
+
+- 补充业务规则：根据id删除相册时，如果存在关联的SPU数据，则不允许删除，将抛出异常，此关联数据表现在`pms_spu`表的`album_id`字段
+- 根据id删除品牌（Brand）数据--业务层
+  - 业务规则：数据必须存在，否则抛出异常（ERR_NOT_FOUND）
+  - 业务规则：不允许存在关联的品牌数据，否则抛出异常（ERR_CONFLICT），此关联数据表现在`pms_brand_category`表的`brand_id`字段
+  - 业务规则：不允许存在关联的SPU数据，否则抛出异常（ERR_CONFLICT），此关联数据表现在`pms_spu`表的`brand_id`字段
+- 根据id删除品牌（Brand）数据--控制器层
+  - URL格式参考：`/brands/9527/delete`
+  - 要求配置API文档的显示文本
+  - 可不配置检查请求参数的基本格式
+- 根据id删除属性模板（AttributeTemplate）数据--业务层
+  - 业务规则：数据必须存在，否则抛出异常（ERR_NOT_FOUND）
+  - 业务规则：不允许存在关联的属性数据，否则抛出异常（ERR_CONFLICT），此关联数据表现在`pms_attribute`表的`template_id`字段
+  - 业务规则：不允许存在关联的类别数据，否则抛出异常（ERR_CONFLICT），此关联数据表现在`pms_category_attribute_template`表的`attribute_template_id`字段
+  - 业务规则：不允许存在关联的SPU数据，否则抛出异常（ERR_CONFLICT），此关联数据表现在`pms_spu`表的`attribute_template_id`字段
+- 根据id删除属性模板（AttributeTemplate）数据--控制器层
+  - URL格式参考：`/attribute-templates/9527/delete`
+  - 要求配置API文档的显示文本
+  - 可不配置检查请求参数的基本格式
+
+
+
+
+
+
+
+
+
+
+
+
+
