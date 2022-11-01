@@ -466,7 +466,7 @@ int countByAlbumId(Long albumId);
 void countByAlbumId() {
     Long albumId = 1L;
     int count = mapper.countByAlbumId(albumId);
-    log.debug("根据相册【{}】统计图片的数量，结果：{}", albumId, count);
+    log.debug("统计完成，根据相册【{}】统计图片的数量，结果：{}", albumId, count);
 }
 ```
 
