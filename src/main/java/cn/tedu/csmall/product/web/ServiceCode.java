@@ -12,6 +12,7 @@ public enum ServiceCode {
      * 成功
      */
     OK(20000),
+    ERR_BAD_REQUEST(40000),
     /**
      * 错误：数据不存在
      */

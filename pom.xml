@@ -32,6 +32,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- Spring Boot Validation的依赖项，用于检查请求参数的基本格式 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
         <!-- Mybatis整合Spring Boot的依赖项 -->
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

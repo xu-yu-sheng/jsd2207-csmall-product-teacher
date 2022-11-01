@@ -161,6 +161,70 @@ public JsonResult addNew(AlbumAddNewDTO albumAddNewDTO) {
 
 - 以上分析的“不信任”客户端检查结果的原因，大多是小概率事件，如果客户端能执行检查，将可以“过滤”掉绝大部分请求参数格式错误的请求，以减轻服务器端的压力，提升用户体验（因为检查结果能迅速体现出来）
 
+# 45. 使用Validation框架检查请求参数的基本格式
+
+在`pom.xml`中添加`spring-boot-starter-validation`依赖项：
+
+```xml
+<!-- Spring Boot Validation的依赖项，用于检查请求参数的基本格式 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+在控制器中，对于封装类型的请求参数，应该先在请求参数之前添加`@Valid`或`@Validated`注解，表示将需要对此请求参数的格式进行检查，例如：
+
+```java
+@ApiOperation("添加相册")
+@ApiOperationSupport(order = 100)
+@PostMapping("/add-new")
+//                       ↓↓↓↓↓↓ 以下是新添加的注解
+public JsonResult addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
+    log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
+    albumService.addNew(albumAddNewDTO);
+    log.debug("添加相册成功！");
+    return JsonResult.ok();
+}
+```
+
+然后，在此封装类型中，在需要检查的属性上，添加检查注解，例如可以添加`@NotNull`注解，此注解表示“不允许为`null`值”，例如：
+
+```java
+@Data
+public class AlbumAddNewDTO implements Serializable {
+
+    /**
+     * 相册名称
+     */
+    @ApiModelProperty(value = "相册名称", required = true)
+    @NotNull // 新添加的注解
+    private String name;
+    
+	// 暂不关心其它代码   
+}
+```
+
+重启项目，如果客户端提交请求时，未提交`name`请求参数，就会响应`400`错误，并且，在服务器端的控制台会提示错误：
+
+```
+2022-11-01 11:27:45.398  WARN 15104 --- [nio-9080-exec-3] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.validation.BindException: org.springframework.validation.BeanPropertyBindingResult: 1 errors<EOL>Field error in object 'albumAddNewDTO' on field 'name': rejected value [null]; codes [NotNull.albumAddNewDTO.name,NotNull.name,NotNull.java.lang.String,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [albumAddNewDTO.name,name]; arguments []; default message [name]]; default message [不能为null]]
+```
+
+由于检查未通过时会抛出`org.springframework.validation.BindException`异常，则可以在全局异常处理器中，添加对此异常的处理，以避免响应`400`错误到客户端，而是改为响应一段JSON数据：
+
+```java
+
+```
+
+
+
+
+
+
+
+
+
 
 
 
