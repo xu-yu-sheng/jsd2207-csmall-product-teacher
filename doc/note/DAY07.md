@@ -353,6 +353,67 @@ public JsonResult handleConstraintViolationException(ConstraintViolationExceptio
 
 **注意：除了`@NotNull`注解以外，其它注解均不检查请求参数为`null`的情况，例如在某个请求参数上配置了`@NotEmpty`，当提交的请求参数为`null`时将通过检查（视为正确），所以，当某个请求参数需要配置为不允许为`null`时，必须使用`@NotNull`，且以上不冲突的多个注解可以同时添加在同一个请求参数上！**
 
+# 46. 根据id删除相册
+
+此前已经完成Mapper层和Controller层的部分代码，此次主要实现Service层代码。
+
+先在`IAlbumService`中添加抽象方法：
+
+```java
+void delete(Long id);
+```
+
+然后，在`AlbumServiceImpl`中实现以上方法：
+
+```java
+public void delete(Long id) {
+    // 调用Mapper对象的getStandardById()执行查询
+    // 判断查询结果是否为null
+    // 是：无此id对应的数据，将不允许执行删除操作，则抛出异常
+    
+    // 调用Mapper对象的deleteById()方法执行删除
+}
+```
+
+具体实现为：
+
+```java
+@Override
+public void delete(Long id) {
+    // 调用Mapper对象的getStandardById()执行查询
+    AlbumStandardVO queryResult = albumMapper.getStandardById(id);
+    // 判断查询结果是否为null
+    if (queryResult == null) {
+        // 是：无此id对应的数据，将不允许执行删除操作，则抛出异常
+        String message = "删除相册失败，尝试访问的数据不存在！";
+        throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+    }
+
+    // 调用Mapper对象的deleteById()方法执行删除
+    albumMapper.deleteById(id);
+}
+```
+
+完成后，在`AlbumServiceTests`中编写并执行测试：
+
+```java
+@Test
+void delete() {
+    Long id = 1L;
+
+    try {
+        service.delete(id);
+        log.debug("测试删除数据成功！");
+    } catch (ServiceException e) {
+        log.debug(e.getMessage());
+    }
+}
+```
+
+
+
+
+
 
 
 

@@ -17,4 +17,11 @@ public interface IAlbumService {
      */
     void addNew(AlbumAddNewDTO albumAddNewDTO);
 
+    /**
+     * 删除相册
+     *
+     * @param id 尝试删除的相册的id
+     */
+    void delete(Long id);
+
 }

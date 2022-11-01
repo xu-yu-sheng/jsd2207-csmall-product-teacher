@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.AlbumMapper;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +51,21 @@ public class AlbumServiceImpl implements IAlbumService {
         log.debug("即将插入相册数据：{}", album);
         albumMapper.insert(album);
         log.debug("插入相册数据完成");
+    }
+
+    @Override
+    public void delete(Long id) {
+        // 调用Mapper对象的getStandardById()执行查询
+        AlbumStandardVO queryResult = albumMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 是：无此id对应的数据，将不允许执行删除操作，则抛出异常
+            String message = "删除相册失败，尝试访问的数据不存在！";
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 调用Mapper对象的deleteById()方法执行删除
+        albumMapper.deleteById(id);
     }
 
 }
