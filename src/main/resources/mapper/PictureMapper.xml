@@ -77,6 +77,11 @@
         SELECT count(*) FROM pms_picture
     </select>
 
+    <!-- int countByAlbumId(Long albumId); -->
+    <select id="countByAlbumId" resultType="int">
+        SELECT count(*) FROM pms_picture WHERE album_id=#{albumId}
+    </select>
+
     <!-- PictureStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

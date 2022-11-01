@@ -430,6 +430,58 @@ public JsonResult delete(@Range(min = 1, message = "删除相册失败，尝试�
 
 全部完成后，可以通过API文档进行测试访问。
 
+# 47. 补充删除相册的策略
+
+目前，图片表（`pms_picture`）中有`album_id`字段，体现了图片与相册的关联，当删除相册时，如果有图片与此相册存在关联，应该：
+
+- 不允许删除此相册
+- 执行删除此相册的同时，删除对应的所有图片
+- 执行删除此相册的同时，将对应的所有图片处理为“未分类”或类似的状态
+
+如果采取以上第1种策略，则需要实现“统计在图片表中有多少数据与此相册存在关联”，需要执行的SQL语句大致是：
+
+```mysql
+select count(*) from pms_picture where album_id=?
+```
+
+则在`PictureMapper`接口中添加抽象方法：
+
+```java
+int countByAlbumId(Long albumId);
+```
+
+然后，在`PictureMapper.xml`中配置以上抽象方法映射的SQL语句：
+
+```xml
+<!-- int countByAlbumId(Long albumId); -->
+<select id="countByAlbumId" resultType="int">
+	SELECT count(*) FROM pms_picture WHERE album_id=#{albumId}
+</select>
+```
+
+并且，在`PictureMapperTests`中测试：
+
+```java
+@Test
+void countByAlbumId() {
+    Long albumId = 1L;
+    int count = mapper.countByAlbumId(albumId);
+    log.debug("根据相册【{}】统计图片的数量，结果：{}", albumId, count);
+}
+```
+
+完成后，在`AlbumServiceImpl`中的`delete()`中添加：
+
+```java
+// 事先自动装配PictureMapper
+int count = pictureMapper.countByAlbumId(id);
+if (count > 0) {
+    String message = "删除相册失败，此相册存在关联的图片数据！";
+    log.debug(message);
+    throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+}
+```
+
 
 
 

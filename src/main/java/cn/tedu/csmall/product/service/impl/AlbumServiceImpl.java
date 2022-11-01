@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service.impl;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.AlbumMapper;
+import cn.tedu.csmall.product.mapper.PictureMapper;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Album;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
@@ -24,6 +25,8 @@ public class AlbumServiceImpl implements IAlbumService {
 
     @Autowired
     private AlbumMapper albumMapper;
+    @Autowired
+    private PictureMapper pictureMapper;
 
     public AlbumServiceImpl() {
         log.debug("创建业务对象：AlbumServiceImpl");
@@ -64,6 +67,14 @@ public class AlbumServiceImpl implements IAlbumService {
             String message = "删除相册失败，尝试访问的数据不存在！";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 检查是否存在图片（picture）关联到此相册，如果存在，则不允许删除
+        int count = pictureMapper.countByAlbumId(id);
+        if (count > 0) {
+            String message = "删除相册失败，此相册存在关联的图片数据！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
         }
 
         // 调用Mapper对象的deleteById()方法执行删除

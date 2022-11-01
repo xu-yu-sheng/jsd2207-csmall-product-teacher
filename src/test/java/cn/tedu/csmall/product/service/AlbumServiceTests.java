@@ -31,7 +31,7 @@ public class AlbumServiceTests {
 
     @Test
     void delete() {
-        Long id = 1L;
+        Long id = 22L;
 
         try {
             service.delete(id);
