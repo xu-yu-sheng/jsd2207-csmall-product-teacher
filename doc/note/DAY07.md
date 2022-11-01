@@ -214,14 +214,70 @@ public class AlbumAddNewDTO implements Serializable {
 由于检查未通过时会抛出`org.springframework.validation.BindException`异常，则可以在全局异常处理器中，添加对此异常的处理，以避免响应`400`错误到客户端，而是改为响应一段JSON数据：
 
 ```java
+@ExceptionHandler
+public JsonResult handleBindException(BindException e) {
+    log.debug("开始处理BindException");
 
+    StringJoiner stringJoiner = new StringJoiner("，", "请求参数格式错误，", "！！！");
+    List<FieldError> fieldErrors = e.getFieldErrors();
+    for (FieldError fieldError : fieldErrors) {
+        String defaultMessage = fieldError.getDefaultMessage();
+        stringJoiner.add(defaultMessage);
+    }
+
+    return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, stringJoiner.toString());
+}
 ```
 
+当请求参数可能出现多种错误时，也可以选择“快速失败”的机制，它会使得框架只要发现错误，就停止检查其它规则，这需要在配置类中进行配置，则在项目的根包下创建`config.ValidationConfiguration`类并配置：
 
+```java
+package cn.tedu.csmall.product.config;
 
+import cn.tedu.csmall.product.controller.AlbumController;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.validator.HibernateValidator;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
+import javax.validation.Validation;
 
+/**
+ * Validation配置类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Slf4j
+@Configuration
+public class ValidationConfiguration {
 
+    public ValidationConfiguration() {
+        log.debug("创建配置类对象：ValidationConfiguration");
+    }
+
+    @Bean
+    public javax.validation.Validator validator() {
+        return Validation.byProvider(HibernateValidator.class)
+                .configure() // 开始配置
+                .failFast(true) // 快速失败，即检查请求参数时，一旦发现某个参数不符合规则，则视为失败，并停止检查（剩余未检查的部分将不会被检查）
+                .buildValidatorFactory()
+                .getValidator();
+    }
+
+}
+```
+
+使用这种做法，当客户端提交的请求参数格式错误时，最多只会发现1种错误，则处理异常的代码可以调整为：
+
+```java
+@ExceptionHandler
+public JsonResult handleBindException(BindException e) {
+    log.debug("开始处理BindException");
+    String defaultMessage = e.getFieldError().getDefaultMessage();
+    return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, defaultMessage);
+}
+```
 
 
 

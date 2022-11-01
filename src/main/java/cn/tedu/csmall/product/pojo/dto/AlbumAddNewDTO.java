@@ -19,14 +19,14 @@ public class AlbumAddNewDTO implements Serializable {
      * 相册名称
      */
     @ApiModelProperty(value = "相册名称", required = true)
-    @NotNull(message = "必须提交相册名称")
+    @NotNull(message = "添加相册失败，必须提交相册名称！")
     private String name;
 
     /**
      * 相册简介
      */
     @ApiModelProperty(value = "相册简介", required = true)
-    @NotNull(message = "必须提交相册简介")
+    @NotNull(message = "添加相册失败，必须提交相册简介！")
     private String description;
 
     /**

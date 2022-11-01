@@ -36,14 +36,15 @@ public class GlobalExceptionHandler {
     public JsonResult handleBindException(BindException e) {
         log.debug("开始处理BindException");
 
-        StringJoiner stringJoiner = new StringJoiner("，", "请求参数格式错误，", "！！！");
-        List<FieldError> fieldErrors = e.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            String defaultMessage = fieldError.getDefaultMessage();
-            stringJoiner.add(defaultMessage);
-        }
+        String defaultMessage = e.getFieldError().getDefaultMessage();
+        //StringJoiner stringJoiner = new StringJoiner("，", "请求参数格式错误，", "！！！");
+        //List<FieldError> fieldErrors = e.getFieldErrors();
+        //for (FieldError fieldError : fieldErrors) {
+        //    String defaultMessage = fieldError.getDefaultMessage();
+        //    stringJoiner.add(defaultMessage);
+        //}
 
-        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, stringJoiner.toString());
+        return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, defaultMessage);
     }
 
 }
