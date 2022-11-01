@@ -26,13 +26,13 @@ public class JsonResult implements Serializable {
 
     public static JsonResult ok() {
         JsonResult jsonResult = new JsonResult();
-        jsonResult.state = 1;
+        //jsonResult.state = ServiceCode.OK;
         return jsonResult;
     }
 
-    public static JsonResult fail(Integer state, String message) {
+    public static JsonResult fail(ServiceCode serviceCode, String message) {
         JsonResult jsonResult = new JsonResult();
-        jsonResult.state = state;
+        // jsonResult.state = state;
         jsonResult.message = message;
         return jsonResult;
     }

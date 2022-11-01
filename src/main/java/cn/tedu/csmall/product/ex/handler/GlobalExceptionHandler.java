@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.ex.handler;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.web.JsonResult;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,11 +24,9 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public JsonResult handleServiceException(ServiceException e) {
         log.debug("处理请求的方法抛出了ServiceException，将统一处理");
-
-        //JsonResult jsonResult = new JsonResult();
-        //jsonResult.setState(2);
-        //jsonResult.setMessage(e.getMessage());
-        return JsonResult.fail(2, e.getMessage());
+        //return JsonResult.fail(ServiceCode.ERR_CONFLICT, e.getMessage());
+        JsonResult.fail(ServiceCode.ERR_NOT_FOUND, "");
+        return null;
     }
 
 }
