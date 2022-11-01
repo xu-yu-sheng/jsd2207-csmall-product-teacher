@@ -8,6 +8,18 @@ package cn.tedu.csmall.product.web;
  */
 public enum ServiceCode {
 
-    OK, ERR_CONFLICT, ERR_NOT_FOUND;
+    OK(100),
+    ERR_CONFLICT(200),
+    ERR_NOT_FOUND(300);
+
+    private Integer value;
+
+    private ServiceCode(Integer value) {
+        this.value = value;
+    }
+
+    public Integer getValue() {
+        return value;
+    }
 
 }

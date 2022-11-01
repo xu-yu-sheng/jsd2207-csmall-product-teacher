@@ -16,23 +16,15 @@ public class JsonResult implements Serializable {
      */
     private String message;
 
-    public JsonResult() {
-    }
-
-    public JsonResult(Integer state, String message) {
-        this.state = state;
-        this.message = message;
-    }
-
     public static JsonResult ok() {
         JsonResult jsonResult = new JsonResult();
-        //jsonResult.state = ServiceCode.OK;
+        jsonResult.state = ServiceCode.OK.getValue();
         return jsonResult;
     }
 
     public static JsonResult fail(ServiceCode serviceCode, String message) {
         JsonResult jsonResult = new JsonResult();
-        // jsonResult.state = state;
+        jsonResult.state = serviceCode.getValue();
         jsonResult.message = message;
         return jsonResult;
     }
