@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.BrandMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.service.IBrandService;
+import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class BrandServiceImpl implements IBrandService {
         if (countByName > 0) {
             String message = "添加品牌失败，品牌名称【" + brandAddNewDTO.getName() + "】已经被占用！";
             log.warn(message);
-            throw new ServiceException(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
         }
 
         // 创建品牌对象，用于插入到数据表
