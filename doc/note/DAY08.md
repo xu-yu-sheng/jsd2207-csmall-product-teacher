@@ -71,7 +71,17 @@ public JsonResult list() {
 
 完成后，重启项目，可以通过API文档来查看并测试访问。
 
+# 基于Spring JDBC的事务管理
 
+事务（Transaction）：是关系型数据库中一种能够保障多个写操作（增、删、改）要么全部成功，要么全部失败的机制。
+
+在基于Spring JDBC的项目中，只需要在业务方法上添加`@Transactional`注解，即可使得此方法是**事务性**的。
+
+```mysql
+UPDATE 存款表 SET 余额=余额+50000 WHERE 账户='刘苍松';
+
+UPDATE 存款表 SET 余额=余额-50000 WHERE 账户='刘国斌';
+```
 
 
 

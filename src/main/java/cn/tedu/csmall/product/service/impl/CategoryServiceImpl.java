@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理类别业务的实现类
@@ -30,6 +31,7 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    @Transactional
     public void addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理【添加类别】的业务，参数：{}", categoryAddNewDTO);
 
@@ -73,6 +75,8 @@ public class CategoryServiceImpl implements ICategoryService {
         // 调用Mapper对象的方法，将数据插入到数据库，并获取返回值
         log.debug("准备向数据库中写入类别数据：{}", category);
         categoryMapper.insert(category);
+
+        category.getGmtCreate().toString();
 
         // 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
         if (parentId != 0) {
