@@ -77,11 +77,15 @@ public JsonResult list() {
 
 在基于Spring JDBC的项目中，只需要在业务方法上添加`@Transactional`注解，即可使得此方法是**事务性**的。
 
-```mysql
-UPDATE 存款表 SET 余额=余额+50000 WHERE 账户='刘苍松';
-
-UPDATE 存款表 SET 余额=余额-50000 WHERE 账户='刘国斌';
+```java
+@Override
+@Transactional // 新添加的注解
+public void addNew(CategoryAddNewDTO categoryAddNewDTO) {
+    // 暂不关心方法内部代码
+}
 ```
+
+
 
 
 
