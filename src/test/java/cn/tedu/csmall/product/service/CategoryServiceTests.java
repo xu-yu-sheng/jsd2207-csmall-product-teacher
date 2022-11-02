@@ -17,8 +17,8 @@ public class CategoryServiceTests {
     @Test
     void testAddNew() {
         CategoryAddNewDTO categoryAddNewDTO = new CategoryAddNewDTO();
-        categoryAddNewDTO.setName("热带水果");
-        categoryAddNewDTO.setParentId(25L);
+        categoryAddNewDTO.setName("砂糖橘");
+        categoryAddNewDTO.setParentId(75000L);
 
         try {
             service.addNew(categoryAddNewDTO);

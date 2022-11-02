@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.CategoryMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.ICategoryService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +33,25 @@ public class CategoryServiceImpl implements ICategoryService {
     public void addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理【添加类别】的业务，参数：{}", categoryAddNewDTO);
 
+        // 查询父级类别
+        Integer depth;
+        Long parentId = categoryAddNewDTO.getParentId();
+        if (parentId == 0) {
+            // 确定当前类别的depth值，为：1
+            depth = 1;
+        } else {
+            // 确定当前类别的depth值，为：父级depth + 1
+            CategoryStandardVO parentCategory
+                    = categoryMapper.getStandardById(parentId);
+            if (parentCategory == null) {
+                String message = "添加类别失败，所选择的父级类别不存在！";
+                log.debug(message);
+                throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+            } else {
+                depth = parentCategory.getDepth() + 1;
+            }
+        }
+
         // 调用Mapper对象的【根据名称统计数量】方法进行统计
         String name = categoryAddNewDTO.getName();
         int count = categoryMapper.countByName(name);
@@ -48,9 +68,17 @@ public class CategoryServiceImpl implements ICategoryService {
         Category category = new Category();
         // 将参数DTO的各属性值复制到Category实体类对象中
         BeanUtils.copyProperties(categoryAddNewDTO, category);
+        // 补全Category对象的值：depth >>> 使用以上的depth变量
+        category.setDepth(depth);
+        // 补全Category对象的值：isParent >>> 0，新增的类别的isParent固定为0
+        category.setIsParent(0);
         // 调用Mapper对象的方法，将数据插入到数据库，并获取返回值
         log.debug("准备向数据库中写入类别数据：{}", category);
         categoryMapper.insert(category);
+
+        // TODO 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
     }
+
+    // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
 
 }

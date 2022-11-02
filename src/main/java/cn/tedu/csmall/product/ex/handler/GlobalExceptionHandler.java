@@ -30,13 +30,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public JsonResult handleServiceException(ServiceException e) {
+    public JsonResult<Void> handleServiceException(ServiceException e) {
         log.debug("开始处理ServiceException");
         return JsonResult.fail(e);
     }
 
     @ExceptionHandler
-    public JsonResult handleBindException(BindException e) {
+    public JsonResult<Void> handleBindException(BindException e) {
         log.debug("开始处理BindException");
 
         String defaultMessage = e.getFieldError().getDefaultMessage();
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
-    public JsonResult handleConstraintViolationException(ConstraintViolationException e) {
+    public JsonResult<Void> handleConstraintViolationException(ConstraintViolationException e) {
         log.debug("开始处理ConstraintViolationException");
         StringJoiner stringJoiner = new StringJoiner("，");
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
