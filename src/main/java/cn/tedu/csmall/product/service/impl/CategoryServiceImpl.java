@@ -34,23 +34,21 @@ public class CategoryServiceImpl implements ICategoryService {
         log.debug("开始处理【添加类别】的业务，参数：{}", categoryAddNewDTO);
 
         // 查询父级类别
-        Integer depth;
+        Integer depth = 1;
         Long parentId = categoryAddNewDTO.getParentId();
-        if (parentId == 0) {
-            // 确定当前类别的depth值，为：1
-            depth = 1;
-        } else {
+        CategoryStandardVO parentCategory = null;
+        if (parentId != 0) {
             // 确定当前类别的depth值，为：父级depth + 1
-            CategoryStandardVO parentCategory
-                    = categoryMapper.getStandardById(parentId);
+            parentCategory = categoryMapper.getStandardById(parentId);
+            log.debug("根据父级类别ID【{}】查询父级类别详情，结果：{}", parentId, parentCategory);
             if (parentCategory == null) {
                 String message = "添加类别失败，所选择的父级类别不存在！";
                 log.debug(message);
                 throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
-            } else {
-                depth = parentCategory.getDepth() + 1;
             }
+            depth = parentCategory.getDepth() + 1;
         }
+        log.debug("当前尝试添加的类型的depth值为：{}", depth);
 
         // 调用Mapper对象的【根据名称统计数量】方法进行统计
         String name = categoryAddNewDTO.getName();
@@ -76,7 +74,16 @@ public class CategoryServiceImpl implements ICategoryService {
         log.debug("准备向数据库中写入类别数据：{}", category);
         categoryMapper.insert(category);
 
-        // TODO 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
+        // 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
+        if (parentId != 0) {
+            if (parentCategory.getIsParent() == 0) {
+                Category updateParentCategory = new Category();
+                updateParentCategory.setId(parentId);
+                updateParentCategory.setIsParent(1);
+                log.debug("将父级类别的isParent更新为1，更新的参数对象：{}", updateParentCategory);
+                categoryMapper.update(updateParentCategory);
+            }
+        }
     }
 
     // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
