@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -11,12 +12,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Range;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 处理相册相关请求的控制器
@@ -59,6 +58,16 @@ public class AlbumController {
         log.debug("开始处理【根据id删除相册】的请求，参数：{}", id);
         albumService.delete(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:8080/albums
+    @ApiOperation("查询相册列表")
+    @ApiOperationSupport(order = 420)
+    @GetMapping("")
+    public JsonResult list() {
+        log.debug("开始处理【查询相册列表】的请求，无参数");
+        List<AlbumListItemVO> list = albumService.list();
+        return JsonResult.ok(list);
     }
 
     // http://localhost:8080/albums/hello/delete

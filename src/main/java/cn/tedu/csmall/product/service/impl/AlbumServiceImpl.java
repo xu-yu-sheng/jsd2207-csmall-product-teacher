@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.AlbumMapper;
 import cn.tedu.csmall.product.mapper.PictureMapper;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import cn.tedu.csmall.product.service.IAlbumService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 处理相册数据的业务实现类
@@ -82,6 +85,12 @@ public class AlbumServiceImpl implements IAlbumService {
         // 调用Mapper对象的deleteById()方法执行删除
         log.debug("即将执行删除，参数：{}", id);
         albumMapper.deleteById(id);
+    }
+
+    @Override
+    public List<AlbumListItemVO> list() {
+        log.debug("开始处理【查询相册列表】的业务，无参数");
+        return albumMapper.list();
     }
 
 }
