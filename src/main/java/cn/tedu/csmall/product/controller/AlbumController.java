@@ -15,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,7 +66,7 @@ public class AlbumController {
     @ApiOperation("查询相册列表")
     @ApiOperationSupport(order = 420)
     @GetMapping("")
-    public JsonResult list() {
+    public JsonResult<List<AlbumListItemVO>> list() {
         log.debug("开始处理【查询相册列表】的请求，无参数");
         List<AlbumListItemVO> list = albumService.list();
         return JsonResult.ok(list);
