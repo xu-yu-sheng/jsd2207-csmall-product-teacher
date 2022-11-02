@@ -43,7 +43,7 @@ public class AlbumController {
     @ApiOperation("添加相册")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public JsonResult addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
+    public JsonResult<Void> addNew(@Valid AlbumAddNewDTO albumAddNewDTO) {
         log.debug("开始处理【添加相册】的请求，参数：{}", albumAddNewDTO);
         albumService.addNew(albumAddNewDTO);
         log.debug("添加相册成功！");
@@ -55,7 +55,7 @@ public class AlbumController {
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")
-    public JsonResult delete(@Range(min = 1, message = "删除相册失败，尝试删除的相册的ID无效！")
+    public JsonResult<Void> delete(@Range(min = 1, message = "删除相册失败，尝试删除的相册的ID无效！")
                              @PathVariable Long id) {
         log.debug("开始处理【根据id删除相册】的请求，参数：{}", id);
         albumService.delete(id);

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,23 +28,23 @@ public class JsonResult<T> implements Serializable {
     @ApiModelProperty("操作成功时响应的数据")
     private T data;
 
-    public static JsonResult ok() {
+    public static JsonResult<Void> ok() {
         return ok(null);
     }
 
-    public static <T> JsonResult ok(T data) {
-        JsonResult jsonResult = new JsonResult();
+    public static <T> JsonResult<T> ok(T data) {
+        JsonResult<T> jsonResult = new JsonResult<>();
         jsonResult.state = ServiceCode.OK.getValue();
         jsonResult.data = data;
         return jsonResult;
     }
 
-    public static JsonResult fail(ServiceException e) {
+    public static JsonResult<Void> fail(ServiceException e) {
         return fail(e.getServiceCode(), e.getMessage());
     }
 
-    public static JsonResult fail(ServiceCode serviceCode, String message) {
-        JsonResult jsonResult = new JsonResult();
+    public static JsonResult<Void> fail(ServiceCode serviceCode, String message) {
+        JsonResult<Void> jsonResult = new JsonResult<>();
         jsonResult.state = serviceCode.getValue();
         jsonResult.message = message;
         return jsonResult;
