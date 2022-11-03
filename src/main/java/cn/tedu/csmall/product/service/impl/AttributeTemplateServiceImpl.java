@@ -49,7 +49,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
         BeanUtils.copyProperties(attributeTemplateAddNewDTO, attributeTemplate);
         // 执行插入数据
         log.debug("准备向数据库中写入属性模板数据：{}", attributeTemplate);
-        attributeTemplateMapper.insert(attributeTemplate);
+        int rows = attributeTemplateMapper.insert(attributeTemplate);
+        if (rows != 1) {
+            String message = "添加属性模板失败，服务器忙，请稍后再尝试！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
     }
 
 }

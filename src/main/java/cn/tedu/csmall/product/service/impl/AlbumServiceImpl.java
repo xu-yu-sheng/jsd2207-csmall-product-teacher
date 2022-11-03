@@ -55,7 +55,12 @@ public class AlbumServiceImpl implements IAlbumService {
         Album album = new Album();
         BeanUtils.copyProperties(albumAddNewDTO, album);
         log.debug("即将插入相册数据：{}", album);
-        albumMapper.insert(album);
+        int rows = albumMapper.insert(album);
+        if (rows != 1) {
+            String message = "添加相册失败，服务器忙，请稍后再尝试！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
         log.debug("插入相册数据完成");
     }
 
@@ -84,7 +89,12 @@ public class AlbumServiceImpl implements IAlbumService {
 
         // 调用Mapper对象的deleteById()方法执行删除
         log.debug("即将执行删除，参数：{}", id);
-        albumMapper.deleteById(id);
+        int rows = albumMapper.deleteById(id);
+        if (rows != 1) {
+            String message = "删除相册失败，服务器忙，请稍后再尝试！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
+        }
     }
 
     @Override
