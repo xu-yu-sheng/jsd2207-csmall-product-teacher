@@ -142,7 +142,7 @@
     - 提示：在补充抽象方法时，此抽象方法需要2个参数，则各参数之前应该添加`@Param`注解
 
     - ```java
-      int countByNameAndTemplateId(@Param("name") String name, @Param("templateId") SLong templateId);
+      int countByNameAndTemplateId(@Param("name") String name, @Param("templateId") Long templateId);
       ```
 
     - ```mysql
