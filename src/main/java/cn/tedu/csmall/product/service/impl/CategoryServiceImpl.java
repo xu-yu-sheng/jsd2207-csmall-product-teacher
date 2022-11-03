@@ -73,9 +73,12 @@ public class CategoryServiceImpl implements ICategoryService {
         category.setIsParent(0);
         // 调用Mapper对象的方法，将数据插入到数据库，并获取返回值
         log.debug("准备向数据库中写入类别数据：{}", category);
-        categoryMapper.insert(category);
-
-        category.getGmtCreate().toString();
+        int rows = categoryMapper.insert(category);
+        if (rows != 1) {
+            String message = "添加类别失败，服务器忙，请稍后再尝试！";
+            log.debug(message);
+            throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
 
         // 检查当前新增类型的父级类别，如果父类别的isParent为0，则将父级类别的isParent更新为1
         if (parentId != 0) {
@@ -84,7 +87,12 @@ public class CategoryServiceImpl implements ICategoryService {
                 updateParentCategory.setId(parentId);
                 updateParentCategory.setIsParent(1);
                 log.debug("将父级类别的isParent更新为1，更新的参数对象：{}", updateParentCategory);
-                categoryMapper.update(updateParentCategory);
+                rows = categoryMapper.update(updateParentCategory);
+                if (rows != 1) {
+                    String message = "添加类别失败，服务器忙，请稍后再尝试！";
+                    log.debug(message);
+                    throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+                }
             }
         }
     }
