@@ -1,4 +1,4 @@
-# 查询相册列表--Service
+# 48. 查询相册列表--Service
 
 在`IAlbumService`中添加抽象方法：
 
@@ -29,7 +29,7 @@ void list() {
 }
 ```
 
-# 查询相册列表--Controller
+# 49. 查询相册列表--Controller
 
 首先，需要在`JsonResult`中添加新的属性，用于封装“响应到客户端的数据”：
 
@@ -71,7 +71,7 @@ public JsonResult list() {
 
 完成后，重启项目，可以通过API文档来查看并测试访问。
 
-# 基于Spring JDBC的事务管理
+# 50. 基于Spring JDBC的事务管理
 
 事务（Transaction）：是关系型数据库中一种能够保障多个写操作（增、删、改）要么全部成功，要么全部失败的机制。
 

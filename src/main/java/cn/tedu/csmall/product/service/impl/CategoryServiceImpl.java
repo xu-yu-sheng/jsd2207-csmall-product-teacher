@@ -31,7 +31,6 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    @Transactional
     public void addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理【添加类别】的业务，参数：{}", categoryAddNewDTO);
 

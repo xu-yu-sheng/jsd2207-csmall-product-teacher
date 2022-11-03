@@ -325,8 +325,8 @@ public class AlbumController {
 
 通常，自定义异常应该继承自`RuntimeException`，其原因主要有：
 
-- 所有`RuntimeException`不会受到`try...catch`或`throw / throws`语法的约束
-- Xxxxx
+- 所有`RuntimeException`不会受到`try...catch`或`throw / throws`语法的约束，更适合结合Spring MVC框架的统一处理异常机制来处理
+- 基于Spring JDBC的事务管理，默认将基于`RuntimeException`进行回滚
 
 则在项目的根包下创建`ex.ServiceException`类，继承自`RuntimeException`：
 
