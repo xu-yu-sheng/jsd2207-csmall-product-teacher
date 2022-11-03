@@ -1,4 +1,4 @@
-# DAY01 (10.24)
+# DAY01（10.24）
 
 在`product`项目中实现以下表的“插入1条数据”的功能：
 
@@ -7,7 +7,7 @@
 
 提示，可通过 https://gitee.com/chengheng2022/jsd2206-csmall-product-teacher 参考。
 
-# DAY02 (10.25)
+# DAY02（10.25）
 
 在`product`项目中实现品牌表（`pms_brand`）、类别表（`pms_category`）、属性模板表（`pms_attribute_template`）的功能：
 
@@ -21,7 +21,7 @@
 - 根据id查询数据详情
 - 查询当前表中的数据列表
 
-# DAY03 (10.26)
+# DAY03（10.26）
 
 在`product`项目中实现：
 
@@ -90,7 +90,7 @@
 
 ![image-20221031173820915](images/image-20221031173820915.png)
 
-# DAY07 (11.01)
+# DAY07（11.01）
 
 在`csmall-product`项目中实现：
 
@@ -113,7 +113,7 @@
   - 要求配置API文档的显示文本
   - 可不配置检查请求参数的基本格式
 
-# DAY08(11.02)
+# DAY08（11.02）
 
 在`csmall-web-client`项目中实现：
 
@@ -124,7 +124,38 @@
   - 补充必要的服务器端代码
 - 删除属性模板（同上）
 
+# DAY09（10.03）
 
+在`csmall-passport`项目中实现：
+
+- 补全Mapper层对`ams_admin`表的8个基础数据访问功能
+  - 8个功能，可参考DAY02作业
+
+在`csmall-product`项目中实现：
+
+- 添加属性--Service层
+
+  - 业务逻辑：同一个属性模板下，属性名称必须唯一
+
+    - 提示：`pms_attribute`表的`template_id`字段表示属性归属于哪个属性模板
+
+    - 提示：在补充抽象方法时，此抽象方法需要2个参数，则各参数之前应该添加`@Param`注解
+
+    - ```java
+      int countByNameAndTemplateId(@Param("name") String name, @Param("templateId") SLong templateId);
+      ```
+
+    - ```mysql
+      select count(*) from pms_attribute where name=? and template_id?
+      ```
+
+- 添加属性--Controller层
+
+- 添加属性--前端页面
+
+  - 提示：此页面应该在DAY06已完成
+  - 在此页面的`mounted`生命周期中，需加载属性模板列表，以显示下拉列表
+  - 参考：https://gitee.com/chengheng2022/jsd2206-csmall-web-client-teacher/blob/master/src/views/sys-admin/temp/AttributeAddNewView.vue
 
 
 
