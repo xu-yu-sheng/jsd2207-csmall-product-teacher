@@ -124,7 +124,7 @@
   - 补充必要的服务器端代码
 - 删除属性模板（同上）
 
-# DAY09（10.03）
+# DAY09（11.03）
 
 在`csmall-passport`项目中实现：
 
@@ -157,9 +157,15 @@
   - 在此页面的`mounted`生命周期中，需加载属性模板列表，以显示下拉列表
   - 参考：https://gitee.com/chengheng2022/jsd2206-csmall-web-client-teacher/blob/master/src/views/sys-admin/temp/AttributeAddNewView.vue
 
+# DAY10（11.04）
 
+在`csmall-web-client`和`csmall-product`项目中实现：
 
+- 通过页面设置数据状态：启用品牌、禁用品牌
+- 通过页面设置数据状态：启用类别、禁用类别
+- 通过页面设置数据状态：将类别显示在导航栏、将类别隐藏（不显示在导航栏）
+  - “显示”：`display`
+  - “隐藏”：`hidden`
 
-
-
+提示：关于显示类别列表，按照显示品牌列表的模式操作即可，也不必考虑分页问题，后续会优化
 
