@@ -153,6 +153,16 @@
         SELECT count(*) FROM pms_spu
     </select>
 
+    <!-- int countByAlbum(Long albumId); -->
+    <select id="countByAlbum" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE album_id=#{albumId}
+    </select>
+
+    <!-- int countByBrand(Long brandId); -->
+    <select id="countByBrand" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE brand_id=#{brandId}
+    </select>
+
     <!-- SpuStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

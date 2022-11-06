@@ -15,7 +15,7 @@ public class AttributeTemplateServiceTests {
     IAttributeTemplateService service;
 
     @Test
-    void testAddNew() {
+    void addNew() {
         AttributeTemplateAddNewDTO attributeTemplateAddNewDTO
                 = new AttributeTemplateAddNewDTO();
         attributeTemplateAddNewDTO.setName("大米手机的属性模版");

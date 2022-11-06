@@ -17,4 +17,11 @@ public interface IBrandService {
      */
     void addNew(BrandAddNewDTO brandAddNewDTO);
 
+    /**
+     * 根据品牌id，删除品牌数据
+     *
+     * @param id 尝试删除的品牌的id
+     */
+    void delete(Long id);
+
 }

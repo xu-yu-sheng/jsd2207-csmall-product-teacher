@@ -64,6 +64,14 @@ public interface BrandCategoryMapper {
     int count();
 
     /**
+     * 根据品牌统计关联数据的数量
+     *
+     * @param brandId 类别id
+     * @return 此类别关联的数据的数量
+     */
+    int countByBrand(Long brandId);
+
+    /**
      * 根据id查询品牌与类别的关联标准信息
      *
      * @param id 品牌与类别的关联id

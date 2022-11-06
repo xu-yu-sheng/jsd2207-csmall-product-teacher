@@ -75,6 +75,20 @@ public class SpuMapperTests {
     }
 
     @Test
+    void countByAlbum() {
+        Long albumId = 1L;
+        int countByBrand = mapper.countByAlbum(albumId);
+        log.debug("根据相册【{}】统计完成，数量：{}", albumId, countByBrand);
+    }
+
+    @Test
+    void countByBrand() {
+        Long brandId = 1L;
+        int countByBrand = mapper.countByBrand(brandId);
+        log.debug("根据品牌【{}】统计完成，数量：{}", brandId, countByBrand);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);

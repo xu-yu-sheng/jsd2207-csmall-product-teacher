@@ -1,9 +1,12 @@
 package cn.tedu.csmall.product.service.impl;
 
 import cn.tedu.csmall.product.ex.ServiceException;
+import cn.tedu.csmall.product.mapper.BrandCategoryMapper;
 import cn.tedu.csmall.product.mapper.BrandMapper;
+import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -23,6 +26,10 @@ public class BrandServiceImpl implements IBrandService {
 
     @Autowired
     private BrandMapper brandMapper;
+    @Autowired
+    private SpuMapper spuMapper;
+    @Autowired
+    private BrandCategoryMapper brandCategoryMapper;
 
     public BrandServiceImpl() {
         log.info("创建业务对象：BrandServiceImpl");
@@ -52,6 +59,50 @@ public class BrandServiceImpl implements IBrandService {
             String message = "添加品牌失败，服务器忙，请稍后再尝试！";
             log.debug(message);
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        log.debug("开始处理【删除品牌】的业务，参数：{}", id);
+        // 调用Mapper对象的getDetailsById()方法执行查询
+        BrandStandardVO queryResult = brandMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 是：此id对应的数据不存在，则抛出异常(ERR_NOT_FOUND)
+            String message = "删除品牌失败，尝试删除的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 检查此品牌是否关联了类别
+        {
+            int count = brandCategoryMapper.countByBrand(id);
+            if (count > 0) {
+                String message = "删除品牌失败！当前品牌仍关联了类别！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+
+        // 检查此品牌是否关联了SPU
+        {
+            int count = spuMapper.countByBrand(id);
+            if (count > 0) {
+                String message = "删除品牌失败！当前品牌仍关联了商品！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+
+        // 调用Mapper对象的deleteById()执行删除，并获取返回值
+        int rows = brandMapper.deleteById(id);
+        // 判断以上返回值是否不为1
+        if (rows != 1) {
+            // 是：抛出异常(ERR_DELETE)
+            String message = "删除品牌失败，服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
         }
     }
 

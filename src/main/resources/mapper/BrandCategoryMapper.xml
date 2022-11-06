@@ -58,6 +58,11 @@
         SELECT count(*) FROM pms_brand_category
     </select>
 
+    <!-- int countByBrand(Long brandId); -->
+    <select id="countByBrand" resultType="int">
+        SELECT count(*) FROM pms_brand_category WHERE brand_id=#{brandId}
+    </select>
+
     <!-- BrandCategoryStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

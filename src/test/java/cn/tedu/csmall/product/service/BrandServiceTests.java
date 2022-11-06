@@ -15,13 +15,25 @@ public class BrandServiceTests {
     IBrandService service;
 
     @Test
-    void testAddNew() {
+    void addNew() {
         BrandAddNewDTO brandAddNewDTO = new BrandAddNewDTO();
         brandAddNewDTO.setName("海尔");
 
         try {
             service.addNew(brandAddNewDTO);
             log.debug("测试添加品牌成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void delete() {
+        Long id = 1L;
+
+        try {
+            service.delete(id);
+            log.debug("删除成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }

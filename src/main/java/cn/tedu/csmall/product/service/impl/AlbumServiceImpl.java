@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.service.impl;
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.AlbumMapper;
 import cn.tedu.csmall.product.mapper.PictureMapper;
+import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Album;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
@@ -30,6 +31,8 @@ public class AlbumServiceImpl implements IAlbumService {
     private AlbumMapper albumMapper;
     @Autowired
     private PictureMapper pictureMapper;
+    @Autowired
+    private SpuMapper spuMapper;
 
     public AlbumServiceImpl() {
         log.debug("创建业务对象：AlbumServiceImpl");
@@ -83,6 +86,16 @@ public class AlbumServiceImpl implements IAlbumService {
             if (count > 0) {
                 String message = "删除相册失败，此相册存在关联的图片数据！";
                 log.debug(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+
+        // 检查此相册是否关联了SPU
+        {
+            int count = spuMapper.countByAlbum(id);
+            if (count > 0) {
+                String message = "删除相册失败！当前相册仍关联了商品！";
+                log.warn(message);
                 throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
             }
         }

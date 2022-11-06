@@ -15,7 +15,7 @@ public class CategoryServiceTests {
     ICategoryService service;
 
     @Test
-    void testAddNew() {
+    void addNew() {
         CategoryAddNewDTO categoryAddNewDTO = new CategoryAddNewDTO();
         // categoryAddNewDTO.setName("水果");
         categoryAddNewDTO.setName("热带水果");
