@@ -17,4 +17,11 @@ public interface IAttributeTemplateService {
      */
     void addNew(AttributeTemplateAddNewDTO attributeTemplateAddNewDTO);
 
+    /**
+     * 删除商品属性模板
+     *
+     * @param id 被删除的商品属性模板的id
+     */
+    void delete(Long id);
+
 }

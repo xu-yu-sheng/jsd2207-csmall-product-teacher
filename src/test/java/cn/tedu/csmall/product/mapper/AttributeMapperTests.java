@@ -72,6 +72,13 @@ public class AttributeMapperTests {
     }
 
     @Test
+    void countByTemplateId() {
+        Long templateId = 1L;
+        int count = mapper.countByTemplateId(templateId);
+        log.debug("根据属性模板【{}】统计属性数量完成，统计结果：{}", templateId, count);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);

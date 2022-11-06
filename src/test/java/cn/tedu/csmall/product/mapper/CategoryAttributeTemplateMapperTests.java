@@ -73,6 +73,13 @@ public class CategoryAttributeTemplateMapperTests {
     }
 
     @Test
+    void countByAttributeTemplate() {
+        Long attributeTemplateId = 1L;
+        int count = mapper.countByAttributeTemplate(attributeTemplateId);
+        log.debug("根据属性模板【{}】统计关联数据的数量：{}", attributeTemplateId, count);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);

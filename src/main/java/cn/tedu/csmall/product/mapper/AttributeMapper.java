@@ -64,6 +64,14 @@ public interface AttributeMapper {
     int count();
 
     /**
+     * 根据属性模板统计属性数据的数量
+     *
+     * @param templateId 属性模板id
+     * @return 此属性模板中属性数据的数量
+     */
+    int countByTemplateId(Long templateId);
+
+    /**
      * 根据id查询属性标准信息
      *
      * @param id 属性id

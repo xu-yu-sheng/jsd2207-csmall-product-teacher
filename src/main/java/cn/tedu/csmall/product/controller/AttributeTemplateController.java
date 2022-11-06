@@ -2,11 +2,13 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateAddNewDTO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
+import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +41,16 @@ public class AttributeTemplateController {
         attributeTemplateService.addNew(attributeTemplateAddNewDTO);
         log.debug("添加属性模板成功！");
         return "添加属性模板成功！";
+    }
+
+    // http://localhost:9080/attribute-templates/9527/delete
+    @ApiOperation("根据id删除属性模板")
+    @ApiOperationSupport(order = 200)
+    @PostMapping("/{id:[0-9]+}/delete")
+    public JsonResult<Void> delete(@PathVariable Long id) {
+        log.debug("开始处理【删除属性模板】的请求，参数：{}", id);
+        attributeTemplateService.delete(id);
+        return JsonResult.ok();
     }
 
 }

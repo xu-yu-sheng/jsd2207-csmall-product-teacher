@@ -163,6 +163,11 @@
         SELECT count(*) FROM pms_spu WHERE brand_id=#{brandId}
     </select>
 
+    <!-- int countByAttributeTemplate(Long attributeTemplateId); -->
+    <select id="countByAttributeTemplate" resultType="int">
+        SELECT count(*) FROM pms_spu WHERE attribute_template_id=#{attributeTemplateId}
+    </select>
+
     <!-- SpuStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT
