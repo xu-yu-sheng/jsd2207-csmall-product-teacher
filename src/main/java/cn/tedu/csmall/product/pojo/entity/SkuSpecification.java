@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class SkuSpecification implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 

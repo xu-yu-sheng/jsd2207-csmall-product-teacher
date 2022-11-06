@@ -3,7 +3,7 @@
 DROP TABLE IF EXISTS pms_brand;
 CREATE TABLE pms_brand
 (
-    id                     bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id                     bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     name                   varchar(50)         DEFAULT NULL COMMENT '品牌名称',
     pinyin                 varchar(50)         DEFAULT NULL COMMENT '品牌名称的拼音',
     logo                   varchar(255)        DEFAULT NULL COMMENT '品牌logo的URL',
@@ -23,7 +23,7 @@ CREATE TABLE pms_brand
 DROP TABLE IF EXISTS pms_category;
 CREATE TABLE pms_category
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     name         varchar(50)         DEFAULT NULL COMMENT '类别名称',
     parent_id    bigint(20) unsigned DEFAULT '0' COMMENT '父级类别id，如果无父级，则为0',
     depth        tinyint(3) unsigned DEFAULT '1' COMMENT '深度，最顶级类别的深度为1，次级为2，以此类推',
@@ -41,7 +41,7 @@ CREATE TABLE pms_category
 DROP TABLE IF EXISTS pms_brand_category;
 CREATE TABLE pms_brand_category
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     brand_id     bigint(20) unsigned DEFAULT NULL COMMENT '品牌id',
     category_id  bigint(20) unsigned DEFAULT NULL COMMENT '类别id',
     gmt_create   datetime            DEFAULT NULL COMMENT '数据创建时间',
@@ -52,7 +52,7 @@ CREATE TABLE pms_brand_category
 DROP TABLE IF EXISTS pms_picture;
 CREATE TABLE pms_picture
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     album_id     bigint(20) unsigned  DEFAULT NULL COMMENT '相册id',
     url          varchar(255)         DEFAULT NULL COMMENT '图片url',
     description  varchar(255)         DEFAULT NULL COMMENT '图片简介',
@@ -68,7 +68,7 @@ CREATE TABLE pms_picture
 DROP TABLE IF EXISTS pms_album;
 CREATE TABLE pms_album
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     name         varchar(50)         DEFAULT NULL COMMENT '相册名称',
     description  varchar(255)        DEFAULT NULL COMMENT '相册简介',
     sort         tinyint(3) unsigned DEFAULT '0' COMMENT '排序序号',
@@ -80,7 +80,7 @@ CREATE TABLE pms_album
 DROP TABLE IF EXISTS pms_attribute_template;
 CREATE TABLE pms_attribute_template
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     name         varchar(50)         DEFAULT NULL COMMENT '属性模版名称',
     pinyin       varchar(50)         DEFAULT NULL COMMENT '属性模版名称的拼音',
     keywords     varchar(255)        DEFAULT NULL COMMENT '关键词列表，各关键词使用英文的逗号分隔',
@@ -93,7 +93,7 @@ CREATE TABLE pms_attribute_template
 DROP TABLE IF EXISTS pms_attribute;
 CREATE TABLE pms_attribute
 (
-    id                 bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id                 bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     template_id        bigint(20) unsigned DEFAULT NULL COMMENT '所属属性模版id',
     name               varchar(50)         DEFAULT NULL COMMENT '属性名称',
     description        varchar(255)        DEFAULT NULL COMMENT '属性简介（某些属性名称可能相同，通过简介补充描述）',
@@ -111,7 +111,7 @@ CREATE TABLE pms_attribute
 DROP TABLE IF EXISTS pms_category_attribute_template;
 CREATE TABLE pms_category_attribute_template
 (
-    id                    bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id                    bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     category_id           bigint(20) unsigned DEFAULT NULL COMMENT '类别id',
     attribute_template_id bigint(20) unsigned DEFAULT NULL COMMENT '属性模版id',
     gmt_create            datetime            DEFAULT NULL COMMENT '数据创建时间',
@@ -122,7 +122,7 @@ CREATE TABLE pms_category_attribute_template
 DROP TABLE IF EXISTS pms_spu;
 CREATE TABLE pms_spu
 (
-    id                     bigint(20) unsigned NOT NULL COMMENT '记录id',
+    id                     bigint(20) unsigned NOT NULL COMMENT '数据id',
     name                   varchar(50)         DEFAULT NULL COMMENT 'SPU名称',
     type_number            varchar(50)         DEFAULT NULL COMMENT 'SPU编号',
     title                  varchar(255)        DEFAULT NULL COMMENT '标题',
@@ -159,7 +159,7 @@ CREATE TABLE pms_spu
 DROP TABLE IF EXISTS pms_spu_detail;
 CREATE TABLE pms_spu_detail
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     spu_id       bigint(20) unsigned DEFAULT NULL COMMENT 'SPU id',
     detail       text COMMENT 'SPU详情，应该使用HTML富文本，通常内容是若干张图片',
     gmt_create   datetime            DEFAULT NULL COMMENT '数据创建时间',
@@ -170,7 +170,7 @@ CREATE TABLE pms_spu_detail
 DROP TABLE IF EXISTS pms_sku;
 CREATE TABLE pms_sku
 (
-    id                     bigint(20) unsigned NOT NULL COMMENT '记录id',
+    id                     bigint(20) unsigned NOT NULL COMMENT '数据id',
     spu_id                 bigint(20) unsigned DEFAULT NULL COMMENT 'SPU id',
     title                  varchar(255)        DEFAULT NULL COMMENT '标题',
     bar_code               varchar(255)        DEFAULT NULL COMMENT '条型码',
@@ -193,7 +193,7 @@ CREATE TABLE pms_sku
 DROP TABLE IF EXISTS pms_sku_specification;
 CREATE TABLE pms_sku_specification
 (
-    id              bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '记录id',
+    id              bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     sku_id          bigint(20) unsigned DEFAULT NULL COMMENT 'SKU id',
     attribute_id    bigint(20) unsigned DEFAULT NULL COMMENT '属性id',
     attribute_name  varchar(50)         DEFAULT NULL COMMENT '属性名称',

@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class Album implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 
@@ -30,7 +30,7 @@ public class Album implements Serializable {
     private String description;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
     private Integer sort;
 

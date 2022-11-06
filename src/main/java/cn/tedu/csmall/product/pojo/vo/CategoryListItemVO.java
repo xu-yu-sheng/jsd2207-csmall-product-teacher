@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class CategoryListItemVO implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 
@@ -39,7 +39,7 @@ public class CategoryListItemVO implements Serializable {
     private String keywords;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
     private Integer sort;
 

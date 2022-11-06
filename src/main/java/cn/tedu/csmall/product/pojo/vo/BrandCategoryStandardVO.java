@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class BrandCategoryStandardVO implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 

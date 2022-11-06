@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class PictureListItemVO implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 
@@ -49,7 +49,7 @@ public class PictureListItemVO implements Serializable {
     private Integer height;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
     private Integer sort;
 

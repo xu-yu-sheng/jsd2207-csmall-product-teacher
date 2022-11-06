@@ -15,9 +15,9 @@ import java.io.Serializable;
 public class AlbumListItemVO implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
-    @ApiModelProperty("记录id")
+    @ApiModelProperty("数据id")
     private Long id;
 
     /**
@@ -33,9 +33,9 @@ public class AlbumListItemVO implements Serializable {
     private String description;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
-    @ApiModelProperty("自定义排序序号")
+    @ApiModelProperty("排序序号")
     private Integer sort;
 
 }

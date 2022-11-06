@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 public class SpuDetail implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 

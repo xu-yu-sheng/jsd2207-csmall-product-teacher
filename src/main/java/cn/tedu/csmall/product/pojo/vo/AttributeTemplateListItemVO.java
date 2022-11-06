@@ -14,7 +14,7 @@ import java.io.Serializable;
 public class AttributeTemplateListItemVO implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 
@@ -34,7 +34,7 @@ public class AttributeTemplateListItemVO implements Serializable {
     private String keywords;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
     private Integer sort;
 

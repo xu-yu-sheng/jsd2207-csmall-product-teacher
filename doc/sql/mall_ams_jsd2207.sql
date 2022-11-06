@@ -3,7 +3,7 @@
 DROP TABLE IF EXISTS ams_admin;
 CREATE TABLE ams_admin
 (
-    id             bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    id             bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     username       varchar(50)         DEFAULT NULL COMMENT '用户名',
     password       char(64)            DEFAULT NULL COMMENT '密码（密文）',
     nickname       varchar(50)         DEFAULT NULL COMMENT '昵称',
@@ -23,7 +23,7 @@ CREATE TABLE ams_admin
 DROP TABLE IF EXISTS ams_admin_role;
 CREATE TABLE ams_admin_role
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     admin_id     bigint(20) unsigned DEFAULT NULL COMMENT '管理员id',
     role_id      bigint(20) unsigned DEFAULT NULL COMMENT '角色id',
     gmt_create   datetime            DEFAULT NULL COMMENT '数据创建时间',
@@ -34,7 +34,7 @@ CREATE TABLE ams_admin_role
 DROP TABLE IF EXISTS ams_permission;
 CREATE TABLE ams_permission
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     name         varchar(50)         DEFAULT NULL COMMENT '名称',
     value        varchar(255)        DEFAULT NULL COMMENT '值',
     description  varchar(255)        DEFAULT NULL COMMENT '简介',
@@ -47,7 +47,7 @@ CREATE TABLE ams_permission
 DROP TABLE IF EXISTS ams_role;
 CREATE TABLE ams_role
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     name         varchar(50)         DEFAULT NULL COMMENT '名称',
     description  varchar(255)        DEFAULT NULL COMMENT '简介',
     sort         tinyint(3) unsigned DEFAULT '0' COMMENT '排序序号',
@@ -59,7 +59,7 @@ CREATE TABLE ams_role
 DROP TABLE IF EXISTS ams_role_permission;
 CREATE TABLE ams_role_permission
 (
-    id            bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    id            bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     role_id       bigint(20) unsigned DEFAULT NULL COMMENT '角色id',
     permission_id bigint(20) unsigned DEFAULT NULL COMMENT '权限id',
     gmt_create    datetime            DEFAULT NULL COMMENT '数据创建时间',
@@ -70,7 +70,7 @@ CREATE TABLE ams_role_permission
 DROP TABLE IF EXISTS ams_login_log;
 CREATE TABLE ams_login_log
 (
-    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    id           bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '数据id',
     admin_id     bigint(20) unsigned DEFAULT NULL COMMENT '管理员id',
     username     varchar(50)         DEFAULT NULL COMMENT '管理员用户名（冗余）',
     nickname     varchar(50)         DEFAULT NULL COMMENT '管理员昵称（冗余）',

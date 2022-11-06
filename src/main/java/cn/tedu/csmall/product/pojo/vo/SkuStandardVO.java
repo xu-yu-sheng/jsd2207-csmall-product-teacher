@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class SkuStandardVO implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 
@@ -85,7 +85,7 @@ public class SkuStandardVO implements Serializable {
     private Integer positiveCommentCount;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
     private Integer sort;
 

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class Sku implements Serializable {
 
     /**
-     * 记录id
+     * 数据id
      */
     private Long id;
 
@@ -86,7 +86,7 @@ public class Sku implements Serializable {
     private Integer positiveCommentCount;
 
     /**
-     * 自定义排序序号
+     * 排序序号
      */
     private Integer sort;
 
