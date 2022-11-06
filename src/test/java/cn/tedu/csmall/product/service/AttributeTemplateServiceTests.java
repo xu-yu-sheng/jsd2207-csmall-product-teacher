@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @Slf4j
 @SpringBootTest
 public class AttributeTemplateServiceTests {
@@ -36,6 +38,15 @@ public class AttributeTemplateServiceTests {
             log.debug("测试删除数据成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void list() {
+        List<?> list = service.list();
+        log.debug("查询列表完成，列表中的数据的数量：{}", list.size());
+        for (Object item : list) {
+            log.debug("{}", item);
         }
     }
 

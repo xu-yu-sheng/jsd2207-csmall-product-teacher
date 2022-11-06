@@ -7,12 +7,15 @@ import cn.tedu.csmall.product.mapper.CategoryAttributeTemplateMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 处理属性模板业务的实现类
@@ -116,6 +119,12 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
         log.debug("删除完成！");
+    }
+
+    @Override
+    public List<AttributeTemplateListItemVO> list() {
+        log.debug("开始处理【查询属性模板列表】的业务，无参数");
+        return attributeTemplateMapper.list();
     }
 
 }

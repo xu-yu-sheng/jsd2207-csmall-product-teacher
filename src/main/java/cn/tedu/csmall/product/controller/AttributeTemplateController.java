@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -8,10 +9,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 处理属性模板相关请求的控制器
@@ -36,11 +36,10 @@ public class AttributeTemplateController {
     @ApiOperation("添加属性模板")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public String addNew(AttributeTemplateAddNewDTO attributeTemplateAddNewDTO) {
-        log.debug("开始处理【添加属性模板】的请求：{}", attributeTemplateAddNewDTO);
+    public JsonResult<Void> addNew(AttributeTemplateAddNewDTO attributeTemplateAddNewDTO) {
+        log.debug("开始处理【添加属性模板】的请求，参数：{}", attributeTemplateAddNewDTO);
         attributeTemplateService.addNew(attributeTemplateAddNewDTO);
-        log.debug("添加属性模板成功！");
-        return "添加属性模板成功！";
+        return JsonResult.ok();
     }
 
     // http://localhost:9080/attribute-templates/9527/delete
@@ -51,6 +50,16 @@ public class AttributeTemplateController {
         log.debug("开始处理【删除属性模板】的请求，参数：{}", id);
         attributeTemplateService.delete(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/attribute-templates
+    @ApiOperation("查询属性模板列表")
+    @ApiOperationSupport(order = 410)
+    @GetMapping("")
+    public JsonResult<List<AttributeTemplateListItemVO>> list() {
+        log.debug("开始处理【查询属性模板列表】的请求，无参数");
+        List<AttributeTemplateListItemVO> list = attributeTemplateService.list();
+        return JsonResult.ok(list);
     }
 
 }
