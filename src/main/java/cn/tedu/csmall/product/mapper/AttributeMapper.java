@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -70,6 +71,15 @@ public interface AttributeMapper {
      * @return 此属性模板中属性数据的数量
      */
     int countByTemplateId(Long templateId);
+
+    /**
+     * 根据属性名称和属性模板统计当前表中属性数据的数量
+     *
+     * @param name       属性名称
+     * @param templateId 属性模板id
+     * @return 当前表中匹配名称的属性数据的数量
+     */
+    int countByNameAndTemplate(@Param("name") String name, @Param("templateId") Long templateId);
 
     /**
      * 根据id查询属性标准信息

@@ -79,6 +79,14 @@ public class AttributeMapperTests {
     }
 
     @Test
+    void countByNameAndTemplate() {
+        String name = "小米15的颜色属性";
+        Long templateId = 1L;
+        int count = mapper.countByNameAndTemplate(name, templateId);
+        log.debug("根据名称【{}】在属性模板【{}】中统计属性数量完成，统计结果：{}", name, templateId, count);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);
