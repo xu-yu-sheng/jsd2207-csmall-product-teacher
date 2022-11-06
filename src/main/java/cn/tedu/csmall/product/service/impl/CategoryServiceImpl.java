@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 处理类别业务的实现类
@@ -96,7 +95,88 @@ public class CategoryServiceImpl implements ICategoryService {
             }
         }
     }
-
     // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
+
+    @Override
+    public void setEnable(Long id) {
+        updateEnableById(id, 1);
+    }
+
+    @Override
+    public void setDisable(Long id) {
+        updateEnableById(id, 0);
+    }
+
+    @Override
+    public void setDisplay(Long id) {
+        updateDisplayById(id, 1);
+    }
+
+    @Override
+    public void setHidden(Long id) {
+        updateDisplayById(id, 0);
+    }
+
+    private void updateEnableById(Long id, Integer enable) {
+        String[] tips = {"禁用", "启用"};
+        log.debug("开始处理【{}类别】的业务，参数：{}", tips[enable], id);
+        // 调用Mapper对象的getDetailsById()方法执行查询
+        CategoryStandardVO queryResult = categoryMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            String message = tips[enable] + "类别失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 判断查询结果中的enable是否为1
+        if (queryResult.getEnable().equals(enable)) {
+            String message = tips[enable] + "类别失败，当前类别已经处于" + tips[enable] + "状态！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // 准备执行更新
+        Category category = new Category();
+        category.setId(id);
+        category.setEnable(enable);
+        int rows = categoryMapper.update(category);
+        if (rows != 1) {
+            String message = tips[enable] + "类别失败，服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+    }
+
+    private void updateDisplayById(Long id, Integer isDisplay) {
+        String[] tips = {"隐藏", "显示"};
+        log.debug("开始处理【{}类别】的业务，参数：{}", tips[isDisplay], id);
+        // 调用Mapper对象的getDetailsById()方法执行查询
+        CategoryStandardVO queryResult = categoryMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            String message = tips[isDisplay] + "类别失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 判断查询结果中的enable是否为1
+        if (queryResult.getIsDisplay().equals(isDisplay)) {
+            String message = tips[isDisplay] + "类别失败，当前类别已经处于" + tips[isDisplay] + "状态！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // 准备执行更新
+        Category category = new Category();
+        category.setId(id);
+        category.setIsDisplay(isDisplay);
+        int rows = categoryMapper.update(category);
+        if (rows != 1) {
+            String message = tips[isDisplay] + "类别失败，服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+    }
 
 }

@@ -17,14 +17,62 @@ public class CategoryServiceTests {
     @Test
     void addNew() {
         CategoryAddNewDTO categoryAddNewDTO = new CategoryAddNewDTO();
-        // categoryAddNewDTO.setName("水果");
-        categoryAddNewDTO.setName("热带水果");
+        categoryAddNewDTO.setName("水果");
+        // categoryAddNewDTO.setName("热带水果");
         // categoryAddNewDTO.setName("榴莲");
-        categoryAddNewDTO.setParentId(80L);
+        categoryAddNewDTO.setParentId(0L);
 
         try {
             service.addNew(categoryAddNewDTO);
             log.debug("测试添加数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void setEnable() {
+        Long id = 1L;
+
+        try {
+            service.setEnable(id);
+            log.debug("测试启用数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void setDisable() {
+        Long id = 1L;
+
+        try {
+            service.setDisable(id);
+            log.debug("测试禁用数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void setDisplay() {
+        Long id = 1L;
+
+        try {
+            service.setDisplay(id);
+            log.debug("测试显示数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void setHidden() {
+        Long id = 1L;
+
+        try {
+            service.setHidden(id);
+            log.debug("测试隐藏数据成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }

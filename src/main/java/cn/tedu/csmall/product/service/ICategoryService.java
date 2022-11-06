@@ -19,4 +19,32 @@ public interface ICategoryService {
      */
     void addNew(CategoryAddNewDTO categoryAddNewDTO);
 
+    /**
+     * 启用类别
+     *
+     * @param id 尝试启用的类别的id
+     */
+    void setEnable(Long id);
+
+    /**
+     * 禁用类别
+     *
+     * @param id 尝试禁用的类别的id
+     */
+    void setDisable(Long id);
+
+    /**
+     * 显示类别
+     *
+     * @param id 尝试显示的类别的id
+     */
+    void setDisplay(Long id);
+
+    /**
+     * 隐藏类别
+     *
+     * @param id 尝试隐藏的类别的id
+     */
+    void setHidden(Long id);
+
 }
