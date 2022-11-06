@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.CategoryMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.ICategoryService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -11,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 处理类别业务的实现类
@@ -115,6 +118,12 @@ public class CategoryServiceImpl implements ICategoryService {
     @Override
     public void setHidden(Long id) {
         updateDisplayById(id, 0);
+    }
+
+    @Override
+    public List<CategoryListItemVO> list() {
+        log.debug("开始处理【查询类别列表】的业务，无参数");
+        return categoryMapper.list();
     }
 
     private void updateEnableById(Long id, Integer enable) {

@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.service.ICategoryService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -9,10 +10,9 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 处理类别相关请求的控制器
@@ -37,11 +37,10 @@ public class CategoryController {
     @ApiOperation("添加类别")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public String addNew(CategoryAddNewDTO categoryAddNewDTO) {
+    public JsonResult<Void> addNew(CategoryAddNewDTO categoryAddNewDTO) {
         log.debug("开始处理【添加类别】的请求，参数：{}", categoryAddNewDTO);
         categoryService.addNew(categoryAddNewDTO);
-        log.debug("添加相册成功！");
-        return "添加相册成功！";
+        return JsonResult.ok();
     }
 
     // http://localhost:9080/categories/3/enable
@@ -86,6 +85,16 @@ public class CategoryController {
         log.debug("开始处理【隐藏类别】的请求，参数：{}", id);
         categoryService.setHidden(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/categories
+    @ApiOperation("查询品牌列表")
+    @ApiOperationSupport(order = 410)
+    @GetMapping("")
+    public JsonResult<List<CategoryListItemVO>> list() {
+        log.debug("开始处理【查询类别列表】的请求，无参数");
+        List<CategoryListItemVO> list = categoryService.list();
+        return JsonResult.ok(list);
     }
 
 }
