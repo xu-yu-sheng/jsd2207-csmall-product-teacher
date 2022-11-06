@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -9,10 +10,10 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 处理品牌相关请求的控制器
@@ -37,10 +38,10 @@ public class BrandController {
     @ApiOperation("添加品牌")
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
-    public String addNew(BrandAddNewDTO brandAddNewDTO) {
-        log.debug("开始处理【添加品牌】的请求：{}", brandAddNewDTO);
+    public JsonResult<Void> addNew(@Validated BrandAddNewDTO brandAddNewDTO) {
+        log.debug("开始处理【添加品牌】的请求，参数：{}", brandAddNewDTO);
         brandService.addNew(brandAddNewDTO);
-        return "添加相册成功！";
+        return JsonResult.ok();
     }
 
     // http://localhost:9080/brands/9527/delete
@@ -74,6 +75,16 @@ public class BrandController {
         log.debug("开始处理【禁用品牌】的请求，参数：{}", id);
         brandService.setDisable(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/brands
+    @ApiOperation("查询品牌列表")
+    @ApiOperationSupport(order = 410)
+    @GetMapping("")
+    public JsonResult<List<BrandListItemVO>> list() {
+        log.debug("开始处理【查询品牌列表】的请求，无参数");
+        List<BrandListItemVO> list = brandService.list();
+        return JsonResult.ok(list);
     }
 
 }

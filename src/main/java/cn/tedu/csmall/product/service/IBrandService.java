@@ -1,6 +1,9 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+
+import java.util.List;
 
 /**
  * 品牌业务接口
@@ -37,5 +40,12 @@ public interface IBrandService {
      * @param id 尝试禁用的品牌的id
      */
     void setDisable(Long id);
+
+    /**
+     * 查询品牌列表
+     *
+     * @return 品牌列表，如果没有匹配的品牌，将返回长度为0的列表
+     */
+    List<BrandListItemVO> list();
 
 }

@@ -6,6 +6,7 @@ import cn.tedu.csmall.product.mapper.BrandMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 处理品牌业务的实现类
@@ -114,6 +117,12 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public void setDisable(Long id) {
         updateEnableById(id, 0);
+    }
+
+    @Override
+    public List<BrandListItemVO> list() {
+        log.debug("开始处理【查询品牌列表】的业务，无参数");
+        return brandMapper.list();
     }
 
     private void updateEnableById(Long id, Integer enable) {
