@@ -36,7 +36,7 @@ public class AttributeController {
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
     public JsonResult<Void> addNew(AttributeAddNewDTO attributeAddNewDTO) {
-        log.debug("开始处理【添加属性】的请求：{}", attributeAddNewDTO);
+        log.debug("开始处理【添加属性】的请求，参数：{}", attributeAddNewDTO);
         attributeService.addNew(attributeAddNewDTO);
         return JsonResult.ok();
     }

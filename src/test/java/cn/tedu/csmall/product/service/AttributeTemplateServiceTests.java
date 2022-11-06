@@ -22,7 +22,18 @@ public class AttributeTemplateServiceTests {
 
         try {
             service.addNew(attributeTemplateAddNewDTO);
-            log.debug("测试添加属性模板成功！");
+            log.debug("测试添加数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void delete() {
+        try {
+            Long id = 1L;
+            service.delete(id);
+            log.debug("测试删除数据成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }

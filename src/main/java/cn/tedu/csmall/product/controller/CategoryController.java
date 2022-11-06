@@ -35,7 +35,7 @@ public class CategoryController {
     @ApiOperationSupport(order = 100)
     @PostMapping("/add-new")
     public String addNew(CategoryAddNewDTO categoryAddNewDTO) {
-        log.debug("开始处理【添加类别】的请求：{}", categoryAddNewDTO);
+        log.debug("开始处理【添加类别】的请求，参数：{}", categoryAddNewDTO);
         categoryService.addNew(categoryAddNewDTO);
         log.debug("添加相册成功！");
         return "添加相册成功！";

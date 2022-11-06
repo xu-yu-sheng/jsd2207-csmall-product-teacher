@@ -1,7 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.ex.ServiceException;
-import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,21 +9,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @Slf4j
 @SpringBootTest
-public class CategoryServiceTests {
+public class AttributeServiceTests {
 
     @Autowired
-    ICategoryService service;
+    IAttributeService service;
 
     @Test
     void addNew() {
-        CategoryAddNewDTO categoryAddNewDTO = new CategoryAddNewDTO();
-        // categoryAddNewDTO.setName("水果");
-        categoryAddNewDTO.setName("热带水果");
-        // categoryAddNewDTO.setName("榴莲");
-        categoryAddNewDTO.setParentId(80L);
+        AttributeAddNewDTO attributeAddNewDTO = new AttributeAddNewDTO();
+        attributeAddNewDTO.setName("大米手机的颜色属性");
 
         try {
-            service.addNew(categoryAddNewDTO);
+            service.addNew(attributeAddNewDTO);
             log.debug("测试添加数据成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());

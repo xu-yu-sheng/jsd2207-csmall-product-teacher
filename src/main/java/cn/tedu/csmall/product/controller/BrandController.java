@@ -9,7 +9,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +51,28 @@ public class BrandController {
     public JsonResult<Void> delete(@PathVariable Long id) {
         log.debug("开始处理【删除品牌】的请求，参数：{}", id);
         brandService.delete(id);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/brands/3/enable
+    @ApiOperation("启用品牌")
+    @ApiOperationSupport(order = 310)
+    @ApiImplicitParam(name = "id", value = "品牌id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/enable")
+    public JsonResult<Void> setEnable(@PathVariable Long id) {
+        log.debug("开始处理【启用品牌】的请求，参数：{}", id);
+        brandService.setEnable(id);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/brands/3/disable
+    @ApiOperation("禁用品牌")
+    @ApiOperationSupport(order = 311)
+    @ApiImplicitParam(name = "id", value = "品牌id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/disable")
+    public JsonResult<Void> setDisable(@PathVariable Long id) {
+        log.debug("开始处理【禁用品牌】的请求，参数：{}", id);
+        brandService.setDisable(id);
         return JsonResult.ok();
     }
 

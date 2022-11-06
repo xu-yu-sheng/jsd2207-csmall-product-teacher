@@ -21,7 +21,7 @@ public class BrandServiceTests {
 
         try {
             service.addNew(brandAddNewDTO);
-            log.debug("测试添加品牌成功！");
+            log.debug("测试添加数据成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }
@@ -33,7 +33,31 @@ public class BrandServiceTests {
 
         try {
             service.delete(id);
-            log.debug("删除成功！");
+            log.debug("测试删除数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void setEnable() {
+        Long id = 1L;
+
+        try {
+            service.setEnable(id);
+            log.debug("测试启用数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void setDisable() {
+        Long id = 1L;
+
+        try {
+            service.setDisable(id);
+            log.debug("测试禁用数据成功！");
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }

@@ -106,4 +106,45 @@ public class BrandServiceImpl implements IBrandService {
         }
     }
 
+    @Override
+    public void setEnable(Long id) {
+        updateEnableById(id, 1);
+    }
+
+    @Override
+    public void setDisable(Long id) {
+        updateEnableById(id, 0);
+    }
+
+    private void updateEnableById(Long id, Integer enable) {
+        String[] tips = {"禁用", "启用"};
+        log.debug("开始处理【{}品牌】的业务，参数：{}", tips[enable], id);
+        // 调用Mapper对象的getDetailsById()方法执行查询
+        BrandStandardVO queryResult = brandMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            String message = tips[enable] + "品牌失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 判断查询结果中的enable是否为1
+        if (queryResult.getEnable().equals(enable)) {
+            String message = tips[enable] + "品牌失败，当前品牌已经处于" + tips[enable] + "状态！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // 准备执行更新
+        Brand brand = new Brand();
+        brand.setId(id);
+        brand.setEnable(enable);
+        int rows = brandMapper.update(brand);
+        if (rows != 1) {
+            String message = tips[enable] + "品牌失败，服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+    }
+
 }
