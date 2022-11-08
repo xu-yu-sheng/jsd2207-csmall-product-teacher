@@ -98,13 +98,21 @@
 
 如果执行的测试需要加载Spring环境，测试类必须创建在`src/test/java`下的根包或其子孙包下，并且测试类必须添加`@SpringBootTest`注解，如果不需要加载Spring环境，则测试类可以创建在`src/test/java`下的任意位置，当然，仍推荐创建在根包或其子孙包下。
 
-#### 【Spring Boot】
+#### 【Spring Boot】Spring Boot项目的日志默认显示级别是？
 
+info
 
+#### 【Spring Boot】Spring Boot项目如何配置日志的显示级别？
 
+在配置文件中通过`logging.level.根包`属性进行配置，此“根包”至少需要配置1级包名，也可以精确到某个类名，通常配置为项目的根包，此属性的值可以是`trace` / `debug` / `info` / `warn` / `error`其中的某1个。
 
+#### 【Spring Boot】如何在Spring Boot项目使用Profile配置？
 
+使用`application-自定义名称.properties`作为配置文件的名称，此类Profile配置文件默认并不会加载，需要在主配置文件`application.properties`中通过`spring.profiles.active`属性来激活，此属性的值是Profile配置文件的文件名中自定义的部分。
 
+#### 【Spring Boot】在Spring Boot项目如何配置服务端口？
+
+使用`server.port`属性指定服务端口，通常建议使用4位数或5位数的未常用端口，避免与已有服务的端口冲突。
 
 
 

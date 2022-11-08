@@ -169,3 +169,24 @@
 
 提示：关于显示类别列表，按照显示品牌列表的模式操作即可，也不必考虑分页问题，后续会优化
 
+# DAY11（11.07）
+
+无
+
+# DAY12（11.08）
+
+请思考以下问题，并通过文本文档提交答案：
+
+- Spring Security框架主要解决了什么问题？
+- BCrypt算法的主要特点是什么？
+- UUID的主要特点是什么？
+- 在继承了`WebSecurityConfigurerAdapter`的配置类中，重写`void configurer(HttpSecurity http)`方法
+  - `http.formLogin()`方法的作用是什么？
+  - 配置请求认证的过程中，调用的`mvcMatchers()`方法的作用是什么？
+  - 配置请求认证的过程中，调用的`permitAll()`方法的作用是什么？
+  - 配置请求认证的过程中，如果某个路径被多次匹配，最终此路径的规则是什么？
+  - `http.csrs().disable()`的作用是什么？
+- `UserDetailsService`的作用是什么？
+- 如果得到`AuthenticationManager`对象？
+- 当调用`AuthenticationManager`对象的`authenticate()`方法后，会发生什么？此方法的返回结果是什么？
+- Spring Security如何判定某个请求是否已经通过认证？
