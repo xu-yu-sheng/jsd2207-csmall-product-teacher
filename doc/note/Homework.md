@@ -185,8 +185,25 @@
   - 配置请求认证的过程中，调用的`mvcMatchers()`方法的作用是什么？
   - 配置请求认证的过程中，调用的`permitAll()`方法的作用是什么？
   - 配置请求认证的过程中，如果某个路径被多次匹配，最终此路径的规则是什么？
-  - `http.csrs().disable()`的作用是什么？
+  - `http.csrf().disable()`的作用是什么？
 - `UserDetailsService`的作用是什么？
 - 如果得到`AuthenticationManager`对象？
 - 当调用`AuthenticationManager`对象的`authenticate()`方法后，会发生什么？此方法的返回结果是什么？
 - Spring Security如何判定某个请求是否已经通过认证？
+
+# DAY13（11.09）
+
+请思考以下问题，并通过文本文档提交答案：
+
+- 相比Session机制，JWT最大的优点是什么？
+- 在Spring Security的配置类的`void configurer(HttpSecurity http)`方法中，`http.cors()`的作用是什么？
+- 根据业内惯用的作法，客户端应该如何携带JWT数据向服务器提交请求？
+- 在服务器端，为什么要使用过滤器而不是其它组件来解析JWT？
+- 在服务器端，JWT过滤器的主要作用是？
+- 如果客户端提交的请求没有携带JWT，服务器端的JWT过滤器应该如何处理？
+- 在Spring Security的配置类的`void configurer(HttpSecurity http)`方法中，为什么要通过`http.addFilter()`系列方法添加JWT过滤器？
+- 在服务器端，控制器处理请求时，如何获取当事人信息？
+- 在服务器端，如何配置方法级别的权限？
+
+
+
