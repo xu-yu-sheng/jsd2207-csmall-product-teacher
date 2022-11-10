@@ -4,14 +4,17 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.web.JsonResult;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
-import java.util.List;
 import java.util.Set;
 import java.util.StringJoiner;
 
@@ -59,6 +62,40 @@ public class GlobalExceptionHandler {
             stringJoiner.add(constraintViolation.getMessage());
         }
         return JsonResult.fail(ServiceCode.ERR_BAD_REQUEST, stringJoiner.toString());
+    }
+
+    @ExceptionHandler({
+            InternalAuthenticationServiceException.class, // AuthenticationServiceException >>> AuthenticationException
+            BadCredentialsException.class // AuthenticationException
+    })
+    public JsonResult<Void> handleAuthenticationException(AuthenticationException e) {
+        log.debug("捕获到AuthenticationException");
+        log.debug("异常类型：{}", e.getClass().getName());
+        log.debug("异常消息：{}", e.getMessage());
+        String message = "登录失败，用户名或密码错！";
+        return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED, message);
+    }
+
+    @ExceptionHandler
+    public JsonResult<Void> handleDisabledException(DisabledException e) {
+        log.debug("捕获到DisabledException");
+        String message = "登录失败，此账号已经被禁用！";
+        return JsonResult.fail(ServiceCode.ERR_UNAUTHORIZED_DISABLED, message);
+    }
+
+    @ExceptionHandler
+    public JsonResult<Void> handleAccessDeniedException(AccessDeniedException e) {
+        log.debug("捕获到AccessDeniedException");
+        String message = "访问失败，当前登录的用户不具有此操作权限！";
+        return JsonResult.fail(ServiceCode.ERR_FORBIDDEN, message);
+    }
+
+    @ExceptionHandler
+    public String handleThrowable(Throwable e) {
+        String message = "你有异常没有处理，请根据服务器端控制台的信息，补充对此类异常的处理！！！";
+        log.debug(message);
+        e.printStackTrace();
+        return message;
     }
 
 }

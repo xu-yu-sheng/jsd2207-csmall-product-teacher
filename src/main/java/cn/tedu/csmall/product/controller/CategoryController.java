@@ -88,7 +88,7 @@ public class CategoryController {
     }
 
     // http://localhost:9080/categories
-    @ApiOperation("查询品牌列表")
+    @ApiOperation("查询类别列表")
     @ApiOperationSupport(order = 410)
     @GetMapping("")
     public JsonResult<List<CategoryListItemVO>> list() {
