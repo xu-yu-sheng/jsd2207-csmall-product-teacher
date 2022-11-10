@@ -210,14 +210,27 @@
 请思考以下问题，并通过文本文档提交答案：
 
 - 相比Session机制，JWT最大的优点是什么？
+  - 更适合长时间保存用户状态
 - 在Spring Security的配置类的`void configurer(HttpSecurity http)`方法中，`http.cors()`的作用是什么？
+  - 启用Spring Security的`CorsFilter`过滤器，此过滤器可以对复杂请求的预检放行
 - 根据业内惯用的作法，客户端应该如何携带JWT数据向服务器提交请求？
+  - 应该使用请求头中的`Authorization`属性表示JWT数据
 - 在服务器端，为什么要使用过滤器而不是其它组件来解析JWT？
+  - 过滤器是Java EE体系中最早接收到请求的组件
+  - Spring Security内置了一些过滤器，用于处理认证、授权的相关问题，包含检查Security上下文中是否存在认证信息
+  - 解析JWT必须执行在Spring Security的相关过滤器之前，否则没有意义
 - 在服务器端，JWT过滤器的主要作用是？
+  - 尝试解析JWT，如果是有效的，则应该从中获取用户信息，用于创建认证信息（`Authentication`），并将认证信息存入到Security上下文中
 - 如果客户端提交的请求没有携带JWT，服务器端的JWT过滤器应该如何处理？
+  - 直接放行
 - 在Spring Security的配置类的`void configurer(HttpSecurity http)`方法中，为什么要通过`http.addFilter()`系列方法添加JWT过滤器？
+  - 如果没有通过`http.addFilter()`系列方法添加JWT过滤器，则JWT过滤器会在Spring Security内置的过滤器链之后执行，则没有意义
 - 在服务器端，控制器处理请求时，如何获取当事人信息？
+  - 在处理请求的方法的参数列表中，使用`@AuthenticationPrincipal`注解，添加在当事人类型的参数上
+  - 当事人的类型，就是Secuirity上下文中`Authentication`对象的当事人类型
 - 在服务器端，如何配置方法级别的权限？
+  - 在配置类上添加`@EnableGlobalMethodSecurity(prePostEnabled = true)`注解，这是一次性配置
+  - 在方法上（通常是处理请求的方法上）使用`@PreAuthorize`注解来配置权限规则
 
 
 
