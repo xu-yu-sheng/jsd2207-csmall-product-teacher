@@ -199,6 +199,50 @@ Spring框架通过 DI 实现/完善 了IoC。
 
 下周再讲
 
+# 93. Spring MVC框架
+
+## 93.1. Spring MVC框架的作用
+
+Spring MVC框架主要解决了接收请求、响应结果的相关问题。
+
+## 93.2. Spring MVC框架的依赖项
+
+当项目中需要使用Spring MVC框架时，需要添加的依赖项是：`spring-webmvc`
+
+## 93.3. 配置请求路径
+
+通过`@RequestMapping`系列注解可以配置请求路径
+
+## 93.4. 限制请求方式
+
+通过`@RequestMapping`注解的`method`属性限制请求方式，例如：
+
+```java
+@RequestMapping(value = "/login", method = RequestMethod.POST)
+```
+
+或者，直接使用衍生的注解，例如`@GetMapping`、`@PostMapping`。
+
+## 93.5. 接收请求参数
+
+可以在处理请求的方法的参数列表中自由设计请求参数，可以：
+
+- 将各请求参数逐一列举出来，表现为方法的多个参数，例如：
+
+  ```java
+  public JsonResult<Void> login(String username, String password) { ... }
+  ```
+
+- 将各请求参数封装到自定义的类型中，使用自定义的类型作为方法的参数
+
+关于请求参数的注解：
+
+- `@RequestParam`：此注解可以用于：修改请求参数的名称（没有太多实用价值），强制要求必须提交此参数（可以通过Validation框架的`@NotNull`实现同样效果），设置请求参数的默认值（适用于允许客户端不提交此请求参数时）
+- `@PathVariable`：当URL中设计了占位符参数时，必须在对应的方法参数上添加此注解，以表示此参数的值来自URL中的占位符位置的值，如果占位符中的名称与方法参数名称不匹配，可以通过此注解的参数来配置
+- `@RequestBody`：当方法的参数添加了此注解时，客户端提交的请求参数必须是对象格式的，当方法的参数没有添加此注解时，客户端提交的请求参数必须是FormData格式的
+
+
+
 
 
 

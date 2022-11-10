@@ -15,6 +15,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,7 +56,7 @@ public class AlbumController {
     @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")
     public JsonResult<Void> delete(@Range(min = 1, message = "删除相册失败，尝试删除的相册的ID无效！")
-                                   @PathVariable Long id) {
+                             @PathVariable Long id) {
         log.debug("开始处理【根据id删除相册】的请求，参数：{}", id);
         albumService.delete(id);
         return JsonResult.ok();
