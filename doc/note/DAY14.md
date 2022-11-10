@@ -46,12 +46,19 @@ Spring框架创建对象有2种做法：
 
 - 在任何配置类（添加了`@Configuration`）中，自定义方法，返回某种类型的（你需要的）对象，并在方法上添加`@Bean`注解
 
+  - 此方式创建出来的对象，在Spring容器中的名称就是方法名称
   - 此方法应该是`public`
   - 此方法的返回值类型，是你期望Spring框架管理的数据的类型
   - 此方法的参数列表，应该为空
   - 此方法的方法体，应该是自行设计的，没有要求
 
 - 配置组件扫描，并在组件类上添加组件注解
+
+  - 此方式创建出来的对象，在Spring容器中的名称默认是将类名首字母改为小写
+
+    - 例如：类名是`AdminController`，则对象在Spring容器中的名称为`adminController`
+    - 此规则仅适用于类名的第1个字母大写，且第2个字母小写的情况，如果不符合此规则，则对象在Spring容器中的名称就是类名
+    - 可以通过组件注解的参数来指定名称
 
   - 在任何配置类上，添加`@ComponentScan`，当加载此配置类时，就会激活组件扫描
 
@@ -104,7 +111,7 @@ Spring框架创建对象有2种做法：
 
 注意：Spring框架并不是使用了设计模式中的“单例模式”，只是从对象的管理方面，对象的作用域表现与单例模式的极为相似而已。
 
-## 95.2. 自动装配
+## 92.5. 自动装配
 
 自动装配：当某个量需要值时，Spring框架会自动的从容器中找到合适的值，为这个量赋值。
 
@@ -139,22 +146,58 @@ public class AlbumController {
 
 > 提示：Spring创建对象时需要调用构造方法，如果类中仅有1个构造方法（如上所示），Spring会自动调用，如果这唯一的构造方法是有参数的，Spring也会自动从容器中找到合适的对象来调用此构造方法，如果容器没有合适的对象，则无法创建！如果类中有多个构造方法，默认情况下，Spring会自动调用添加了`@Autowired`注解的构造方法，如果多个构造方法都没有添加此注解，则Spring会自动调用无参数的构造方法，如果也不存在无参数构造方法，则会报错！
 
-
-
-
-
-
-
-
-
-
+或者：
 
 ```java
-Admin admin = new Admin();
-admin.setUsername("root");
+@RestController
+public class AlbumController {
+
+    private IAlbumService albumService;
+    
+    @Autowired
+    //                          ↓↓↓↓↓↓↓  自动装配  ↓↓↓↓↓↓↓
+    public void setAlbumService(IAlbumService albumService) {
+        this.albumService = albumService;
+    }
+    
+}
 ```
 
+另外，在配置类中的`@Bean`方法也可以在需要的时候自行添加参数，如果Spring容器中有合适的值，Spring也会从容器中找到值来调用方法。
 
+关于“合适的值”，Spring对于`@Autowired`的处理机制是：查找在Spring容器中匹配类型的对象的数量：
+
+- 1个：直接装配，且装配成功
+- 0个：取决于`@Autowired`注解的`required`属性
+  - `true`（默认值）：装配失败，在加载时即报错
+  - `false`：放弃装配，则此量的值为`null`，在接下来的使用过程中可能导致NPE（`NullPointerException`）
+- 超过1个：取决于是否存在某个Spring Bean（Spring容器中的对象）的名称与当前量的名称匹配
+  - 存在：成功装配
+  - 不存在：装配失败，在加载时即报错
+
+关于通过名称匹配：
+
+- 默认情况下，要求量（全局变量、方法参数等）的名称与对象在Spring容器中名称完全相同，视为匹配
+- 可以在量（全局变量、方法参数等）的声明之前添加`@Qualifier`注解，通过此注解参数来指定名称，以匹配某个Spring容器的对象 
+  - `@Qualifier`注解是用于配合自动装配机制的，单独使用没有意义
+
+其实，还可以使用`@Resource`注解实现自动装配，但不推荐！
+
+Spring框架对`@Resource`注解的自动装配机制是：先根据名称再根据类型来实现自动装配。
+
+`@Resource`是`javax`包中的注解，根据此注解的声明，此注解只能添加在类上、属性上、方法上，不可以添加在构造方法上、方法的参数上。
+
+## 92.6. 关于IoC与DI
+
+**IoC**：**I**nversion **o**f **C**ontrol，控制反转，即将对象的创建、管理的权力（控制能力）交给框架
+
+**DI**：**D**ependency **I**njection，依赖注入，即为依赖项注入值
+
+Spring框架通过 DI 实现/完善 了IoC。
+
+## 92.7. 关于Spring AOP
+
+下周再讲
 
 
 
