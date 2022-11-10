@@ -69,8 +69,24 @@ Spring框架创建对象有2种做法：
 
     - `@Component`：通用注解
     - `@Controller`：控制器类的注解
+      - `@RestController`：仅添加Spring MVC框架后可使用
+      - `@ControllerAdvice`：仅添加Spring MVC框架后可使用
+      - `@RestControllerAdvice`：仅添加Spring MVC框架后可使用
     - `@Service`：Service这种业务类的注解
     - `@Repository`：处理数据源中的数据读写的类的注解
+
+  - 以上4种组件注解在Spring框架作用范围之内是完全等效的
+
+  - 在Spring框架中，还有`@Configuration`注解，也是组件注解的一种，但是Spring对此注解的处理更加特殊（Spring框架对配置类使用了代理模式）
+
+对于这2种创建对象的做法，通常：
+
+- 如果是自定义的类，优先使用组件扫描的做法来创建对象
+- 如果不是自定义的类，无法使用组件扫描的做法，只能在配置类中通过`@Bean`方法来创建对象
+
+当Spring成功的创建了对象后，会将对象保存在Spring应用程序上下文（`ApplicationContext`）中，后续，当需要这些对象时，可以从Spring应用程序上下文中获取！
+
+由于Spring应用程序上下文中持有大量对象的引用，所以，Spring应用程序上下文也通常被称之为“Spring容器”。
 
 ## 92.4. Spring框架管理的对象的作用域
 
@@ -87,6 +103,47 @@ Spring框架创建对象有2种做法：
 > 提示：可以在类上添加`@Lazy`注解，使得此对象是“懒加载的”，相当于“懒汉式单例模式”，只会在第1次需要获取对象时才把对象创建出来！
 
 注意：Spring框架并不是使用了设计模式中的“单例模式”，只是从对象的管理方面，对象的作用域表现与单例模式的极为相似而已。
+
+## 95.2. 自动装配
+
+自动装配：当某个量需要值时，Spring框架会自动的从容器中找到合适的值，为这个量赋值。
+
+自动装配的典型表现是在属性上添加`@Autowired`注解，例如：
+
+```java
+@RestController
+public class AlbumController {
+
+    // ↓↓↓↓↓  自动装配的典型表现  ↓↓↓↓↓
+    @Autowired
+    private IAlbumService albumService;
+    
+}
+```
+
+或者：
+
+```java
+@RestController
+public class AlbumController {
+
+    private IAlbumService albumService;
+    
+    //                     ↓↓↓↓↓↓↓  自动装配  ↓↓↓↓↓↓↓
+    public AlbumController(IAlbumService albumService) {
+        this.albumService = albumService;
+    }
+    
+}
+```
+
+> 提示：Spring创建对象时需要调用构造方法，如果类中仅有1个构造方法（如上所示），Spring会自动调用，如果这唯一的构造方法是有参数的，Spring也会自动从容器中找到合适的对象来调用此构造方法，如果容器没有合适的对象，则无法创建！如果类中有多个构造方法，默认情况下，Spring会自动调用添加了`@Autowired`注解的构造方法，如果多个构造方法都没有添加此注解，则Spring会自动调用无参数的构造方法，如果也不存在无参数构造方法，则会报错！
+
+
+
+
+
+
 
 
 
