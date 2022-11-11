@@ -311,11 +311,11 @@ public class RedisConfiguration {
 }
 ```
 
+关于Redis中的`list`类型的数据，它是一种先进后出、后进先出的栈结构：
 
+![image-20221111174239963](images/image-20221111174239963.png)
 
-
-
-
+在Redis中操作`list`时，允许从左侧或右侧进行操作（请将此栈结构想像为横着的）：
 
 
 
