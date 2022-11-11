@@ -124,6 +124,18 @@
             sort DESC, id DESC
     </select>
 
+    <!-- List<AttributeListItemVO> listByTemplateId(Long templateId); -->
+    <select id="listByTemplateId" resultMap="ListResultMap">
+        SELECT
+            <include refid="ListQueryFields" />
+        FROM
+            pms_attribute
+        WHERE
+            template_id=#{templateId}
+        ORDER BY
+            sort DESC, id
+    </select>
+
     <sql id="StandardQueryFields">
         <if test="true">
             id,

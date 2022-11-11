@@ -6,6 +6,7 @@ import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
+import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 import cn.tedu.csmall.product.service.IAttributeService;
 import cn.tedu.csmall.product.web.ServiceCode;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 处理属性业务的实现类
@@ -124,6 +127,12 @@ public class AttributeServiceImpl implements IAttributeService {
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
         return attribute;
+    }
+
+    @Override
+    public List<AttributeListItemVO> listByTemplateId(Long templateId) {
+        log.debug("开始处理【根据属性模板查询属性列表】的业务，参数：{}", templateId);
+        return attributeMapper.listByTemplateId(templateId);
     }
 
 }

@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
+import cn.tedu.csmall.product.pojo.vo.AttributeListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 import cn.tedu.csmall.product.service.IAttributeService;
 import cn.tedu.csmall.product.web.JsonResult;
@@ -12,6 +13,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 处理属性相关请求的控制器
@@ -62,6 +65,18 @@ public class AttributeController {
         log.debug("开始处理【根据id查询属性详情】的请求，参数：{}", id);
         AttributeStandardVO attribute = attributeService.getStandardById(id);
         return JsonResult.ok(attribute);
+    }
+
+    // http://localhost:9080/attributes/list-by-template
+    @ApiOperation("根据属性模板查询属性列表")
+    @ApiOperationSupport(order = 410)
+    @ApiImplicitParam(name = "templateId", value = "属性模板id",
+            required = true, dataType = "long")
+    @GetMapping("/list-by-template")
+    public JsonResult<List<AttributeListItemVO>> listByTemplateId(Long templateId) {
+        log.debug("开始处理【根据属性模板查询属性列表】的请求，参数：{}", templateId);
+        List<AttributeListItemVO> list = attributeService.listByTemplateId(templateId);
+        return JsonResult.ok(list);
     }
 
 }

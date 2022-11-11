@@ -108,4 +108,12 @@ public interface AttributeMapper {
      */
     List<AttributeListItemVO> list();
 
+    /**
+     * 根据属性模板id查询属性列表
+     *
+     * @param templateId 属性模板id
+     * @return 属性列表的集合
+     */
+    List<AttributeListItemVO> listByTemplateId(Long templateId);
+
 }
