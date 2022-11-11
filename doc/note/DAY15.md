@@ -317,9 +317,9 @@ public class RedisConfiguration {
 
 在Redis中操作`list`时，允许从左侧或右侧进行操作（请将此栈结构想像为横着的）：
 
+![image-20221111174343596](images/image-20221111174343596.png)
 
-
-
+![image-20221111174416595](images/image-20221111174416595.png)
 
 
 
