@@ -8,6 +8,8 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 @Slf4j
 @SpringBootTest
@@ -18,16 +20,20 @@ public class RedisTests {
 
     // Redis编程相关API
     // =====================
-    // RedisTemplate类
-    // opsForValue() >>> 获取ValueOperations对象，操作Redis中的string类型时需要此对象
-    // ValueOperations类
+    // 【RedisTemplate类】
+    // ValueOperations opsForValue() >>> 获取ValueOperations对象，操作Redis中的string类型时需要此对象
+    // Set<String> keys(String pattern) >>> 根据模式pattern搜索Key
+    // Boolean delete(String key) >>> 根据Key删除数据，返回成功与否
+    // Long delete(Collection<String> keys) >>> 根据Key的集合批量删除数据，返回成功删除的数据的数量
+    //
+    // 【ValueOperations类】
     // void set(String key, Serializable value) >>> 向Redis中写入数据
     // Serializable get(String key) >>> 读取Redis中的数据
 
     @Test
     void valueSet() {
         String key = "username1";
-        String value = "wangkejing";
+        String value = "王克晶";
 
         ValueOperations<String, Serializable> ops = redisTemplate.opsForValue();
         ops.set(key, value);
@@ -40,6 +46,33 @@ public class RedisTests {
         ValueOperations<String, Serializable> ops = redisTemplate.opsForValue();
         Serializable value = ops.get(key);
         log.debug("从Redis中取出Key值为【{}】的数据，结果：{}", key, value);
+    }
+
+    @Test
+    void keys() {
+        String pattern = "*";
+
+        Set<String> keys = redisTemplate.keys(pattern);
+        log.debug("根据模式【{}】搜索Key，结果：{}", pattern, keys);
+    }
+
+    @Test
+    void delete() {
+        String key = "username1";
+
+        Boolean result = redisTemplate.delete(key);
+        log.debug("根据Key【{}】删除数据完成，结果：{}", key, result);
+    }
+
+    @Test
+    void deleteX() {
+        Set<String> keys = new HashSet<>();
+        keys.add("username2");
+        keys.add("username3");
+        keys.add("username4");
+
+        Long count = redisTemplate.delete(keys);
+        log.debug("根据Key集合【{}】删除数据完成，成功删除的数据的数量：{}", keys, count);
     }
 
 
