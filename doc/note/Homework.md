@@ -232,5 +232,32 @@
   - 在配置类上添加`@EnableGlobalMethodSecurity(prePostEnabled = true)`注解，这是一次性配置
   - 在方法上（通常是处理请求的方法上）使用`@PreAuthorize`注解来配置权限规则
 
+# DAY14（11.10）
 
+在`csmall-product`项目中实现：
 
+- 根据id查询类别详情 / 根据id查询品牌详情 / 根据id查询相册详情 / 根据id查询属性模板详情 / 根据id查询属性详情
+  - 开发至控制器层，即：通过API文档可以访问
+  - 业务规则：如果没有匹配的数据，抛出异常
+- 根据id修改类别详情
+  - 开发至控制器层，即：通过API文档可以访问
+  - 允许修改的属性：参考`CategoryAddNewDTO`，不包含`parentId`、`enable`、`isDisplay`
+  - 业务规则：新的`name`不允许与数据库已有的重复
+- 根据id修改品牌详情
+  - 开发至控制器层，即：通过API文档可以访问
+  - 允许修改的属性：参考`BrandAddNewDTO`，不包含`enable`
+  - 业务规则：新的`name`不允许与数据库已有的重复
+- 根据id修改相册详情
+  - 开发至控制器层，即：通过API文档可以访问
+  - 允许修改的属性：参考`AlbumAddNewDTO`
+  - 业务规则：新的`name`不允许与数据库已有的重复
+- 根据id修改属性模板详情
+  - 开发至控制器层，即：通过API文档可以访问
+  - 允许修改的属性：参考`AttributeTemplateAddNewDTO`
+  - 业务规则：新的`name`不允许与数据库已有的重复
+- 根据id修改属性详情
+  - 开发至控制器层，即：通过API文档可以访问
+  - 允许修改的属性：参考`AttributeAddNewDTO`，不包含`templateId`
+  - 业务规则：新的`name`不允许与数据库已有的、相同`templateId`的重复
+
+本次作业的提交截止时间下周一上午9:00。
