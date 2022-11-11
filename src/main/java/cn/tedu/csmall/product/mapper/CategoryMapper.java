@@ -83,6 +83,14 @@ public interface CategoryMapper {
     int countByNameAndNotId(@Param("id") Long id, @Param("name") String name);
 
     /**
+     * 根据父级类别，统计其子级类别的数量
+     *
+     * @param parentId 父级类别的id
+     * @return 此类别的子级类别的数量
+     */
+    int countByParentId(Long parentId);
+
+    /**
      * 根据id查询类别详情
      *
      * @param id 类别id

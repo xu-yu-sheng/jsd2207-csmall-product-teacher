@@ -74,7 +74,7 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
 
     @Override
     public void delete(Long id) {
-        log.debug("开始处理【删除属性模板】的业务，参数：{}", id);
+        log.debug("开始处理【根据id删除属性模板】的业务，参数：{}", id);
         // 检查尝试删除的属性是否存在
         Object queryResult = attributeTemplateMapper.getStandardById(id);
         if (queryResult == null) {

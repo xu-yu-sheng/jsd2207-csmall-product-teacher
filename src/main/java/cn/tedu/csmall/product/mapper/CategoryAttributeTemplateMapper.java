@@ -64,6 +64,14 @@ public interface CategoryAttributeTemplateMapper {
     int count();
 
     /**
+     * 根据类别统计关联数据的数量
+     *
+     * @param categoryId 类别id
+     * @return 此类别关联的数据的数量
+     */
+    int countByCategory(Long categoryId);
+
+    /**
      * 根据属性模板统计关联数据的数量
      *
      * @param attributeTemplateId 属性模板id

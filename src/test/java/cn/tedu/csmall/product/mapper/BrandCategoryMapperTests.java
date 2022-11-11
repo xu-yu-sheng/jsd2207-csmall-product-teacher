@@ -80,6 +80,21 @@ public class BrandCategoryMapperTests {
     }
 
     @Test
+    void countByCategory() {
+        Long categoryId = 1L;
+        int count = mapper.countByCategory(categoryId);
+        log.debug("根据类别【{}】统计关联数据的数量：{}", categoryId, count);
+    }
+
+    @Test
+    void countByBrandAndCategory() {
+        Long brandId = 1L;
+        Long categoryId = 1L;
+        int count = mapper.countByBrandAndCategory(brandId, categoryId);
+        log.debug("根据品牌【{}】与类别【{}】统计关联数据的数量：{}", brandId, categoryId, count);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);

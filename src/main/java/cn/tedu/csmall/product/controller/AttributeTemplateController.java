@@ -50,7 +50,7 @@ public class AttributeTemplateController {
     @ApiOperationSupport(order = 200)
     @PostMapping("/{id:[0-9]+}/delete")
     public JsonResult<Void> delete(@PathVariable Long id) {
-        log.debug("开始处理【删除属性模板】的请求，参数：{}", id);
+        log.debug("开始处理【根据id删除属性模板】的请求，参数：{}", id);
         attributeTemplateService.delete(id);
         return JsonResult.ok();
     }

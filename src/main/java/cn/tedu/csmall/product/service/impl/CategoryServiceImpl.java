@@ -1,7 +1,10 @@
 package cn.tedu.csmall.product.service.impl;
 
 import cn.tedu.csmall.product.ex.ServiceException;
+import cn.tedu.csmall.product.mapper.BrandCategoryMapper;
+import cn.tedu.csmall.product.mapper.CategoryAttributeTemplateMapper;
 import cn.tedu.csmall.product.mapper.CategoryMapper;
+import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
@@ -28,6 +31,12 @@ public class CategoryServiceImpl implements ICategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
+    @Autowired
+    private BrandCategoryMapper brandCategoryMapper;
+    @Autowired
+    private CategoryAttributeTemplateMapper categoryAttributeTemplateMapper;
+    @Autowired
+    private SpuMapper spuMapper;
 
     public CategoryServiceImpl() {
         log.info("创建业务对象：CategoryServiceImpl");
@@ -99,7 +108,93 @@ public class CategoryServiceImpl implements ICategoryService {
             }
         }
     }
-    // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
+
+    @Override
+    public void delete(Long id) {
+        log.debug("开始处理【根据id删除类别】的业务，参数：{}", id);
+        // 调用Mapper对象的【根据id查询详情】查询数据，是当前尝试删除的数据
+        CategoryStandardVO currentCategory = categoryMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (currentCategory == null) {
+            // 是：数据不存在，抛出异常（ERR_NOT_FOUND）
+            String message = "删除类别失败，尝试删除的类别不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 检查当前尝试删除的类别是否存在子级类别：判断以上查询结果的isParent是否为1
+        if (currentCategory.getIsParent() == 1) {
+            // 是：当前尝试删除的类别“是父级类别”（包含子级），抛出异常（ERR_CONFLICT）
+            String message = "删除类别失败，尝试删除的类别仍包含子级类别！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+        }
+
+        // 如果此类别关联了品牌，则不允许删除
+        {
+            int count = brandCategoryMapper.countByCategory(id);
+            if (count > 0) {
+                String message = "删除类别失败，当前类别仍关联了类别！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_DELETE, message);
+            }
+        }
+
+        // 如果此类别关联了属性模板，则不允许删除
+        {
+            int count = categoryAttributeTemplateMapper.countByCategory(id);
+            if (count > 0) {
+                String message = "删除类别失败，当前类别仍关联了属性模板！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_DELETE, message);
+            }
+        }
+
+        // 如果此类别关联了SPU，则不允许删除
+        {
+            int count = spuMapper.countByCategory(id);
+            if (count > 0) {
+                String message = "删除类别失败，当前类别仍关联了商品！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_DELETE, message);
+            }
+        }
+
+        // 调用Mapper对象的【根据id删除】执行删除，并获取返回值
+        int rows = categoryMapper.deleteById(id);
+        // 判断返回值是否不为1
+        if (rows != 1) {
+            // 是：抛出异常（ERR_DELETE）
+            String message = "删除类别失败，服务器忙，请稍后再尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_DELETE, message);
+        }
+
+        // ====== 如果这是父级类别中的最后一个子级，则将父级的isParent改为0 =====
+        // 从当前尝试删除的类别对象中取出parentId
+        Long parentId = currentCategory.getParentId();
+        // 判断当前类别是否不为1级类别，即parentId不为0
+        if (parentId != 0) {
+            // 调用Mapper对象的countByParentId(parentId)进行统计
+            int count = categoryMapper.countByParentId(parentId);
+            // 判断统计结果是否为0
+            if (count == 0) {
+                // 创建新的Category对象，用于更新父级，此Category对象中需要封装：id（parentId），isParent（0）
+                Category parentCategory = new Category();
+                parentCategory.setId(parentId);
+                parentCategory.setIsParent(0);
+                // 调用Mapper对象的【更新】功能，执行修改数据，并获取返回值
+                rows = categoryMapper.update(parentCategory);
+                // 判断返回值是否不为1
+                if (rows != 1) {
+                    // 是：抛出异常（ERR_UPDATE）
+                    String message = "删除类别失败，服务器忙，请稍后再尝试！";
+                    log.warn(message);
+                    throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+                }
+            }
+        }
+    }
 
     @Override
     public void updateInfoById(Long id, CategoryUpdateDTO categoryUpdateDTO) {

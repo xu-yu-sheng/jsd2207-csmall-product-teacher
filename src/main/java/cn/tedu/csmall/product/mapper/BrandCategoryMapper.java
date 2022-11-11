@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.BrandCategory;
 import cn.tedu.csmall.product.pojo.vo.BrandCategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandCategoryStandardVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -70,6 +71,23 @@ public interface BrandCategoryMapper {
      * @return 此类别关联的数据的数量
      */
     int countByBrand(Long brandId);
+
+    /**
+     * 根据类别统计关联数据的数量
+     *
+     * @param categoryId 类别id
+     * @return 此类别关联的数据的数量
+     */
+    int countByCategory(Long categoryId);
+
+    /**
+     * 根据品牌与类别统计关联数据的数量
+     *
+     * @param brandId    品牌id
+     * @param categoryId 类别id
+     * @return 此属性模板关联的数据的数量
+     */
+    int countByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId);
 
     /**
      * 根据id查询品牌与类别的关联标准信息

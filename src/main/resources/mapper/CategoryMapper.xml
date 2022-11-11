@@ -90,6 +90,11 @@
         SELECT count(*) FROM pms_category WHERE name=#{name} AND id!=#{id}
     </select>
 
+    <!-- int countByParentId(Long parentId); -->
+    <select id="countByParentId" resultType="int">
+        SELECT count(*) FROM pms_category WHERE parent_id=#{parentId}
+    </select>
+
     <!-- CategoryStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

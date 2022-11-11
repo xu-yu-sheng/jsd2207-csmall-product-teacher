@@ -25,6 +25,13 @@ public interface ICategoryService {
     void addNew(CategoryAddNewDTO categoryAddNewDTO);
 
     /**
+     * 根据id删除类别
+     *
+     * @param id 被删除的类别的id
+     */
+    void delete(Long id);
+
+    /**
      * 根据类别id，修改类别详情
      *
      * @param id                类别id

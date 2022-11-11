@@ -80,6 +80,14 @@ public interface SpuMapper {
     int countByBrand(Long brandId);
 
     /**
+     * 根据类别统计SPU数量
+     *
+     * @param categoryId 品牌ID
+     * @return 关联了此类别的SPU数量
+     */
+    int countByCategory(Long categoryId);
+
+    /**
      * 根据属性模板统计SPU数量
      *
      * @param attributeTemplateId 属性模板id

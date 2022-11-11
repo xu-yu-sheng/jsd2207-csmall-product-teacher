@@ -34,6 +34,18 @@ public class CategoryServiceTests {
     }
 
     @Test
+    void delete() {
+        Long id = 1L;
+
+        try {
+            service.delete(id);
+            log.debug("测试删除数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
     void updateInfoById() {
         Long id = 1L;
         CategoryUpdateDTO categoryUpdateDTO = new CategoryUpdateDTO();

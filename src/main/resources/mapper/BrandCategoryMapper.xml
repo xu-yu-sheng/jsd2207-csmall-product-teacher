@@ -63,6 +63,16 @@
         SELECT count(*) FROM pms_brand_category WHERE brand_id=#{brandId}
     </select>
 
+    <!-- int countByCategory(Long categoryId); -->
+    <select id="countByCategory" resultType="int">
+        SELECT count(*) FROM pms_brand_category WHERE category_id=#{categoryId}
+    </select>
+
+    <!-- int countByBrandAndCategory(@Param("brandId") Long brandId, @Param("categoryId") Long categoryId); -->
+    <select id="countByBrandAndCategory" resultType="int">
+        SELECT count(*) FROM pms_brand_category WHERE brand_id=#{brandId} AND category_id=#{categoryId}
+    </select>
+
     <!-- BrandCategoryStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

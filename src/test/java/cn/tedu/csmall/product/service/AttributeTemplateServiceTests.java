@@ -33,8 +33,9 @@ public class AttributeTemplateServiceTests {
 
     @Test
     void delete() {
+        Long id = 1L;
+
         try {
-            Long id = 1L;
             service.delete(id);
             log.debug("测试删除数据成功！");
         } catch (ServiceException e) {

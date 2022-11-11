@@ -58,6 +58,11 @@
         SELECT count(*) FROM pms_category_attribute_template
     </select>
 
+    <!-- int countByCategory(Long categoryId); -->
+    <select id="countByCategory" resultType="int">
+        SELECT count(*) FROM pms_category_attribute_template WHERE category_id=#{categoryId}
+    </select>
+
     <!-- int countByAttributeTemplate(Long attributeTemplateId); -->
     <select id="countByAttributeTemplate" resultType="int">
         SELECT count(*) FROM pms_category_attribute_template WHERE attribute_template_id=#{attributeTemplateId}

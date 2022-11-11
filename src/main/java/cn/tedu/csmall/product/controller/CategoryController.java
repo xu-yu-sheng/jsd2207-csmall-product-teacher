@@ -45,6 +45,16 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
+    // http://localhost:9080/categories/9527/delete
+    @ApiOperation("根据id删除类别")
+    @ApiOperationSupport(order = 200)
+    @PostMapping("/{id:[0-9]+}/delete")
+    public JsonResult<Void> delete(@PathVariable Long id) {
+        log.debug("开始处理【根据id删除类别】的请求，参数：{}", id);
+        categoryService.delete(id);
+        return JsonResult.ok();
+    }
+
     // http://localhost:9080/categories/9527/update
     @ApiOperation("修改类别详情")
     @ApiOperationSupport(order = 300)

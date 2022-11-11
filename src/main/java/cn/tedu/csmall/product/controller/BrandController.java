@@ -47,12 +47,12 @@ public class BrandController {
     }
 
     // http://localhost:9080/brands/9527/delete
-    @ApiOperation("删除品牌")
+    @ApiOperation("根据id删除品牌")
     @ApiOperationSupport(order = 200)
     @ApiImplicitParam(name = "id", value = "品牌id", required = true, dataType = "long")
     @PostMapping("/{id:[0-9]+}/delete")
     public JsonResult<Void> delete(@PathVariable Long id) {
-        log.debug("开始处理【删除品牌】的请求，参数：{}", id);
+        log.debug("开始处理【根据id删除品牌】的请求，参数：{}", id);
         brandService.delete(id);
         return JsonResult.ok();
     }

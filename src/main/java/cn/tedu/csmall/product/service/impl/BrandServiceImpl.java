@@ -68,7 +68,7 @@ public class BrandServiceImpl implements IBrandService {
 
     @Override
     public void delete(Long id) {
-        log.debug("开始处理【删除品牌】的业务，参数：{}", id);
+        log.debug("开始处理【根据id删除品牌】的业务，参数：{}", id);
         // 调用Mapper对象的getDetailsById()方法执行查询
         BrandStandardVO queryResult = brandMapper.getStandardById(id);
         // 判断查询结果是否为null
