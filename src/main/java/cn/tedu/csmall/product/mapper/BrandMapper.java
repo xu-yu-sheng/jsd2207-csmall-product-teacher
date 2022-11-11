@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -70,6 +71,15 @@ public interface BrandMapper {
      * @return 匹配名称的品牌数据的数量
      */
     int countByName(String name);
+
+    /**
+     * 统计当前表中非此品牌id的匹配名称的品牌数据的数量
+     *
+     * @param id 当前品牌id
+     * @param name 品牌名称
+     * @return 当前表中非此品牌id的匹配名称的品牌数据的数量
+     */
+    int countByNameAndNotId(@Param("id") Long id, @Param("name") String name);
 
     /**
      * 根据id查询品牌标准信息

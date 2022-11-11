@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,14 @@ public interface ICategoryService {
      * @param categoryAddNewDTO 添加的类别对象
      */
     void addNew(CategoryAddNewDTO categoryAddNewDTO);
+
+    /**
+     * 根据类别id，修改类别详情
+     *
+     * @param id                类别id
+     * @param categoryUpdateDTO 新的类别数据
+     */
+    void updateInfoById(Long id, CategoryUpdateDTO categoryUpdateDTO);
 
     /**
      * 启用类别

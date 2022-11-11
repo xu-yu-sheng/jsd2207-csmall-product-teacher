@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
@@ -53,6 +54,17 @@ public class BrandController {
     public JsonResult<Void> delete(@PathVariable Long id) {
         log.debug("开始处理【删除品牌】的请求，参数：{}", id);
         brandService.delete(id);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/brands/9527/update
+    @ApiOperation("修改品牌详情")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id", value = "品牌id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/update")
+    public JsonResult<Void> updateById(@PathVariable Long id, BrandUpdateDTO brandUpdateDTO) {
+        log.debug("开始处理【修改品牌详情】的请求，参数ID：{}, 新数据：{}", id, brandUpdateDTO);
+        brandService.updateInfoById(id, brandUpdateDTO);
         return JsonResult.ok();
     }
 

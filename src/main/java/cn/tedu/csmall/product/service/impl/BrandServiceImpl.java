@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.BrandCategoryMapper;
 import cn.tedu.csmall.product.mapper.BrandMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
@@ -78,11 +79,11 @@ public class BrandServiceImpl implements IBrandService {
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
 
-        // 检查此品牌是否关联了类别
+        // 检查此品牌是否关联了品牌
         {
             int count = brandCategoryMapper.countByBrand(id);
             if (count > 0) {
-                String message = "删除品牌失败！当前品牌仍关联了类别！";
+                String message = "删除品牌失败！当前品牌仍关联了品牌！";
                 log.warn(message);
                 throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
             }
@@ -106,6 +107,43 @@ public class BrandServiceImpl implements IBrandService {
             String message = "删除品牌失败，服务器忙，请稍后再次尝试！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_DELETE, message);
+        }
+    }
+
+    @Override
+    public void updateInfoById(Long id, BrandUpdateDTO brandUpdateDTO) {
+        log.debug("开始处理【修改品牌详情】的业务，参数ID：{}, 新数据：{}", id, brandUpdateDTO);
+        // 检查名称是否被占用
+        {
+            int count = brandMapper.countByNameAndNotId(id, brandUpdateDTO.getName());
+            if (count > 0) {
+                String message = "修改品牌详情失败，品牌名称已经被占用！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+
+        // 调用Mapper对象的getDetailsById()方法执行查询
+        BrandStandardVO queryResult = brandMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 是：此id对应的数据不存在，则抛出异常(ERR_NOT_FOUND)
+            String message = "修改品牌详情失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        Brand brand = new Brand();
+        BeanUtils.copyProperties(brandUpdateDTO, brand);
+        brand.setId(id);
+
+        // 修改数据
+        log.debug("即将修改数据：{}", brand);
+        int rows = brandMapper.update(brand);
+        if (rows != 1) {
+            String message = "修改品牌详情失败，服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
         }
     }
 

@@ -3,6 +3,8 @@ package cn.tedu.csmall.product.mapper;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -70,6 +72,15 @@ public interface CategoryMapper {
      * @return 当前表中匹配名称的类别数据的数量
      */
     int countByName(String name);
+
+    /**
+     * 统计当前表中非此类别id的匹配名称的类别数据的数量
+     *
+     * @param id 当前类别id
+     * @param name 类别名称
+     * @return 当前表中非此类别id的匹配名称的类别数据的数量
+     */
+    int countByNameAndNotId(@Param("id") Long id, @Param("name") String name);
 
     /**
      * 根据id查询类别详情

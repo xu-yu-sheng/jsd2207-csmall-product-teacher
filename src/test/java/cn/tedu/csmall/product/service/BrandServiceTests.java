@@ -2,6 +2,8 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
+import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,22 @@ public class BrandServiceTests {
     }
 
     @Test
+    void updateInfoById() {
+        Long id = 1L;
+        BrandUpdateDTO brandUpdateDTO = new BrandUpdateDTO();
+        brandUpdateDTO.setName("新-品牌");
+        brandUpdateDTO.setKeywords("新-关键词");
+        brandUpdateDTO.setSort(188);
+
+        try {
+            service.updateInfoById(id, brandUpdateDTO);
+            log.debug("测试修改数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
     void setEnable() {
         Long id = 1L;
 
@@ -60,6 +78,17 @@ public class BrandServiceTests {
         try {
             service.setDisable(id);
             log.debug("测试禁用数据成功！");
+        } catch (ServiceException e) {
+            log.debug(e.getMessage());
+        }
+    }
+
+    @Test
+    void getStandardById() {
+        Long id = 1L;
+        try {
+            Object queryResult = service.getStandardById(id);
+            log.debug("根据id【{}】查询完成，查询结果：{}", id, queryResult);
         } catch (ServiceException e) {
             log.debug(e.getMessage());
         }

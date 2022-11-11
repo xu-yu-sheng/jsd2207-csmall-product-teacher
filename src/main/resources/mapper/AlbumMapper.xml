@@ -63,6 +63,11 @@
         SELECT count(*) FROM pms_album WHERE name=#{name}
     </select>
 
+    <!-- int countByNameAndNotId(@Param("id") Long id, @Param("name") String name); -->
+    <select id="countByNameAndNotId" resultType="int">
+        SELECT count(*) FROM pms_album WHERE name=#{name} AND id!=#{id}
+    </select>
+
     <!-- AlbumStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

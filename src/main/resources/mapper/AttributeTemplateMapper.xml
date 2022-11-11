@@ -65,6 +65,11 @@
         SELECT count(*) FROM pms_attribute_template WHERE name=#{name}
     </select>
 
+    <!-- int countByNameAndNotId(@Param("id") Long id, @Param("name") String name); -->
+    <select id="countByNameAndNotId" resultType="int">
+        SELECT count(*) FROM pms_attribute_template WHERE name=#{name} AND id!=#{id}
+    </select>
+
     <!-- AttributeTemplateStandardVO getStandardById(Long id); -->
     <select id="getStandardById" resultMap="StandardResultMap">
         SELECT

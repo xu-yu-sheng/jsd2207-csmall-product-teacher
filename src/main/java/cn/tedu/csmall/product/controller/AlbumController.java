@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AlbumUpdateDTO;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import cn.tedu.csmall.product.service.IAlbumService;
@@ -58,6 +59,17 @@ public class AlbumController {
                                    @PathVariable Long id) {
         log.debug("开始处理【根据id删除相册】的请求，参数：{}", id);
         albumService.delete(id);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/albums/9527/update
+    @ApiOperation("修改相册详情")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id", value = "相册id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/update")
+    public JsonResult<Void> updateById(@PathVariable Long id, AlbumUpdateDTO albumUpdateDTO) {
+        log.debug("开始处理【修改相册详情】的请求，参数ID：{}, 新数据：{}", id, albumUpdateDTO);
+        albumService.updateInfoById(id, albumUpdateDTO);
         return JsonResult.ok();
     }
 

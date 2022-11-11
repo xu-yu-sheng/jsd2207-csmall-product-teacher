@@ -1,8 +1,8 @@
 package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
-import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.IAttributeService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -39,6 +39,17 @@ public class AttributeController {
     public JsonResult<Void> addNew(AttributeAddNewDTO attributeAddNewDTO) {
         log.debug("开始处理【添加属性】的请求，参数：{}", attributeAddNewDTO);
         attributeService.addNew(attributeAddNewDTO);
+        return JsonResult.ok();
+    }
+
+    // http://localhost:9080/attributes/9527/update
+    @ApiOperation("修改属性详情")
+    @ApiOperationSupport(order = 300)
+    @ApiImplicitParam(name = "id", value = "属性id", required = true, dataType = "long")
+    @PostMapping("/{id:[0-9]+}/update")
+    public JsonResult<Void> updateInfoById(@PathVariable Long id, AttributeUpdateInfoDTO attributeUpdateInfoDTO) {
+        log.debug("开始处理【修改属性详情】的请求，参数ID：{}, 新数据：{}", id, attributeUpdateInfoDTO);
+        attributeService.updateInfoById(id, attributeUpdateInfoDTO);
         return JsonResult.ok();
     }
 

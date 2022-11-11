@@ -105,7 +105,7 @@ public class RedisTests {
     }
 
     @Test
-    public void rightPush() {
+    void rightPush() {
         String key = "stringList";
         List<String> stringList = new ArrayList<>();
         for (int i = 1; i <= 10; i++) {

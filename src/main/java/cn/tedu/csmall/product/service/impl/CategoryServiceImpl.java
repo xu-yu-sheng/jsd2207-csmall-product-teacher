@@ -3,6 +3,7 @@ package cn.tedu.csmall.product.service.impl;
 import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.CategoryMapper;
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.CategoryUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
@@ -99,6 +100,43 @@ public class CategoryServiceImpl implements ICategoryService {
         }
     }
     // 注意：删除时，如果删到某个类别没有子级了，需要将它的isParent更新为0
+
+    @Override
+    public void updateInfoById(Long id, CategoryUpdateDTO categoryUpdateDTO) {
+        log.debug("开始处理【修改类别详情】的业务，参数ID：{}, 新数据：{}", id, categoryUpdateDTO);
+        // 检查名称是否被占用
+        {
+            int count = categoryMapper.countByNameAndNotId(id, categoryUpdateDTO.getName());
+            if (count > 0) {
+                String message = "修改类别详情失败，类别名称已经被占用！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+
+        // 调用Mapper对象的getDetailsById()方法执行查询
+        CategoryStandardVO queryResult = categoryMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 是：此id对应的数据不存在，则抛出异常(ERR_NOT_FOUND)
+            String message = "修改类别详情失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        Category category = new Category();
+        BeanUtils.copyProperties(categoryUpdateDTO, category);
+        category.setId(id);
+
+        // 修改数据
+        log.debug("即将修改数据：{}", category);
+        int rows = categoryMapper.update(category);
+        if (rows != 1) {
+            String message = "修改类别详情失败，服务器忙，请稍后再次尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
+    }
 
     @Override
     public void setEnable(Long id) {

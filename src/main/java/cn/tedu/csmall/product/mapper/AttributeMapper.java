@@ -82,6 +82,18 @@ public interface AttributeMapper {
     int countByNameAndTemplate(@Param("name") String name, @Param("templateId") Long templateId);
 
     /**
+     * 统计当前表中非此属性id的匹配名称、匹配属性模板的属性数据的数量
+     *
+     * @param id 当前属性id
+     * @param name 属性名称
+     * @param templateId 属性模板id
+     * @return 当前表中非此属性id的匹配名称、匹配属性模板的属性数据的数量
+     */
+    int countByNameAndTemplateAndNotId(@Param("id") Long id,
+                                       @Param("name") String name,
+                                       @Param("templateId") Long templateId);
+
+    /**
      * 根据id查询属性标准信息
      *
      * @param id 属性id

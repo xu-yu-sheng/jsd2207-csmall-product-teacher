@@ -78,6 +78,14 @@ public class BrandMapperTests {
     }
 
     @Test
+    void countByNameAndNotId() {
+        Long id = 1L;
+        String name = "新-品牌";
+        int count = mapper.countByNameAndNotId(id, name);
+        log.debug("根据名称【{}】且非ID【{}】统计数量完成，统计结果：{}", name, id, count);
+    }
+
+    @Test
     void getStandardById() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);

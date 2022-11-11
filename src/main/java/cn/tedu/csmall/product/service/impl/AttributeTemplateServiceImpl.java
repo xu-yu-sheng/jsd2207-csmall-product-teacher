@@ -6,6 +6,7 @@ import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.mapper.CategoryAttributeTemplateMapper;
 import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeTemplateUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
@@ -121,6 +122,46 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
         log.debug("删除完成！");
+    }
+
+    @Override
+    public void updateInfoById(Long id, AttributeTemplateUpdateInfoDTO attributeTemplateUpdateInfoDTO) {
+        log.debug("开始处理【修改属性模板详情】的业务，参数ID：{}, 新数据：{}", id, attributeTemplateUpdateInfoDTO);
+        // 检查名称是否被占用
+        {
+            int count = attributeTemplateMapper.countByNameAndNotId(id, attributeTemplateUpdateInfoDTO.getName());
+            if (count > 0) {
+                String message = "修改属性模板详情失败，属性模板名称已经被占用！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+        
+        // 调用adminMapper根据参数id执行查询
+        AttributeTemplateStandardVO queryResult = attributeTemplateMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 抛出ServiceException，业务状态码：40400
+            String message = "修改属性模板详情失败！尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 创建Admin对象，将作为修改时的参数
+        AttributeTemplate attributeTemplate = new AttributeTemplate();
+        BeanUtils.copyProperties(attributeTemplateUpdateInfoDTO, attributeTemplate);
+        attributeTemplate.setId(id);
+        
+        // 调用Mapper对象的update()修改属性模板基本资料，并获取返回值
+        log.debug("即将修改属性模板详情：{}", attributeTemplate);
+        int rows = attributeTemplateMapper.update(attributeTemplate);
+        // 判断返回值是否不等于1
+        if (rows != 1) {
+            // 是：抛出ServiceException（ERR_INSERT）
+            String message = "修改属性模板详情失败，服务器忙，请稍后再尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AlbumUpdateDTO;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
 import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 
@@ -27,6 +28,14 @@ public interface IAlbumService {
      * @param id 尝试删除的相册的id
      */
     void delete(Long id);
+
+    /**
+     * 根据相册id，修改相册详情
+     *
+     * @param id             相册id
+     * @param albumUpdateDTO 新的相册数据
+     */
+    void updateInfoById(Long id, AlbumUpdateDTO albumUpdateDTO);
 
     /**
      * 根据id获取相册的标准信息

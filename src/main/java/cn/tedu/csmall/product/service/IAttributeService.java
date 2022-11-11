@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,14 @@ public interface IAttributeService {
      * @param attributeAddNewDTO 添加的属性对象
      */
     void addNew(AttributeAddNewDTO attributeAddNewDTO);
+
+    /**
+     * 修改属性基本资料
+     *
+     * @param id                     属性id
+     * @param attributeUpdateInfoDTO 封装了新基本资料的对象
+     */
+    void updateInfoById(Long id, AttributeUpdateInfoDTO attributeUpdateInfoDTO);
 
     /**
      * 根据id获取属性的标准信息

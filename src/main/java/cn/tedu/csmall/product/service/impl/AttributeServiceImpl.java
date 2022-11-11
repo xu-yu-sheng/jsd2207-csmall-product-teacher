@@ -4,6 +4,7 @@ import cn.tedu.csmall.product.ex.ServiceException;
 import cn.tedu.csmall.product.mapper.AttributeMapper;
 import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.dto.AttributeUpdateInfoDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
 import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 import cn.tedu.csmall.product.service.IAttributeService;
@@ -68,6 +69,47 @@ public class AttributeServiceImpl implements IAttributeService {
             String message = "添加属性失败！服务器忙，请稍后再次尝试！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
+        }
+    }
+
+    @Override
+    public void updateInfoById(Long id, AttributeUpdateInfoDTO attributeUpdateInfoDTO) {
+        log.debug("开始处理【修改属性详情】的业务，参数ID：{}, 新数据：{}", id, attributeUpdateInfoDTO);
+        // 调用adminMapper根据参数id执行查询
+        AttributeStandardVO queryResult = attributeMapper.getStandardById(id);
+        // 判断查询结果是否为null
+        if (queryResult == null) {
+            // 抛出ServiceException，业务状态码：40400
+            String message = "修改属性详情失败！尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+
+        // 检查名称是否被占用
+        {
+            Long templateId = queryResult.getTemplateId();
+            int count = attributeMapper.countByNameAndTemplateAndNotId(id, attributeUpdateInfoDTO.getName(), templateId);
+            if (count > 0) {
+                String message = "修改属性详情失败，属性名称已经被占用！";
+                log.warn(message);
+                throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
+            }
+        }
+
+        // 创建Admin对象，将作为修改时的参数
+        Attribute attribute = new Attribute();
+        BeanUtils.copyProperties(attributeUpdateInfoDTO, attribute);
+        attribute.setId(id);
+
+        // 调用Mapper对象的update()修改属性基本资料，并获取返回值
+        log.debug("即将修改属性详情：{}", attribute);
+        int rows = attributeMapper.update(attribute);
+        // 判断返回值是否不等于1
+        if (rows != 1) {
+            // 是：抛出ServiceException（ERR_INSERT）
+            String message = "修改属性详情失败，服务器忙，请稍后再尝试！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_UPDATE, message);
         }
     }
 
