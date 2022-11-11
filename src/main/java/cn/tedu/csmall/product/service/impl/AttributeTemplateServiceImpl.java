@@ -8,6 +8,8 @@ import cn.tedu.csmall.product.mapper.SpuMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.AttributeTemplate;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -90,11 +92,11 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
             }
         }
 
-        // 如果有类别关联到了此属性模板，不允许删除
+        // 如果有属性模板关联到了此属性模板，不允许删除
         {
             int count = categoryAttributeTemplateMapper.countByAttributeTemplate(id);
             if (count > 0) {
-                String message = "删除属性模板失败！当前属性模板仍存在关联的类别！";
+                String message = "删除属性模板失败！当前属性模板仍存在关联的属性模板！";
                 log.warn(message);
                 throw new ServiceException(ServiceCode.ERR_CONFLICT, message);
             }
@@ -119,6 +121,19 @@ public class AttributeTemplateServiceImpl implements IAttributeTemplateService {
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
         log.debug("删除完成！");
+    }
+
+    @Override
+    public AttributeTemplateStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据id查询属性模板详情】的业务");
+        AttributeTemplateStandardVO attributeTemplate = attributeTemplateMapper.getStandardById(id);
+        if (attributeTemplate == null) {
+            // 是：此id对应的数据不存在，则抛出异常(ERR_NOT_FOUND)
+            String message = "查询属性模板详情失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        return attributeTemplate;
     }
 
     @Override

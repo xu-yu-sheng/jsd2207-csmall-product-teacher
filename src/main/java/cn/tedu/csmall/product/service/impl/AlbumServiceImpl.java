@@ -111,6 +111,18 @@ public class AlbumServiceImpl implements IAlbumService {
     }
 
     @Override
+    public AlbumStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据id查询相册详情】的业务，参数：{}", id);
+        AlbumStandardVO album = albumMapper.getStandardById(id);
+        if (album == null) {
+            String message = "获取相册详情失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        return album;
+    }
+
+    @Override
     public List<AlbumListItemVO> list() {
         log.debug("开始处理【查询相册列表】的业务，无参数");
         return albumMapper.list();

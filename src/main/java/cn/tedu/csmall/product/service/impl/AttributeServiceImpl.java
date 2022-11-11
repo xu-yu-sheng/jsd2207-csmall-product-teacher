@@ -5,6 +5,7 @@ import cn.tedu.csmall.product.mapper.AttributeMapper;
 import cn.tedu.csmall.product.mapper.AttributeTemplateMapper;
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
 import cn.tedu.csmall.product.pojo.entity.Attribute;
+import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 import cn.tedu.csmall.product.service.IAttributeService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -68,6 +69,19 @@ public class AttributeServiceImpl implements IAttributeService {
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_INSERT, message);
         }
+    }
+
+    @Override
+    public AttributeStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据id查询属性详情】的业务，参数：{}", id);
+        AttributeStandardVO attribute = attributeMapper.getStandardById(id);
+        if (attribute == null) {
+            // 是：此id对应的数据不存在，则抛出异常(ERR_NOT_FOUND)
+            String message = "查询属性详情失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        return attribute;
     }
 
 }

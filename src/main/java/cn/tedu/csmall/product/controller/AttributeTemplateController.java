@@ -2,10 +2,12 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeTemplateAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.AttributeTemplateListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AttributeTemplateStandardVO;
 import cn.tedu.csmall.product.service.IAttributeTemplateService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +52,17 @@ public class AttributeTemplateController {
         log.debug("开始处理【删除属性模板】的请求，参数：{}", id);
         attributeTemplateService.delete(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/attribute-templates/9527
+    @ApiOperation("根据id查询属性模板详情")
+    @ApiOperationSupport(order = 400)
+    @ApiImplicitParam(name = "id", value = "属性模板id", required = true, dataType = "long")
+    @GetMapping("/{id:[0-9]+}")
+    public JsonResult<AttributeTemplateStandardVO> getStandardById(@PathVariable Long id) {
+        log.debug("开始处理【根据id查询属性模板详情】的请求，参数：{}", id);
+        AttributeTemplateStandardVO attributeTemplate = attributeTemplateService.getStandardById(id);
+        return JsonResult.ok(attributeTemplate);
     }
 
     // http://localhost:9080/attribute-templates

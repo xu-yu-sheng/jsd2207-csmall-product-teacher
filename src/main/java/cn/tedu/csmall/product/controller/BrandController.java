@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.BrandAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -55,7 +56,7 @@ public class BrandController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/brands/3/enable
+    // http://localhost:9080/brands/9527/enable
     @ApiOperation("启用品牌")
     @ApiOperationSupport(order = 310)
     @ApiImplicitParam(name = "id", value = "品牌id", required = true, dataType = "long")
@@ -66,7 +67,7 @@ public class BrandController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/brands/3/disable
+    // http://localhost:9080/brands/9527/disable
     @ApiOperation("禁用品牌")
     @ApiOperationSupport(order = 311)
     @ApiImplicitParam(name = "id", value = "品牌id", required = true, dataType = "long")
@@ -75,6 +76,16 @@ public class BrandController {
         log.debug("开始处理【禁用品牌】的请求，参数：{}", id);
         brandService.setDisable(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/brands/9527
+    @ApiOperation("根据id查询品牌详情")
+    @ApiOperationSupport(order = 400)
+    @GetMapping("/{id:[0-9]+}")
+    public JsonResult<BrandStandardVO> getStandardById(@PathVariable Long id) {
+        log.debug("开始处理【根据id查询品牌详情】的请求，参数：{}", id);
+        BrandStandardVO brand = brandService.getStandardById(id);
+        return JsonResult.ok(brand);
     }
 
     // http://localhost:9080/brands

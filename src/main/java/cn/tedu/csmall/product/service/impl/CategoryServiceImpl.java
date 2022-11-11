@@ -121,6 +121,19 @@ public class CategoryServiceImpl implements ICategoryService {
     }
 
     @Override
+    public CategoryStandardVO getStandardById(Long id) {
+        log.debug("开始处理【根据id查询类别详情】的业务，参数：{}", id);
+        CategoryStandardVO category = categoryMapper.getStandardById(id);
+        if (category == null) {
+            // 是：此id对应的数据不存在，则抛出异常(ERR_NOT_FOUND)
+            String message = "查询类别详情失败，尝试访问的数据不存在！";
+            log.warn(message);
+            throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+        }
+        return category;
+    }
+
+    @Override
     public List<CategoryListItemVO> list() {
         log.debug("开始处理【查询类别列表】的业务，无参数");
         return categoryMapper.list();

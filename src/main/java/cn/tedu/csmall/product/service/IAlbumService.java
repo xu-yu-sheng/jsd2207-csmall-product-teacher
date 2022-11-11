@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AlbumAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.AlbumListItemVO;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 
 import java.util.List;
 
@@ -26,6 +27,14 @@ public interface IAlbumService {
      * @param id 尝试删除的相册的id
      */
     void delete(Long id);
+
+    /**
+     * 根据id获取相册的标准信息
+     *
+     * @param id 相册id
+     * @return 返回匹配的相册的标准信息，如果没有匹配的数据，将返回null
+     */
+    AlbumStandardVO getStandardById(Long id);
 
     /**
      * 查询相册列表

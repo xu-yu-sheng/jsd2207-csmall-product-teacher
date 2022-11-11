@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -49,6 +50,14 @@ public interface ICategoryService {
      * @param id 尝试隐藏的类别的id
      */
     void setHidden(Long id);
+
+    /**
+     * 根据id获取类别的标准信息
+     *
+     * @param id 类别id
+     * @return 返回匹配的类别的标准信息，如果没有匹配的数据，将返回null
+     */
+    CategoryStandardVO getStandardById(Long id);
 
     /**
      * 查询类别列表

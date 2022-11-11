@@ -1,6 +1,7 @@
 package cn.tedu.csmall.product.service;
 
 import cn.tedu.csmall.product.pojo.dto.AttributeAddNewDTO;
+import cn.tedu.csmall.product.pojo.vo.AttributeStandardVO;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -18,5 +19,13 @@ public interface IAttributeService {
      * @param attributeAddNewDTO 添加的属性对象
      */
     void addNew(AttributeAddNewDTO attributeAddNewDTO);
+
+    /**
+     * 根据id获取属性的标准信息
+     *
+     * @param id 属性id
+     * @return 返回匹配的属性的标准信息，如果没有匹配的数据，将返回null
+     */
+    AttributeStandardVO getStandardById(Long id);
 
 }

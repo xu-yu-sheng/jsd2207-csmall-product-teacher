@@ -2,6 +2,7 @@ package cn.tedu.csmall.product.controller;
 
 import cn.tedu.csmall.product.pojo.dto.CategoryAddNewDTO;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
+import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import cn.tedu.csmall.product.service.ICategoryService;
 import cn.tedu.csmall.product.web.JsonResult;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
@@ -43,7 +44,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categories/3/enable
+    // http://localhost:9080/categories/9527/enable
     @ApiOperation("启用类别")
     @ApiOperationSupport(order = 310)
     @ApiImplicitParam(name = "id", value = "类别id", required = true, dataType = "long")
@@ -54,7 +55,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categories/3/disable
+    // http://localhost:9080/categories/9527/disable
     @ApiOperation("禁用类别")
     @ApiOperationSupport(order = 311)
     @ApiImplicitParam(name = "id", value = "类别id", required = true, dataType = "long")
@@ -65,7 +66,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categories/3/display
+    // http://localhost:9080/categories/9527/display
     @ApiOperation("显示类别")
     @ApiOperationSupport(order = 312)
     @ApiImplicitParam(name = "id", value = "类别id", required = true, dataType = "long")
@@ -76,7 +77,7 @@ public class CategoryController {
         return JsonResult.ok();
     }
 
-    // http://localhost:9080/categories/3/hidden
+    // http://localhost:9080/categories/9527/hidden
     @ApiOperation("隐藏类别")
     @ApiOperationSupport(order = 313)
     @ApiImplicitParam(name = "id", value = "类别id", required = true, dataType = "long")
@@ -85,6 +86,17 @@ public class CategoryController {
         log.debug("开始处理【隐藏类别】的请求，参数：{}", id);
         categoryService.setHidden(id);
         return JsonResult.ok();
+    }
+
+    // http://localhost:9080/categories/9527
+    @ApiOperation("根据id查询类别详情")
+    @ApiOperationSupport(order = 400)
+    @ApiImplicitParam(name = "id", value = "类别id", required = true, dataType = "long")
+    @GetMapping("/{id:[0-9]+}")
+    public JsonResult<CategoryStandardVO> getStandardById(@PathVariable Long id) {
+        log.debug("开始处理【根据id查询类别详情】的请求，参数：{}", id);
+        CategoryStandardVO category = categoryService.getStandardById(id);
+        return JsonResult.ok(category);
     }
 
     // http://localhost:9080/categories
