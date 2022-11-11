@@ -254,6 +254,67 @@ OK
 
 更多命令，可查阅资料，例如：https://blog.csdn.net/weixin_46742102/article/details/109483603
 
+Redis中的传统数据类型有：string、list、hash、set、zset。
+
+# 98. Redis编程
+
+需要添加依赖项：
+
+```xml
+<!-- Spring Boot Data Redis的依赖项，用于实现Redis编程 -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+</dependency>
+```
+
+在Spring系列框架中，Redis编程需要使用`RedisTemplate`工具类，此工具类应该事先创建、配置，并保存到Spring容器中，当需要使用时，自动装配此工具类的对象。
+
+在根包下创建`RedisConfiguration`配置类，在此类中使用`@Bean`方法来配置`RedisTemplate`：
+
+```java
+package cn.tedu.csmall.product.config;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
+
+import java.io.Serializable;
+
+/**
+ * Redis配置类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Slf4j
+@Configuration
+public class RedisConfiguration {
+
+    public RedisConfiguration() {
+        log.debug("创建配置类对象：RedisConfiguration");
+    }
+
+    @Bean
+    public RedisTemplate<String, Serializable> redisTemplate(
+            RedisConnectionFactory redisConnectionFactory) {
+        RedisTemplate<String, Serializable> redisTemplate = new RedisTemplate<>();
+        redisTemplate.setConnectionFactory(redisConnectionFactory);
+        redisTemplate.setKeySerializer(RedisSerializer.string());
+        redisTemplate.setValueSerializer(RedisSerializer.json());
+        return redisTemplate;
+    }
+
+}
+```
+
+
+
+
+
 
 
 
