@@ -1,13 +1,17 @@
 package cn.tedu.csmall.product.repo.impl;
 
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.repo.IBrandRedisRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Repository
@@ -27,8 +31,18 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
     }
 
     @Override
+    public void save(List<BrandListItemVO> brands) {
+        String key = BRAND_LIST_KEY;
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        for (BrandListItemVO brand : brands) {
+            ops.rightPush(key, brand);
+        }
+    }
+
+    @Override
     public BrandStandardVO get(Long id) {
-        Serializable serializable = redisTemplate.opsForValue().get(BRAND_ITEM_KEY_PREFIX + id);
+        Serializable serializable = redisTemplate
+                .opsForValue().get(BRAND_ITEM_KEY_PREFIX + id);
         BrandStandardVO brandStandardVO = null;
         if (serializable != null) {
             if (serializable instanceof BrandStandardVO) {
@@ -36,6 +50,25 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
             }
         }
         return brandStandardVO;
+    }
+
+    @Override
+    public List<BrandListItemVO> list() {
+        long start = 0;
+        long end = -1;
+        return list(start, end);
+    }
+
+    @Override
+    public List<BrandListItemVO> list(long start, long end) {
+        String key = BRAND_LIST_KEY;
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        List<Serializable> list = ops.range(key, start, end);
+        List<BrandListItemVO> brands = new ArrayList<>();
+        for (Serializable item : list) {
+            brands.add((BrandListItemVO) item);
+        }
+        return brands;
     }
 
 }
