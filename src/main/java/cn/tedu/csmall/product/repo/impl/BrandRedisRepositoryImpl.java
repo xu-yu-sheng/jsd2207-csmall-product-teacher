@@ -15,6 +15,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 处理品牌缓存的数据访问实现类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
 @Slf4j
 @Repository
 public class BrandRedisRepositoryImpl implements IBrandRedisRepository {

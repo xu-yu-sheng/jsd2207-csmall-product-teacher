@@ -192,25 +192,297 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
 
 接下来，应该在接口中添加读写数据的抽象方法，并在实现类中实现这些方法！
 
-先实现“写入某个品牌数据”的功能，则在`IBrandRedisRepository`接口中添加抽象方法：
+在`IBrandRedisRepository`接口中添加抽象方法：
 
 ```java
-void save(BrandStandardVO brandStandardVO);
+package cn.tedu.csmall.product.repo;
+
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
+
+import java.util.List;
+
+/**
+ * 处理品牌缓存的数据访问接口
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+public interface IBrandRedisRepository {
+    
+    /**
+     * 品牌数据项在Redis中的Key前缀
+     */
+    String BRAND_ITEM_KEY_PREFIX = "brand:item:";
+    /**
+     * 品牌列表在Redis中的Key
+     */
+    String BRAND_LIST_KEY = "brand:list";
+    /**
+     * 所有品牌数据项的Key
+     */
+    String BRAND_ITEM_KEYS_KEY = "brand:item-keys";
+
+    /**
+     * 向Redis中写入品牌数据
+     *
+     * @param brandStandardVO 品牌数据
+     */
+    void save(BrandStandardVO brandStandardVO);
+
+    /**
+     * 向Redis中写入品牌列表
+     *
+     * @param brands 品牌列表
+     */
+    void save(List<BrandListItemVO> brands);
+
+    /**
+     * 删除Redis中全部品牌数据，包括各品牌详情数据和品牌列表等
+     *
+     * @return 成功删除的数据的数量
+     */
+    Long deleteAll();
+
+    /**
+     * 从Redis中读取品牌数据
+     *
+     * @param id 品牌id
+     * @return 匹配的品牌数据，如果没有匹配的数据，则返回null
+     */
+    BrandStandardVO get(Long id);
+
+    /**
+     * 从Redis中读取品牌列表
+     *
+     * @return 品牌列表
+     */
+    List<BrandListItemVO> list();
+
+    /**
+     * 从Redis中读取品牌列表
+     *
+     * @param start 读取数据的起始下标
+     * @param end   读取数据的截止下标
+     * @return 品牌列表
+     */
+    List<BrandListItemVO> list(long start, long end);
+
+}
 ```
 
 并在`BrandRedisRepositoryImpl`中实现此方法：
 
 ```java
+package cn.tedu.csmall.product.repo.impl;
 
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
+import cn.tedu.csmall.product.repo.IBrandRedisRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ListOperations;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Repository;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * 处理品牌缓存的数据访问实现类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Slf4j
+@Repository
+public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
+
+    @Autowired
+    private RedisTemplate<String, Serializable> redisTemplate;
+
+    public BrandRedisRepositoryImpl() {
+        log.debug("创建处理缓存的数据访问对象：BrandRedisRepositoryImpl");
+    }
+
+    @Override
+    public void save(BrandStandardVO brandStandardVO) {
+        String key = BRAND_ITEM_KEY_PREFIX + brandStandardVO.getId();
+        redisTemplate.opsForSet().add(BRAND_ITEM_KEYS_KEY, key);
+        redisTemplate.opsForValue().set(key, brandStandardVO);
+    }
+
+    @Override
+    public void save(List<BrandListItemVO> brands) {
+        String key = BRAND_LIST_KEY;
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        for (BrandListItemVO brand : brands) {
+            ops.rightPush(key, brand);
+        }
+    }
+
+    @Override
+    public Long deleteAll() {
+        // 获取到所有item的key
+        Set<Serializable> members = redisTemplate
+                .opsForSet().members(BRAND_ITEM_KEYS_KEY);
+        Set<String> keys = new HashSet<>();
+        for (Serializable member : members) {
+            keys.add((String) member);
+        }
+        // 将List和保存Key的Set的Key也添加到集合中
+        keys.add(BRAND_LIST_KEY);
+        keys.add(BRAND_ITEM_KEYS_KEY);
+        return redisTemplate.delete(keys);
+    }
+
+    @Override
+    public BrandStandardVO get(Long id) {
+        Serializable serializable = redisTemplate
+                .opsForValue().get(BRAND_ITEM_KEY_PREFIX + id);
+        BrandStandardVO brandStandardVO = null;
+        if (serializable != null) {
+            if (serializable instanceof BrandStandardVO) {
+                brandStandardVO = (BrandStandardVO) serializable;
+            }
+        }
+        return brandStandardVO;
+    }
+
+    @Override
+    public List<BrandListItemVO> list() {
+        long start = 0;
+        long end = -1;
+        return list(start, end);
+    }
+
+    @Override
+    public List<BrandListItemVO> list(long start, long end) {
+        String key = BRAND_LIST_KEY;
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        List<Serializable> list = ops.range(key, start, end);
+        List<BrandListItemVO> brands = new ArrayList<>();
+        for (Serializable item : list) {
+            brands.add((BrandListItemVO) item);
+        }
+        return brands;
+    }
+
+}
 ```
 
+完成后，可以调整“查询品牌列表”的业务，将原本从数据库中查询数据改为从Redis缓存中查询数据，则修改`BrandServiceImpl`中的`list()`方法：
 
+```java
+@Override
+public List<BrandListItemVO> list() {
+    log.debug("开始处理【查询品牌列表】的业务，无参数");
+    // return brandMapper.list();
+    return brandRedisRepository.list();
+}
+```
 
+至于，查询品牌列表时将从Redis中查询数据。
 
+# 101. 缓存预热
 
+当启用项目时就将缓存数据加载到Redis缓存中，这种做法通常称之为“缓存预热”。
 
+在Spring Boot项目中，自定义组件类，实现`ApplicationRunner`接口，此接口中的`run()`方法将在启动项目之后自动执行，可以通过此机制实现缓存预热。
 
+在根包下创建`preload.CachePreload`类并实现缓存预热：
 
+```java
+package cn.tedu.csmall.product.preload;
+
+import cn.tedu.csmall.product.mapper.BrandMapper;
+import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
+import cn.tedu.csmall.product.repo.IBrandRedisRepository;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.ApplicationArguments;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+@Slf4j
+@Component
+public class CachePreload implements ApplicationRunner {
+
+    @Autowired
+    private BrandMapper brandMapper;
+    @Autowired
+    private IBrandRedisRepository brandRedisRepository;
+
+    public CachePreload() {
+        log.debug("创建开机自动执行的组件对象：CachePreload");
+    }
+
+    // ApplicationRunner中的run()方法会在项目启动成功之后自动执行
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
+        log.debug("CachePreload.run()");
+
+        log.debug("准备删除Redis缓存中的品牌数据……");
+        brandRedisRepository.deleteAll();
+        log.debug("删除Redis缓存中的品牌数据，完成！");
+
+        log.debug("准备从数据库中读取品牌列表……");
+        List<BrandListItemVO> list = brandMapper.list();
+        log.debug("从数据库中读取品牌列表，完成！");
+
+        log.debug("准备将品牌列表写入到Redis缓存……");
+        brandRedisRepository.save(list);
+        log.debug("将品牌列表写入到Redis缓存，完成！");
+    }
+
+}
+```
+
+# 102. 计划任务
+
+计划任务：设定某种规则（通常是与时间相关的规则），当满足规则时，自动执行任务，并且，此规则可能是周期性的满足，则任务也会周期性的执行。
+
+在Spring Boot项目中，需要在配置类上添加`@EnableScheduling`注解，以开启计划任务，否则，当前项目中所有计划任务都是不允许执行的！
+
+在任何组件类中，自定义方法，在方法上添加`@Scheduled`注解，则此方法就是计划任务，通过此注解的参数可以配置计划任务的执行规律。
+
+在根包下创建`config.ScheduleConfiguration`类，在此类上添加`@EnableScheduling`注解，以开启计划任务：
+
+```java
+package cn.tedu.csmall.product.config;
+
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
+
+/**
+ * 计划任务配置类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
+@Slf4j
+@Configuration
+@EnableScheduling
+public class ScheduleConfiguration {
+
+    public ScheduleConfiguration() {
+        log.debug("创建配置类对象：ScheduleConfiguration");
+    }
+
+}
+```
+
+然后，在根包下创建`schedule.CacheSchedule`类，在类上添加`@Component`注解，并在类中自定义计划任务方法：
+
+```java
+
+```
 
 
 

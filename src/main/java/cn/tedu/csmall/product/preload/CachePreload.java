@@ -11,6 +11,12 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * 处理缓存预热的类
+ *
+ * @author java@tedu.cn
+ * @version 0.0.1
+ */
 @Slf4j
 @Component
 public class CachePreload implements ApplicationRunner {
