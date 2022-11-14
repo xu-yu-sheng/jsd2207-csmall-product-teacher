@@ -18,7 +18,7 @@ import java.util.List;
  * @version 0.0.1
  */
 @Slf4j
-@Component
+// @Component
 public class CachePreload implements ApplicationRunner {
 
     @Autowired
