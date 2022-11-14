@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Repository
@@ -38,6 +40,21 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
         for (BrandListItemVO brand : brands) {
             ops.rightPush(key, brand);
         }
+    }
+
+    @Override
+    public Long deleteAll() {
+        // 获取到所有item的key
+        Set<Serializable> members = redisTemplate
+                .opsForSet().members(BRAND_ITEM_KEYS_KEY);
+        Set<String> keys = new HashSet<>();
+        for (Serializable member : members) {
+            keys.add((String) member);
+        }
+        // 将List和保存Key的Set的Key也添加到集合中
+        keys.add(BRAND_LIST_KEY);
+        keys.add(BRAND_ITEM_KEYS_KEY);
+        return redisTemplate.delete(keys);
     }
 
     @Override

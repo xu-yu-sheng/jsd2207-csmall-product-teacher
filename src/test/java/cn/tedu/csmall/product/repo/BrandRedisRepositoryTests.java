@@ -42,6 +42,12 @@ public class BrandRedisRepositoryTests {
     }
 
     @Test
+    void deleteAll() {
+        Long count = repository.deleteAll();
+        log.debug("删除Redis缓存中所有品牌数据，删除的数据的数量：{}", count);
+    }
+
+    @Test
     void get() {
         Long id = 1L;
         BrandStandardVO queryResult = repository.get(id);

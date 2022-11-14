@@ -17,6 +17,8 @@ public interface IBrandRedisRepository {
 
     void save(List<BrandListItemVO> brands);
 
+    Long deleteAll();
+
     BrandStandardVO get(Long id);
 
     List<BrandListItemVO> list();
