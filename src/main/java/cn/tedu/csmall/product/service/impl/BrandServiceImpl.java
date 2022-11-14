@@ -9,6 +9,7 @@ import cn.tedu.csmall.product.pojo.dto.BrandUpdateDTO;
 import cn.tedu.csmall.product.pojo.entity.Brand;
 import cn.tedu.csmall.product.pojo.vo.BrandListItemVO;
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
+import cn.tedu.csmall.product.repo.IBrandRedisRepository;
 import cn.tedu.csmall.product.service.IBrandService;
 import cn.tedu.csmall.product.web.ServiceCode;
 import lombok.extern.slf4j.Slf4j;
@@ -169,10 +170,14 @@ public class BrandServiceImpl implements IBrandService {
         return brand;
     }
 
+    @Autowired
+    private IBrandRedisRepository brandRedisRepository;
+
     @Override
     public List<BrandListItemVO> list() {
         log.debug("开始处理【查询品牌列表】的业务，无参数");
-        return brandMapper.list();
+        // return brandMapper.list();
+        return brandRedisRepository.list();
     }
 
     private void updateEnableById(Long id, Integer enable) {
