@@ -75,6 +75,7 @@ Spring Boot项目默认在`src/main/resources`下已经准备好了配置文件�
 | `@Qualifier`                  | Spring            | 添加在属性上，或添加在方法的参数上，<br />配合自动装配机制，用于指定需要装配的Spring Bean的名称 |
 | `@Scope`                      | Spring            | 添加在组件类上，或添加在已经添加了`@Bean`注解的方法上，<br />用于指定作用域，注解参数为`singleton`（默认）时为“单例”，注解参数为`prototype`时为“非单例” |
 | `@Lazy`                       | Spring            | 添加在组件类上，或添加在已经添加了`@Bean`注解的方法上，<br />用于指定作用域，当Spring Bean是单例时，注解参数为`true`（默认）时为“懒加载”，注解参数为`false`时为“预加载” |
+| `@Value`                      | Spring            | 添加在属性上，或添加在被Spring调用的方法的参数上，用于读取`Environment`中的属性值，为对象的属性或方法的参数注入值 |
 | `@Resource`                   | Spring            | 此注解是`javax`包中的注解，<br />添加在属性上，使得Spring自动装配此属性的值，<br />通常不推荐使用此注解 |
 | `@ResponseBody`               | Spring MVC        | 添加在方法上，标记此方法是“响应正文”的，<br />添加在类上，标记此类中所有方法都是“响应正文”的 |
 | `@RestController`             | Spring MVC        | 添加在类上，标记此类是一个“响应正文”的控制器类               |

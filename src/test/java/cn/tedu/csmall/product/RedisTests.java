@@ -108,13 +108,35 @@ public class RedisTests {
     void rightPush() {
         String key = "stringList";
         List<String> stringList = new ArrayList<>();
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 8; i++) {
             stringList.add("string-" + i);
         }
 
         ListOperations<String, Serializable> ops = redisTemplate.opsForList();
         for (String s : stringList) {
             ops.rightPush(key, s);
+        }
+    }
+
+    @Test
+    void size() {
+        String key = "stringList";
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        Long size = ops.size(key);
+        log.debug("根据Key【{}】读取列表的长度，结果：{}", key, size);
+    }
+
+    @Test
+    void range() {
+        String key = "stringList";
+        long start = 0;
+        long end = -1;
+
+        ListOperations<String, Serializable> ops = redisTemplate.opsForList();
+        List<Serializable> list = ops.range(key, start, end);
+        log.debug("根据Key【{}】从【{}】到【{}】读取列表，结果长度：{}", key, start, end, list.size());
+        for (Serializable item : list) {
+            log.debug("列表项：{}", item);
         }
     }
 
