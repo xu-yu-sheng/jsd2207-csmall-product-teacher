@@ -22,7 +22,7 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
 
     @Override
     public void save(BrandStandardVO brandStandardVO) {
-        String key = "xxx";
+        String key = "brand:" + brandStandardVO.getId();
         redisTemplate.opsForValue().set(key, brandStandardVO);
     }
 

@@ -17,7 +17,25 @@ public class BrandRedisRepositoryTests {
     void save() {
         BrandStandardVO brandStandardVO = new BrandStandardVO();
         brandStandardVO.setId(100L);
-        brandStandardVO.setName("缓存品牌001");
+        brandStandardVO.setName("缓存品牌100");
+
+        repository.save(brandStandardVO);
+
+        brandStandardVO = new BrandStandardVO();
+        brandStandardVO.setId(300L);
+        brandStandardVO.setName("缓存品牌300");
+
+        repository.save(brandStandardVO);
+
+        brandStandardVO = new BrandStandardVO();
+        brandStandardVO.setId(400L);
+        brandStandardVO.setName("缓存品牌400");
+
+        repository.save(brandStandardVO);
+
+        brandStandardVO = new BrandStandardVO();
+        brandStandardVO.setId(500L);
+        brandStandardVO.setName("缓存品牌500");
 
         repository.save(brandStandardVO);
     }
