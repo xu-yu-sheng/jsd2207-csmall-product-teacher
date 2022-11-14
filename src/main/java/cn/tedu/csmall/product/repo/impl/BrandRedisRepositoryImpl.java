@@ -1,4 +1,4 @@
-package cn.tedu.csmall.product.repo.repo.impl;
+package cn.tedu.csmall.product.repo.impl;
 
 import cn.tedu.csmall.product.pojo.vo.BrandStandardVO;
 import cn.tedu.csmall.product.repo.IBrandRedisRepository;
