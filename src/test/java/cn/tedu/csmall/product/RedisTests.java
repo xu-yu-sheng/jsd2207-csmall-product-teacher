@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.ListOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 
 import java.io.Serializable;
@@ -140,6 +141,22 @@ public class RedisTests {
         for (Serializable item : list) {
             log.debug("列表项：{}", item);
         }
+    }
+
+    @Test
+    void add() {
+        SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
+        String key = "brandKeys";
+        String value = "brand:item:2";
+        ops.add(key, value);
+    }
+
+    @Test
+    void members() {
+        SetOperations<String, Serializable> ops = redisTemplate.opsForSet();
+        String key = "brandKeys";
+        Set<Serializable> members = ops.members(key);
+        log.debug("根据Key【{}】读取Set数据，结果：{}", key, members);
     }
 
 }

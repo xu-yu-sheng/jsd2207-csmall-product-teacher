@@ -11,6 +11,8 @@ public interface IBrandRedisRepository {
 
     String BRAND_LIST_KEY = "brand:list";
 
+    String BRAND_ITEM_KEYS_KEY = "brand:item-keys";
+
     void save(BrandStandardVO brandStandardVO);
 
     void save(List<BrandListItemVO> brands);

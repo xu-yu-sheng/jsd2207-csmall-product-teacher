@@ -21,7 +21,7 @@ public class BrandRedisRepositoryTests {
     void save() {
         BrandStandardVO brandStandardVO = new BrandStandardVO();
         brandStandardVO.setId(1L);
-        brandStandardVO.setName("缓存品牌001");
+        brandStandardVO.setName("缓存品牌1");
 
         repository.save(brandStandardVO);
         log.debug("向Redis缓存中写入数据，完成！");
