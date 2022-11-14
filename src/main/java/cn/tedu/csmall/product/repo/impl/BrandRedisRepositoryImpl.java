@@ -22,8 +22,20 @@ public class BrandRedisRepositoryImpl implements IBrandRedisRepository {
 
     @Override
     public void save(BrandStandardVO brandStandardVO) {
-        String key = "brand:" + brandStandardVO.getId();
+        String key = BRAND_ITEM_KEY_PREFIX + brandStandardVO.getId();
         redisTemplate.opsForValue().set(key, brandStandardVO);
+    }
+
+    @Override
+    public BrandStandardVO get(Long id) {
+        Serializable serializable = redisTemplate.opsForValue().get(BRAND_ITEM_KEY_PREFIX + id);
+        BrandStandardVO brandStandardVO = null;
+        if (serializable != null) {
+            if (serializable instanceof BrandStandardVO) {
+                brandStandardVO = (BrandStandardVO) serializable;
+            }
+        }
+        return brandStandardVO;
     }
 
 }

@@ -74,7 +74,9 @@ public class RedisTests {
         Serializable value = ops.get(key);
         log.debug("从Redis中取出Key值为【{}】的数据", key);
         log.debug("结果：{}", value);
-        log.debug("结果的数据类型：{}", value.getClass().getName());
+        if (value == null) {
+            log.debug("结果的数据类型：{}", value.getClass().getName());
+        }
     }
 
     @Test
