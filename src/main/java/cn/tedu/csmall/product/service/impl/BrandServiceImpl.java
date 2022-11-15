@@ -164,22 +164,30 @@ public class BrandServiceImpl implements IBrandService {
     public BrandStandardVO getStandardById(Long id) {
         log.debug("开始处理【根据id查询品牌详情】的业务，参数：{}", id);
         // 根据id从缓存中获取数据
+        log.debug("将从Redis中获取相关数据");
+        BrandStandardVO brand = brandRedisRepository.get(id);
         // 判断获取到的结果是否不为null
-        // 是：直接返回
+        if (brand != null) {
+            // 是：直接返回
+            log.debug("命中缓存，即将返回：{}", brand);
+            return brand;
+        }
 
         // 无缓存数据，从数据库中查找数据
+        log.debug("未命中缓存，即将从数据库中查找数据");
+        brand = brandMapper.getStandardById(id);
         // 判断查询到的结果是否为null
-        // 是：抛出异常
-
-        // 将查询结果写入到缓存，并返回
-
-
-        BrandStandardVO brand = brandMapper.getStandardById(id);
         if (brand == null) {
+            // 是：抛出异常
             String message = "获取品牌详情失败，尝试访问的数据不存在！";
             log.warn(message);
             throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
         }
+
+        // 将查询结果写入到缓存，并返回
+        log.debug("从数据库查询到有效结果，将查询结果存入到Redis：{}", brand);
+        brandRedisRepository.save(brand);
+        log.debug("返回结果：{}", brand);
         return brand;
     }
 

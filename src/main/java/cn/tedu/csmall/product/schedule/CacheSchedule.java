@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * @version 0.0.1
  */
 @Slf4j
-@Component
+// @Component
 public class CacheSchedule {
 
     @Autowired
