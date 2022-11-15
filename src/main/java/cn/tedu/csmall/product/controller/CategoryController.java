@@ -131,4 +131,14 @@ public class CategoryController {
         return JsonResult.ok(list);
     }
 
+    // http://localhost:9080/categories/list-by-parent?parentId=0
+    @ApiOperation("根据父级类别查询子级类别列表")
+    @ApiOperationSupport(order = 415)
+    @GetMapping("/list-by-parent")
+    public JsonResult<List<CategoryListItemVO>> listByParentId(Long parentId) {
+        log.debug("开始处理【根据父级类别查询子级类别列表】的请求，无参数");
+        List<CategoryListItemVO> list = categoryService.listByParentId(parentId);
+        return JsonResult.ok(list);
+    }
+
 }

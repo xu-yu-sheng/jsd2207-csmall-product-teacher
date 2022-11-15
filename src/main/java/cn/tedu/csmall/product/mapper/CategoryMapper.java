@@ -4,7 +4,6 @@ import cn.tedu.csmall.product.pojo.entity.Category;
 import cn.tedu.csmall.product.pojo.vo.CategoryListItemVO;
 import cn.tedu.csmall.product.pojo.vo.CategoryStandardVO;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -76,7 +75,7 @@ public interface CategoryMapper {
     /**
      * 统计当前表中非此类别id的匹配名称的类别数据的数量
      *
-     * @param id 当前类别id
+     * @param id   当前类别id
      * @param name 类别名称
      * @return 当前表中非此类别id的匹配名称的类别数据的数量
      */
@@ -104,5 +103,13 @@ public interface CategoryMapper {
      * @return 类别列表
      */
     List<CategoryListItemVO> list();
+
+    /**
+     * 根据父级类别查询其子级类别列表
+     *
+     * @param parentId 父级类别的id
+     * @return 类别列表
+     */
+    List<CategoryListItemVO> listByParentId(Long parentId);
 
 }

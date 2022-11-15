@@ -129,4 +129,15 @@ public class CategoryServiceTests {
             log.debug("{}", item);
         }
     }
+
+    @Test
+    void listByParentId() {
+        Long parentId = 0L;
+        List<?> list = service.listByParentId(parentId);
+        log.debug("查询列表完成，列表中的数据的数量：{}", list.size());
+        for (Object item : list) {
+            log.debug("{}", item);
+        }
+    }
+
 }

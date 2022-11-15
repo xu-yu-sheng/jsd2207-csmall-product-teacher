@@ -115,6 +115,18 @@
             sort DESC, id DESC
     </select>
 
+    <!-- List<CategoryListItemVO> listByParentId(Long parentId); -->
+    <select id="listByParentId" resultMap="ListResultMap">
+        SELECT
+            <include refid="ListQueryFields"/>
+        FROM
+            pms_category
+        WHERE
+            parent_id=#{parentId}
+        ORDER BY
+            sort DESC, id DESC
+    </select>
+
     <sql id="StandardQueryFields">
         <if test="true">
             id, name, parent_id, depth, keywords, sort, icon, enable, is_parent, is_display
