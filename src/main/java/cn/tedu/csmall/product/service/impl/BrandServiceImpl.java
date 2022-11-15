@@ -35,6 +35,8 @@ public class BrandServiceImpl implements IBrandService {
     private SpuMapper spuMapper;
     @Autowired
     private BrandCategoryMapper brandCategoryMapper;
+    @Autowired
+    private IBrandRedisRepository brandRedisRepository;
 
     public BrandServiceImpl() {
         log.info("创建业务对象：BrandServiceImpl");
@@ -170,14 +172,26 @@ public class BrandServiceImpl implements IBrandService {
         return brand;
     }
 
-    @Autowired
-    private IBrandRedisRepository brandRedisRepository;
-
     @Override
     public List<BrandListItemVO> list() {
         log.debug("开始处理【查询品牌列表】的业务，无参数");
         // return brandMapper.list();
         return brandRedisRepository.list();
+    }
+
+    @Override
+    public void rebuildCache() {
+        log.debug("准备删除Redis缓存中的品牌数据……");
+        brandRedisRepository.deleteAll();
+        log.debug("删除Redis缓存中的品牌数据，完成！");
+
+        log.debug("准备从数据库中读取品牌列表……");
+        List<BrandListItemVO> list = brandMapper.list();
+        log.debug("从数据库中读取品牌列表，完成！");
+
+        log.debug("准备将品牌列表写入到Redis缓存……");
+        brandRedisRepository.save(list);
+        log.debug("将品牌列表写入到Redis缓存，完成！");
     }
 
     private void updateEnableById(Long id, Integer enable) {
