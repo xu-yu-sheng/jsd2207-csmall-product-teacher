@@ -74,6 +74,14 @@ public void rebuildCache() {
     log.debug("准备将品牌列表写入到Redis缓存……");
     brandRedisRepository.save(list);
     log.debug("将品牌列表写入到Redis缓存，完成！");
+
+    log.debug("准备将各品牌详情写入到Redis缓存……");
+    for (BrandListItemVO brandListItemVO : list) {
+        Long id = brandListItemVO.getId();
+        BrandStandardVO brandStandardVO = brandMapper.getStandardById(id);
+        brandRedisRepository.save(brandStandardVO);
+    }
+    log.debug("将各品牌详情写入到Redis缓存，完成！");
 }
 ```
 
@@ -95,25 +103,52 @@ public JsonResult<Void> rebuildCache() {
 
 后续，客户端只需要提交请求，即可实现“重建品牌缓存”。
 
+# 104. 按需加载缓存数据
 
+假设当根据id获取品牌详情时，需要通过“按需加载缓存数据”的机制来实现缓存，可以将原业务调整为：
 
+```java
+@Override
+public BrandStandardVO getStandardById(Long id) {
+    log.debug("开始处理【根据id查询品牌详情】的业务，参数：{}", id);
+    // 根据id从缓存中获取数据
+    log.debug("将从Redis中获取相关数据");
+    BrandStandardVO brand = brandRedisRepository.get(id);
+    // 判断获取到的结果是否不为null
+    if (brand != null) {
+        // 是：直接返回
+        log.debug("命中缓存，即将返回：{}", brand);
+        return brand;
+    }
 
+    // 无缓存数据，从数据库中查找数据
+    log.debug("未命中缓存，即将从数据库中查找数据");
+    brand = brandMapper.getStandardById(id);
+    // 判断查询到的结果是否为null
+    if (brand == null) {
+        // 是：抛出异常
+        String message = "获取品牌详情失败，尝试访问的数据不存在！";
+        log.warn(message);
+        throw new ServiceException(ServiceCode.ERR_NOT_FOUND, message);
+    }
 
-
-
-
-
-
-
+    // 将查询结果写入到缓存，并返回
+    log.debug("从数据库查询到有效结果，将查询结果存入到Redis：{}", brand);
+    brandRedisRepository.save(brand);
+    log.debug("返回结果：{}", brand);
+    return brand;
+}
 ```
-// 根据id从缓存中获取数据
-// 判断获取到的结果是否不为null
-// 是：直接返回
 
-// 无缓存数据，从数据库中查找数据
-// 判断查询到的结果是否为null
-// 是：抛出异常
 
-// 将查询结果写入到缓存，并返回
-```
+
+
+
+
+
+
+
+
+
+
 

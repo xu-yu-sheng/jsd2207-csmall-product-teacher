@@ -103,4 +103,9 @@ public class BrandServiceTests {
         }
     }
 
+    @Test
+    void rebuildCache() {
+        service.rebuildCache();
+    }
+
 }

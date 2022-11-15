@@ -212,6 +212,14 @@ public class BrandServiceImpl implements IBrandService {
         log.debug("准备将品牌列表写入到Redis缓存……");
         brandRedisRepository.save(list);
         log.debug("将品牌列表写入到Redis缓存，完成！");
+
+        log.debug("准备将各品牌详情写入到Redis缓存……");
+        for (BrandListItemVO brandListItemVO : list) {
+            Long id = brandListItemVO.getId();
+            BrandStandardVO brandStandardVO = brandMapper.getStandardById(id);
+            brandRedisRepository.save(brandStandardVO);
+        }
+        log.debug("将各品牌详情写入到Redis缓存，完成！");
     }
 
     private void updateEnableById(Long id, Integer enable) {
