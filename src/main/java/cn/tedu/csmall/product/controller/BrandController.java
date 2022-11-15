@@ -110,4 +110,14 @@ public class BrandController {
         return JsonResult.ok(list);
     }
 
+    // http://localhost:9080/brands/cache/rebuild
+    @ApiOperation("重建品牌缓存")
+    @ApiOperationSupport(order = 600)
+    @PostMapping("/cache/rebuild")
+    public JsonResult<Void> rebuildCache() {
+        log.debug("开始处理【重建品牌缓存】的请求，无参数");
+        brandService.rebuildCache();
+        return JsonResult.ok();
+    }
+
 }

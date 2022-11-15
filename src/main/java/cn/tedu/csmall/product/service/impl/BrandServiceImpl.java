@@ -163,6 +163,17 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public BrandStandardVO getStandardById(Long id) {
         log.debug("开始处理【根据id查询品牌详情】的业务，参数：{}", id);
+        // 根据id从缓存中获取数据
+        // 判断获取到的结果是否不为null
+        // 是：直接返回
+
+        // 无缓存数据，从数据库中查找数据
+        // 判断查询到的结果是否为null
+        // 是：抛出异常
+
+        // 将查询结果写入到缓存，并返回
+
+
         BrandStandardVO brand = brandMapper.getStandardById(id);
         if (brand == null) {
             String message = "获取品牌详情失败，尝试访问的数据不存在！";
@@ -181,6 +192,7 @@ public class BrandServiceImpl implements IBrandService {
 
     @Override
     public void rebuildCache() {
+        log.debug("开始处理【重建品牌缓存】的业务，无参数");
         log.debug("准备删除Redis缓存中的品牌数据……");
         brandRedisRepository.deleteAll();
         log.debug("删除Redis缓存中的品牌数据，完成！");
