@@ -25,7 +25,7 @@ public class IdUtils {
     public static Long getId() {
         // 【临时策略】使用 yyMMddHHmmssSSS 时间值并拼接在 [1000, 9999] 的随机数字
         LocalDateTime now = LocalDateTime.now(); // 2022-11-17T14:17:33.079
-        String dateTimeString = dateTimeFormatter.format(now); // 20221117141959085
+        String dateTimeString = dateTimeFormatter.format(now); // 221117141959085
         int randomNumber = random.nextInt(8999) + 1000;
         String result = dateTimeString + randomNumber;
         long id = Long.valueOf(result);

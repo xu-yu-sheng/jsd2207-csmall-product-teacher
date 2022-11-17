@@ -194,8 +194,8 @@ public class BrandServiceImpl implements IBrandService {
     @Override
     public List<BrandListItemVO> list() {
         log.debug("开始处理【查询品牌列表】的业务，无参数");
-        // return brandMapper.list();
-        return brandRedisRepository.list();
+        return brandMapper.list();
+        // return brandRedisRepository.list();
     }
 
     @Override
