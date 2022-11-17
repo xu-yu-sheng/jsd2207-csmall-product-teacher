@@ -33,6 +33,18 @@ public enum ServiceCode {
      */
     ERR_NOT_FOUND(40400),
     /**
+     * 错误：品牌数据不存在
+     */
+    ERR_NOT_FOUND_BRAND(40401),
+    /**
+     * 错误：类别数据不存在
+     */
+    ERR_NOT_FOUND_CATEGORY(40402),
+    /**
+     * 错误：相册数据不存在
+     */
+    ERR_NOT_FOUND_ALBUM(40403),
+    /**
      * 错误：数据冲突
      */
     ERR_CONFLICT(40900),
