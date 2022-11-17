@@ -251,11 +251,11 @@
         <result column="comment_count" property="commentCount"/>
         <result column="positive_comment_count" property="positiveCommentCount"/>
         <result column="sort" property="sort"/>
-        <result column="is_deleted" property="deleted"/>
-        <result column="is_published" property="published"/>
-        <result column="is_new_arrival" property="newArrival"/>
-        <result column="is_recommended" property="recommended"/>
-        <result column="is_checked" property="checked"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="is_published" property="isPublished"/>
+        <result column="is_new_arrival" property="isNewArrival"/>
+        <result column="is_recommended" property="isRecommended"/>
+        <result column="is_checked" property="isChecked"/>
         <result column="check_user" property="checkUser"/>
         <result column="gmt_check" property="gmtCheck"/>
     </resultMap>
@@ -318,11 +318,11 @@
         <result column="comment_count" property="commentCount"/>
         <result column="positive_comment_count" property="positiveCommentCount"/>
         <result column="sort" property="sort"/>
-        <result column="is_deleted" property="deleted"/>
-        <result column="is_published" property="published"/>
-        <result column="is_new_arrival" property="newArrival"/>
-        <result column="is_recommended" property="recommended"/>
-        <result column="is_checked" property="checked"/>
+        <result column="is_deleted" property="isDeleted"/>
+        <result column="is_published" property="isPublished"/>
+        <result column="is_new_arrival" property="isNewArrival"/>
+        <result column="is_recommended" property="isRecommended"/>
+        <result column="is_checked" property="isChecked"/>
         <result column="check_user" property="checkUser"/>
         <result column="gmt_check" property="gmtCheck"/>
     </resultMap>
