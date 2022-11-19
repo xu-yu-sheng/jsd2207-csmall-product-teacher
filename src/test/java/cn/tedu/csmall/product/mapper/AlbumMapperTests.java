@@ -1,8 +1,9 @@
 package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
+import cn.tedu.csmall.product.pojo.vo.AlbumStandardVO;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -54,7 +55,7 @@ public class AlbumMapperTests {
         Long id = 1L;
         int rows = mapper.deleteById(id);
         // log.debug("删除完成，受影响的行数：{}", rows); // 1
-        Assertions.assertEquals(1, rows); // 断言
+        assertEquals(1, rows); // 断言
     }
 
     @Test
@@ -63,7 +64,7 @@ public class AlbumMapperTests {
         Long id = 1L;
         int rows = mapper.deleteById(id);
         // log.debug("删除完成，受影响的行数：{}", rows); // 0
-        Assertions.assertEquals(0, rows); // 断言
+        assertEquals(0, rows); // 断言
     }
 
     @Test
@@ -107,10 +108,25 @@ public class AlbumMapperTests {
     }
 
     @Test
-    void getStandardById() {
+    @Sql(scripts = {"classpath:sql/truncate_all_tables.sql",
+            "classpath:sql/insert_all_test_data.sql"})
+    @Sql(scripts = "classpath:sql/truncate_all_tables.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    void getStandardByIdSuccessfully() {
+        Long id = 1L;
+        AlbumStandardVO queryResult = mapper.getStandardById(id);
+        // log.debug("根据id【{}】查询数据详情完成，查询结果：{}", id, queryResult);
+        assertNotNull(queryResult);
+        assertEquals(id, queryResult.getId());
+    }
+
+    @Test
+    @Sql(scripts = {"classpath:sql/truncate_all_tables.sql"})
+    void getStandardByIdFailBecauseNotFound() {
         Long id = 1L;
         Object queryResult = mapper.getStandardById(id);
-        log.debug("根据id【{}】查询数据详情完成，查询结果：{}", id, queryResult);
+        // log.debug("根据id【{}】查询数据详情完成，查询结果：{}", id, queryResult);
+        assertNull(queryResult);
     }
 
     @Test

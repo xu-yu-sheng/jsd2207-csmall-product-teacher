@@ -2,9 +2,11 @@ package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Spu;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
@@ -17,16 +19,27 @@ public class SpuMapperTests {
     @Autowired
     SpuMapper mapper;
 
-    @Transactional
+    // @Transactional
     @Test
+    @Sql(scripts = {"classpath:sql/truncate_all_tables.sql"})
+    @Sql(scripts = {"classpath:sql/truncate_all_tables.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void insert() {
         Spu spu = new Spu();
         spu.setId(1L);
         spu.setTitle("测试数据001");
-        log.debug("插入数据之前，参数：{}", spu);
-        int rows = mapper.insert(spu);
-        log.debug("插入数据完成，受影响的行数：{}", rows);
-        log.debug("插入数据之后，参数：{}", spu);
+
+        Assertions.assertDoesNotThrow(() -> {
+            // log.debug("插入数据之前，参数：{}", spu);
+            int rows = mapper.insert(spu);
+            // log.debug("插入数据完成，受影响的行数：{}", rows);
+            // log.debug("插入数据之后，参数：{}", spu);
+            Assertions.assertEquals(1, rows);
+        });
+
+        // Assertions.assertThrows(RuntimeException.class, () -> {
+        //    // 会抛出RuntimeException的代码
+        // });
     }
 
     @Transactional
