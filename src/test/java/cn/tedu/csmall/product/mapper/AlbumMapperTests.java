@@ -48,6 +48,8 @@ public class AlbumMapperTests {
     @Test
     @Sql(scripts = {"classpath:sql/truncate_all_tables.sql",
             "classpath:sql/insert_all_test_data.sql"})
+    @Sql(scripts = "classpath:sql/truncate_all_tables.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteByIdSuccessfully() {
         Long id = 1L;
         int rows = mapper.deleteById(id);
