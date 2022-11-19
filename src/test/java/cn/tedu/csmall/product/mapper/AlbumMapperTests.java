@@ -2,9 +2,11 @@ package cn.tedu.csmall.product.mapper;
 
 import cn.tedu.csmall.product.pojo.entity.Album;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.jdbc.Sql;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +46,22 @@ public class AlbumMapperTests {
     }
 
     @Test
-    void deleteById() {
+    @Sql(scripts = {"classpath:sql/truncate_all_tables.sql",
+            "classpath:sql/insert_all_test_data.sql"})
+    void deleteByIdSuccessfully() {
         Long id = 1L;
         int rows = mapper.deleteById(id);
-        log.debug("删除完成，受影响的行数：{}", rows);
+        // log.debug("删除完成，受影响的行数：{}", rows); // 1
+        Assertions.assertEquals(1, rows); // 断言
+    }
+
+    @Test
+    @Sql(scripts = "classpath:sql/truncate_all_tables.sql")
+    void deleteByIdFailBecauseNotFound() {
+        Long id = 1L;
+        int rows = mapper.deleteById(id);
+        // log.debug("删除完成，受影响的行数：{}", rows); // 0
+        Assertions.assertEquals(0, rows); // 断言
     }
 
     @Test
